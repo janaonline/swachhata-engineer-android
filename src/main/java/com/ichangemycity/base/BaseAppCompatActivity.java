@@ -22,7 +22,7 @@ import java.util.List;
  */
 
 public class BaseAppCompatActivity extends AppCompatActivity {
- 
+
     public String TAG = this.getClass().getSimpleName();
     private String TAG_GET_MAP_KEY = "TAG_GET_MAP_KEY";
     PermissionManager permission;

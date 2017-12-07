@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyDashes">
+
+	<bool name="ga_autoActivityTracking">true</bool>
+
+	<string name="ga_trackingId">UA-51350206-11</string>
+	<string name="ga_anonymizeIp">true</string>
+
+	<bool name="ga_reportUncaughtExceptions">true</bool>
+
+	<screenName name="com.ichangemycity.swachhbharatengineer.SplashScreen">SplashScreen</screenName>
+<screenName name="com.ichangemycity.swachhbharatengineer.UserMainActivityDashboard">UserMainActivityDashboard
+</screenName>
+</resources>
