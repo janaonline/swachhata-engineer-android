@@ -22,34 +22,34 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.analytics.StandardExceptionParser;
 import com.google.android.gms.analytics.Tracker;
+import com.ichangemycity.adapter.ChangeStatusSpinnerAdapter;
 import com.ichangemycity.callback.OnButtonClick;
-import com.ichangemycity.callback.OnTaskCompleted;
 import com.ichangemycity.model.ChangeStatusListData;
+import com.ichangemycity.model.ChangeStatusModel;
 import com.ichangemycity.model.CommentsData;
 import com.ichangemycity.model.ComplaintCategoryData;
 import com.ichangemycity.model.ComplaintData;
@@ -62,8 +62,6 @@ import com.ichangemycity.swachhbharatengineer.R;
 import com.ichangemycity.swachhbharatengineer.Splashscreen;
 import com.ichangemycity.webservice.GPSTracker;
 import com.ichangemycity.webservice.LruBitmapCache;
-import com.ichangemycity.webservice.ParseComplaintData;
-import com.ichangemycity.webservice.URLData;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.prashantsolanki.secureprefmanager.SecurePrefManager;
 import com.prashantsolanki.secureprefmanager.SecurePrefManagerInit;
@@ -75,9 +73,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * Created by pattabi.raman on 23-09-2017.
@@ -87,12 +83,6 @@ public class AppController extends MultiDexApplication {
     public static ArrayList<LanguageData> languageArrayList = new ArrayList<LanguageData>();
     public static String language_code = "code";
     public static String language_label = "label";
-    public static final int COMPLAINT_OPEN = 1;
-    public static final int COMPLAINT_FOLLOW_UP = 2;
-    public static final int COMPLAINT_ON_THE_JOB = 3;
-    public static final int COMPLAINT_RESOLVED = 4;
-    public static final int COMPLAINT_REOPEN = 5;
-    public static final int COMPLAINT_REJECTED = 6;
     public static double latitude = 0.0;
     public static double longitude = 0.0;
     public static boolean isAnyLocationSuggestionClicked;
@@ -165,15 +155,15 @@ public class AppController extends MultiDexApplication {
     public static final String UPDATE_PROFILE_SUCCESS = "USER UPDATE PROFILE SUCCESS";
     public static final String UPDATE_PROFILE_FAILURE = "USER UPDATE PROFILE FAILURE";
     public static final String USER_LOGIN = "logged in";
-    public static final String SURVEY_SUBMIT="SurveySubmit";
-    public static final String ONBOARDING="Onboarding";
-    public static final String WITHOUT_OTP=" Without OTP";
-    public static final String WITH_MVAYO_OTP=" With MVAYOO OTP";
-    public static final String WITH_FAK_OTP=" With FAK OTP";
-    public static final String WITH_MVAYO_RESEND_OTP=" With MVAYOO RESEND OTP";
-    public static final String FAILED_FAK_OTP="Failed with FAK OTP";
-    public static final String MANUAL_CANCELLED_FAK_OTP="Manual cancelled FAK OTP";
-
+    public static final String SURVEY_SUBMIT = "SurveySubmit";
+    public static final String ONBOARDING = "Onboarding";
+    public static final String WITHOUT_OTP = " Without OTP";
+    public static final String WITH_MVAYO_OTP = " With MVAYOO OTP";
+    public static final String WITH_FAK_OTP = " With FAK OTP";
+    public static final String WITH_MVAYO_RESEND_OTP = " With MVAYOO RESEND OTP";
+    public static final String FAILED_FAK_OTP = "Failed with FAK OTP";
+    public static final String MANUAL_CANCELLED_FAK_OTP = "Manual cancelled FAK OTP";
+    public static int selectedComplaintDropdownIndex = -1;
     private static void getScreenResolution(Application activity) {
         WindowManager wm = (WindowManager) activity
                 .getSystemService(Context.WINDOW_SERVICE);
@@ -392,6 +382,7 @@ public class AppController extends MultiDexApplication {
         }
         return isValid;
     }
+
     public static View view;
 
     public static void showProgressDialog(final Activity activity, final String loading) {
@@ -606,14 +597,17 @@ public class AppController extends MultiDexApplication {
                 try {
                     (activity.findViewById(R.id.viewEmpty)).setVisibility(View.VISIBLE);
                     ((TextView) activity.findViewById(R.id.viewEmpty)).setText(activity.getResources().getString(R.string.no_data));
-                } catch (Exception e){}
+                } catch (Exception e) {
+                }
             } else {
                 try {
                     (activity.findViewById(R.id.viewEmpty)).setVisibility(View.GONE);
-                }catch (Exception e){}
+                } catch (Exception e) {
+                }
             }
         }
     }
+
     public static void setEmptyViewForRecyclerViewFragments(final Activity activity, final EasyRecyclerView recyclerView, final TextView textview) {
         try {
             if (recyclerView.getAdapter() != null) {
@@ -625,11 +619,235 @@ public class AppController extends MultiDexApplication {
                     textview.setVisibility(View.GONE);
                 }
             }
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
+    }
+
+    public static ArrayList<ComplaintData> getParsedComplaintData(final JSONArray json_comp_array) {
+
+        ArrayList<ComplaintData> data = new ArrayList<ComplaintData>();
+        try {
+            for (int i = 0; i < json_comp_array.length(); i++) {
+                JSONObject json_obj = json_comp_array.getJSONObject(i);
+                ComplaintData cData = ComplaintData.getInstance();
+                cData.setComplaintId(json_obj.getInt("complaintId") + "");
+                cData.setGeneric_id(json_obj.getString("generic_id"));
+                cData.setCity_id(json_obj.getInt("city_id") + "");
+                cData.setCreated_at(json_obj.getString("created_at"));
+                cData.setUser_id(json_obj.getInt("user_id") + "");
+                cData.setCategory_id(json_obj.getInt("category_id") + "");
+                cData.setVoted_count(json_obj.getInt("voted_count") + "");
+                cData.setCommented_count(json_obj.getInt("commented_count")
+                        + "");
+                cData.setComplaint_url(json_obj.getString("complaint_url"));
+                cData.setAffected(json_obj.get("affected").toString());
+                cData.setCategory_name(json_obj.getString("category_name"));
+                if (json_obj.has("complaint_image"))
+                    cData.setComplaint_image(json_obj
+                            .getString("complaint_image"));
+                else
+                    cData.setComplaint_image("http://icmycsaasqa.ichangemycity.com/android/garbage.jpg");
+
+                cData.setComplaint_image_l1(json_obj
+                        .getString("complaint_image_l1"));
+                cData.setComplaint_image_l1(json_obj
+                        .getString("complaint_image_l2"));
+
+                if (json_obj.has("complaint_image_height"))
+                    cData.setComplaint_image_height(json_obj
+                            .getInt("complaint_image_height") + "");
+                else
+                    cData.setComplaint_image_height(300 + "");
+
+                cData.setLocation(json_obj.getString("location"));
+                cData.setLatitude(json_obj.get("latitude").toString());
+                cData.setLongitude(json_obj.get("longitude").toString());
+
+                if (json_obj.has("landmark"))
+                    cData.setLandmark(json_obj.getString("landmark"));
+                else
+                    cData.setLandmark("Landmark missing in web service");
+                cData.setParent_id(json_obj.getString("parent_id"));
+                cData.setFull_name(json_obj.getString("full_name"));
+                if (json_obj.has("user_image"))
+                    cData.setUser_image(json_obj.getString("user_image"));
+                else
+                    cData.setUser_image("http://icmycsaasqa.ichangemycity.com/android/account.png");
+
+                cData.setComplaint_status_id(json_obj
+                        .getString("complaint_status_id"));
+                cData.setComplaint_status(json_obj
+                        .getString("complaint_status"));
+                cData.setRadius("" + json_obj.getInt("radius"));
+                if (json_obj.has("feed")) {
+                    String feed = json_obj.getString("feed");
+                    try {
+                        cData.setHasFeed(true);
+                        JSONObject mComplaintFeedJsonObject = new JSONObject(
+                                feed);
+                        cData.setFeed_id(mComplaintFeedJsonObject
+                                .getString("feed_id"));
+                        // cData.setFeed_user_id(mComplaintFeedJsonObject
+                        // .getString("feed_user_id"));
+                        cData.setFeed_description(mComplaintFeedJsonObject
+                                .getString("feed_description"));
+                        cData.setFeed_full_name(""/*
+												 * mComplaintFeedJsonObject
+												 * .getString
+												 * ("feed_user_full_name")
+												 */);
+                        cData.setFeed_color(mComplaintFeedJsonObject
+                                .getString("feed_color"));
+                        cData.set_is_feed_high_priority(mComplaintFeedJsonObject
+                                .get("is_feed_high_priority").toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        cData.setHasFeed(false);
+                    }
+                } else {
+                    cData.setHasFeed(false);
+                }
+                if (json_obj.has("feedback_count")) {
+                    String feedback_count = json_obj
+                            .getString("feedback_count");
+                    JSONObject feedback = new JSONObject(feedback_count);
+                    cData.setFeedback_count(true);
+                    cData.setNeutral(feedback.getInt("neutral") + "");
+                    cData.setSatisfaction(feedback.getInt("satisfaction") + "");
+                    cData.setUn_satisfied(feedback.getInt("un_satisfied") + "");
+                } else {
+                    cData.setFeedback_count(false);
+                    cData.setNeutral("0");
+                    cData.setSatisfaction("0");
+                    cData.setUn_satisfied("0");
+                }
+                // if (!complaintId.contains(json_obj
+                // .getString("complaintId"))) {
+                data.add(cData);
+                // }
+
+                // }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return data;
+
+    }
+    public static final int COMPLAINT_OPEN = 1;
+    public static final int COMPLAINT_FOLLOW_UP = 2;
+    public static final int COMPLAINT_ON_THE_JOB = 3;
+    public static final int COMPLAINT_RESOLVED = 4;
+    public static final int COMPLAINT_REOPEN = 5;
+    public static final int COMPLAINT_REJECTED = 6;
+
+    // Complaint cards
+    public static void customizeVotedUpButton(final Activity activity,
+                                              final ComplaintData cData, final LinearLayout resolved,
+                                              final Spinner changeStatusSpinner, final TextView neutral,
+                                              final TextView satisfaction, final TextView un_satisfied,
+                                              final FrameLayout frameSpinner) {
+        ArrayList<ChangeStatusModel> changeStatusModel = new ArrayList<ChangeStatusModel>();
+        ChangeStatusModel changeStatus = new ChangeStatusModel();
+
+        if (Integer.parseInt(cData.getComplaint_status_id()) == COMPLAINT_OPEN
+                || Integer.parseInt(cData.getComplaint_status_id()) ==  COMPLAINT_REOPEN) {
+            changeStatus = new ChangeStatusModel();
+            changeStatus.setStatusID( COMPLAINT_ON_THE_JOB);
+            changeStatus.setStatusName(activity.getString(R.string.on_the_job)
+                    .toUpperCase());
+            changeStatus.setColor(Color.parseColor("#2bb5f9"));
+            changeStatus.setCurrentStatusColor(activity.getResources()
+                    .getColor(R.color.red_reopn_open));
+            changeStatusModel.add(changeStatus);
+            changeStatus = new ChangeStatusModel();
+            changeStatus.setStatusID( COMPLAINT_REJECTED);
+            changeStatus.setStatusName(activity.getString(R.string.rejected)
+                    .toString().toUpperCase());
+            changeStatus.setCurrentStatusColor(activity.getResources()
+                    .getColor(R.color.red_reopn_open));
+            changeStatus.setColor(Color.parseColor("#607d8b"));
+            changeStatusModel.add(changeStatus);
+            changeStatusSpinner.setVisibility(View.VISIBLE);
+            frameSpinner.setVisibility(View.VISIBLE);
+            resolved.setVisibility(View.GONE);
+        } else if (Integer.parseInt(cData.getComplaint_status_id()) == COMPLAINT_ON_THE_JOB) {
+            changeStatus = new ChangeStatusModel();
+            changeStatus.setStatusID( COMPLAINT_RESOLVED);
+            changeStatus.setCurrentStatusColor(activity.getResources()
+                    .getColor(R.color.blue_on_the_job));
+            changeStatus.setStatusName(activity.getString(R.string.resolved)
+                    .toUpperCase());
+            changeStatus.setColor(Color.parseColor("#00bd00"));
+            changeStatusModel.add(changeStatus);
+
+            changeStatus = new ChangeStatusModel();
+            changeStatus.setStatusID( COMPLAINT_REJECTED);
+            changeStatus.setCurrentStatusColor(activity.getResources()
+                    .getColor(R.color.blue_on_the_job));
+            changeStatus.setStatusName(activity.getString(R.string.rejected)
+                    .toUpperCase());
+            changeStatus.setColor(Color.parseColor("#607d8b"));
+            changeStatusModel.add(changeStatus);
+            changeStatusSpinner.setVisibility(View.VISIBLE);
+            frameSpinner.setVisibility(View.VISIBLE);
+            resolved.setVisibility(View.GONE);
+        } else if (Integer.parseInt(cData.getComplaint_status_id()) ==  COMPLAINT_REJECTED) {
+            changeStatusSpinner.setVisibility(View.INVISIBLE);
+            frameSpinner.setVisibility(View.INVISIBLE);
+            resolved.setVisibility(View.GONE);
+        } else if (Integer.parseInt(cData.getComplaint_status_id()) == COMPLAINT_RESOLVED) {
+            changeStatusSpinner.setVisibility(View.INVISIBLE);
+            frameSpinner.setVisibility(View.INVISIBLE);
+            resolved.setVisibility(View.VISIBLE);
+        }
+
+        if (Integer.parseInt(cData.getComplaint_status_id()) == COMPLAINT_RESOLVED)
+            setSmileCounts(cData, neutral, satisfaction, un_satisfied, true,
+                    resolved);
+
+        else
+            setSmileCounts(cData, neutral, satisfaction, un_satisfied, true,
+                    resolved);
+
+        if (changeStatusSpinner.getVisibility() == View.VISIBLE) {
+
+            ChangeStatusSpinnerAdapter mAdapter = new ChangeStatusSpinnerAdapter(
+                    activity, cData, changeStatusModel);
+            changeStatusSpinner.setAdapter(mAdapter);
+        }
+    }
+
+    public static void setSmileCounts(final ComplaintData cData,
+                                      final TextView neutral, final TextView satisfaction,
+                                      final TextView un_satisfied, final boolean isToClick,
+                                      final LinearLayout cta_feedback) {
+        if (isToClick) {
+            neutral.setClickable(true);
+            satisfaction.setClickable(true);
+            un_satisfied.setClickable(true);
+            cta_feedback.setClickable(true);
+
+        } else {
+            neutral.setClickable(false);
+            satisfaction.setClickable(false);
+            un_satisfied.setClickable(false);
+            cta_feedback.setClickable(false);
+        }
+
+
+        if (cData.isFeedback_count()) {
+            neutral.setText(cData.getNeutral());
+            satisfaction.setText(cData.getSatisfaction());
+            un_satisfied.setText(cData.getUn_satisfied());
+        } else {
+
+        }
     }
 
 //    public static void logTrace(Activity activity, String value) {
 //        Log.i(activity.getClass().getSimpleName().toString(), value);
 //    }
+
 }
 

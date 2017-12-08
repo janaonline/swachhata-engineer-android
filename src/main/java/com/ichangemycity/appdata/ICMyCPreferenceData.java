@@ -11,7 +11,7 @@ import com.prashantsolanki.secureprefmanager.SecurePrefManager;
  */
 
 public class ICMyCPreferenceData {
-    public static final String preferenceName = "swachhataPreference";
+
     public static final String selectedLanguage = "selectedLanguage";
     public static final String selectedLanguagePosition = "selectedLanguagePosition";
     public static final String deviceUniqueID = "deviceUniqueID";
@@ -24,57 +24,53 @@ public class ICMyCPreferenceData {
     public static final String Latitude = "Latitude";
     public static final String Longitude = "Longitude";
     public static final String userProfileImage = "userProfileImage";
+    public static final String roleId = "role_id";
     public static final String posted_complaint_count = "posted_complaint_count";
     public static final String voted_up_count = "voted_up_count";
+    public static final String un_assigned_count = "un_assigned_count";
     public static final String postedComplaintId = "postedComplaintId";
-    public static final String surveyTitle= "surveyTitle";
-    public static final String surveyID="surveyID";
-    public static final String surveyImage = "surveyImage";
 
     public static final String deviceToken = "deviceToken";
-//    public static final String LoginStatus = "LoginStatus";
-    //    public static final String cityId = "cityId";
+    public static final String LoginStatus = "LoginStatus";
+    public static final String cityId = "cityId";
     public static final String Mobile_No = "Mobile_No";
-//    public static final String Address = "Address";
-//    public static final String Ward_No = "Ward_No";
-//    public static final String user_email_verified = "user_email_verified";
-//    public static final String Ward_Name = "Ward_Name";
-//    public static final String postedcomplaint = "postedcomplaint";
-//    public static final String followers = "followers";
-//    public static final String followed = "followers";
-//    public static final String affectedusers = "affectedusers";
-//    public static final String votedcomp = "votedcomp";
-//    public static final String totalcomplaintcount = "totalcomplaintcount";
-//    public static final String totalcomplaintresolvedcount = "totalcomplaintresolvedcount";
+    public static final String Address = "Address";
+    public static final String Ward_No = "Ward_No";
+    public static final String user_email_verified = "user_email_verified";
+    public static final String Ward_Name = "Ward_Name";
+    public static final String postedcomplaint = "postedcomplaint";
+    public static final String followers = "followers";
+    public static final String followed = "followers";
+    public static final String affectedusers = "affectedusers";
+    public static final String votedcomp = "votedcomp";
+    public static final String totalcomplaintcount = "totalcomplaintcount";
+    public static final String totalcomplaintresolvedcount = "totalcomplaintresolvedcount";
     public static final String type = "type";
-//    public static final String profile_id = "profile_id";
+    public static final String profile_id = "profile_id";
     public static final String unreadNotificationsCnt = "unreadNotificationsCnt";
-//    public static final String mArrayList_user_full_name = "mArrayList_user_full_name";
-//    public static final String mArrayList_ward_name = "mArrayList_ward_name";
-//    public static final String mArrayList_civic_agency_name = "mArrayList_civic_agency_name";
-//    public static final String mArrayList_category_name = "mArrayList_category_name";
-//    public static final String mArrayList_complaint_title = "mArrayList_complaint_title";
-//    public static final String mArrayList_complaint_description = "mArrayList_complaint_description";
-//    public static final String mArrayList_affected_users_count = "mArrayList_affected_users_count";
-//    public static final String CommentsCount = "CommentsCount";
+    public static final String mArrayList_user_full_name = "mArrayList_user_full_name";
+    public static final String mArrayList_ward_name = "mArrayList_ward_name";
+    public static final String mArrayList_civic_agency_name = "mArrayList_civic_agency_name";
+    public static final String mArrayList_category_name = "mArrayList_category_name";
+    public static final String mArrayList_complaint_title = "mArrayList_complaint_title";
+    public static final String mArrayList_complaint_description = "mArrayList_complaint_description";
+    public static final String mArrayList_affected_users_count = "mArrayList_affected_users_count";
+    public static final String CommentsCount = "CommentsCount";
     public static final String maintainOneComplaint = "maintainOneComplaint";
     public static final String user_full_name = "user_full_name";
     public static final String id = "id";// logged in user id
     public static final String complaintUploadedImageFile = "complaintUploadedImageFile";
     public static final String commentUploadedImageFile = "commentUploadedImageFile";
     public static final String shareImage = "shareImage";
-    public static final String deviceWidth = "deviceWidth";
-    public static final String deviceHeight = "deviceHeight";
-    //    public static final String notifsCount = "notifsCount";
-    public static final String isToShowNotifsCount = "isToShowNotifsCount";
+    public static final String deviceWidth= "deviceWidth";
+    public static final String deviceHeight= "deviceHeight";
+    public static final String high_priority_count="high_priority_count";
+    public static final String on_the_job_count="on_the_job_count";
+    public static final String resolved_count="resolved_count";
+    public static final String re_opened_count="re_opened_count";
+    public static final String rejected_count="rejected_count";
     public static final String isDeeplinked = "isDeeplinked";
-    public static final String isToShowNearby = "isToShowNearby";
-//    public static final String isToFillLocationBelowLandmark = "isToFillLocationBelowLandmark";
-//    public static final String telephoneNumber = "telephoneNumber";
-    public static final String API_KEY_AUTOCOMPLETE = "api_key_auto_complete";
-    public static final String filled_survey_form = "filled_survey_form";
-//    public static final String primerCardImage="primerCardImage";
-
+    public static final String assignedCount = "assignedCount";
     public static void setPreference(Context activity, String key, String value) {
         SecurePrefManager.with(activity).set(key).value(value).go();
         AppController.traceLog(key, value);

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="160dp"
+	android:layout_height="wrap_content"
+	android:layout_gravity="center"
+	android:background="@color/white" >
+
+	<LinearLayout
+		android:id="@+id/data"
+		android:layout_width="160dp"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:layout_marginLeft="8dp"
+		android:background="@color/white"
+		android:orientation="horizontal" >
+
+		<TextView
+			android:id="@+id/statusColor"
+			android:layout_width="12dp"
+			android:layout_height="12dp"
+			android:background="@drawable/round_corner_changestatus"
+			android:layout_gravity="center"  />
+
+		<TextView
+			android:id="@android:id/text1"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="8dp"
+			android:background="@color/white"
+			android:maxLength="30"
+			android:paddingBottom="16dp"
+			android:paddingTop="16dp"
+			android:text="on-the-job"
+			android:textColor="@color/black"
+			android:textSize="14sp" />
+	</LinearLayout>
+
+	<View
+		android:id="@+id/view"
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:layout_below="@+id/data"
+		android:background="#efefef" />
+
+	
+
+</RelativeLayout>

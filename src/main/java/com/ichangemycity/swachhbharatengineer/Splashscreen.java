@@ -266,8 +266,6 @@ public class Splashscreen extends BaseAppCompatActivity {
         protected void onPostExecute(Void result) {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
-
-
             if (ICMyCPreferenceData.getPreferenceItem(Splashscreen.this,
                     ICMyCPreferenceData.selectedLanguage, "un").equalsIgnoreCase(
                     "un")) {

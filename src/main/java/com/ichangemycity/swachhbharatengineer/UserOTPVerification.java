@@ -232,35 +232,7 @@ public class UserOTPVerification extends BaseAppCompatActivity {
 
                     }
                 });
-        TextWatcher otpTextWatcher = new TextWatcher() {
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                // TODO Auto-generated method stub
-                if (s.length() == 4) {
-                    // validateOTP(s.toString());
-                    ((Button) findViewById(R.id.done))
-                            .setVisibility(View.VISIBLE);
-                    validateOTP(s.toString());
-                } else {
-                    ((Button) findViewById(R.id.done)).setVisibility(View.GONE);
-                }
-            }
-        };
 
 
         doOTPTimer();

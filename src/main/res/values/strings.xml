@@ -67,8 +67,8 @@
     <string name="write_a_comment">Write a comment </string>
     <string name="rate_us_on_playstore">Rate Us on Playstore</string>
     <string name="reject">REJECT</string>
-    <string name="on_the_job">ON THE JOB</string>
-    <string name="resolved">RESOLVED</string>
+    <string name="on_the_job">On the job</string>
+    <string name="resolved">Resolved</string>
     <string name="id_">"ID: "</string>
     <string name="change_status">Change Status</string>
     <string name="are_you_sure_to_logout">Are you sure to logout?</string>

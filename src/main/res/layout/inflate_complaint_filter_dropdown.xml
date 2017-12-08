@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="horizontal" >
+
+	<TextView
+		android:visibility="gone"
+		android:id="@+id/filtercolor"
+		android:layout_width="8dp"
+		android:layout_height="8dp"
+		android:layout_alignBottom="@+id/parent"
+		android:layout_alignParentTop="true"
+		android:background="@color/white" />
+
+	<LinearLayout
+		android:id="@+id/parent"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_toRightOf="@+id/filtercolor"
+		android:gravity="center"
+		android:orientation="vertical" >
+
+		<TextView
+			android:id="@+id/textPostComplaint"
+			android:layout_width="match_parent"
+			android:layout_height="48dp"
+			android:paddingLeft="8dp"
+			android:textColor="@color/black"
+			android:textSize="16sp" />
+
+		<View android:id="@+id/view1"
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:background="#eaeaea" />
+	</LinearLayout>
+
+</RelativeLayout>
