@@ -60,7 +60,7 @@ import static android.R.color.holo_orange_light;
 import static android.R.color.holo_red_light;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener {
+        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
     public static Activity activity;
     com.jude.easyrecyclerview.EasyRecyclerView mRecyclerView;
     @SuppressWarnings("rawtypes")
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity
     public static android.support.v7.app.ActionBar actionBar;
     private DrawerLayout drawer;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +83,13 @@ public class MainActivity extends AppCompatActivity
         activity = MainActivity.this;
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        // recycler view
+        mRecyclerView = (com.jude.easyrecyclerview.EasyRecyclerView) findViewById(R.id.list);
+        refreshLayout = (android.support.v4.widget.SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        mLayoutManager = new LinearLayoutManager(activity);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        initSwipeOptions();
         setToolbarAndCustomizeTitle(toolbar, getResources().getString(R.string.app_name));
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -95,7 +103,6 @@ public class MainActivity extends AppCompatActivity
 
         getProfileDetailsAndRunHomeFeed();
         setSpinnerData();
-
 
 
     }
@@ -190,8 +197,8 @@ public class MainActivity extends AppCompatActivity
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
 
-            runHomeFeedWebService(complaintFilterModel.get(position)
-                    .getComplaintType(),true);
+                runHomeFeedWebService(complaintFilterModel.get(position)
+                        .getComplaintType(), true);
 
             }
 
@@ -332,12 +339,16 @@ public class MainActivity extends AppCompatActivity
             int id = item.getItemId();
             switch (id) {
                 case R.id.on_the_job:
+                    complaintFilter.setSelection(3);
                     break;
                 case R.id.resolved:
+                    complaintFilter.setSelection(5);
                     break;
                 case R.id.rejected:
+                    complaintFilter.setSelection(6);
                     break;
                 case R.id.re_opened:
+                    complaintFilter.setSelection(4);
                     break;
                 case R.id.rate_us_on_playstore:
                     String appPackageName = activity.getPackageName();
@@ -687,6 +698,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onErrorResponse(final VolleyError volleyError) {
 //                AppController.hideProgressDialog(activity);
+                    hideSwipeProgress();
                     AppController.handleVolleyError(activity, (RelativeLayout) activity.findViewById(R.id.parentLayout), volleyError);
 
                 }
@@ -746,18 +758,20 @@ public class MainActivity extends AppCompatActivity
             mRecyclerView.setVisibility(View.VISIBLE);
             hideSwipeProgress();
             if (data.size() <= 0) {
-                AppController.setEmptyViewForRecyclerView(activity,mRecyclerView);
-                try{
+                AppController.setEmptyViewForRecyclerView(activity, mRecyclerView);
+                try {
                     ((TextView) findViewById(R.id.viewEmpty)).setText(activity.getResources().getString(R.string.loading));
-                }catch (Exception e){}
+                } catch (Exception e) {
+                }
             }
             if (isToScroll) {
                 AppController.hideProgressDialog(activity);
                 mRecyclerView.setAdapter(new HomeTabLocalFeedAdapter(activity));
-                AppController.setEmptyViewForRecyclerView(activity,mRecyclerView);
-                try{
+                AppController.setEmptyViewForRecyclerView(activity, mRecyclerView);
+                try {
                     ((TextView) findViewById(R.id.viewEmpty)).setText(activity.getResources().getString(R.string.no_complaints));
-                }catch (Exception e){}
+                } catch (Exception e) {
+                }
                 mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     /**
                      * Callback method to be invoked when the RecyclerView has been scrolled. This will be
@@ -802,7 +816,7 @@ public class MainActivity extends AppCompatActivity
                                 // loading = false;
                                 try {
                                     runHomeFeedWebService(complaintFilterModel.get(
-                                            complaintFilter.getSelectedItemPosition()).getComplaintType(),false);
+                                            complaintFilter.getSelectedItemPosition()).getComplaintType(), false);
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -820,7 +834,6 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-
     }
 
     boolean isLoadMore;
@@ -828,7 +841,7 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<ComplaintData> GetParsedJsonFromResponse(
             JSONObject json_comp_object) {
         try {
-           JSONArray json_comp_array = json_comp_object
+            JSONArray json_comp_array = json_comp_object
                     .getJSONArray("complaints");
             if (json_comp_array.length() == 0) {
                 isLoadMore = false;
@@ -853,7 +866,8 @@ public class MainActivity extends AppCompatActivity
         super.onStart();
         try {
             mRecyclerView.getAdapter().notifyDataSetChanged();
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
     }
 
     private void initSwipeOptions() {
@@ -892,6 +906,6 @@ public class MainActivity extends AppCompatActivity
     public void onRefresh() {
         mRecyclerView.setVisibility(View.GONE);
         runHomeFeedWebService(complaintFilterModel.get(
-                complaintFilter.getSelectedItemPosition()).getComplaintType(),true);
+                complaintFilter.getSelectedItemPosition()).getComplaintType(), true);
     }
 }
