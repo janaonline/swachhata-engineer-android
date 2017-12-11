@@ -1,5 +1,7 @@
 package com.ichangemycity.model;
 
+import java.util.ArrayList;
+
 public class ComplaintData {
 
     private static ComplaintData instance;
@@ -17,11 +19,29 @@ public class ComplaintData {
             feed_user_activity_id, feed_content_id, feed_created_at,
             feed_user_id, feed_title, feed_full_name, feed_description,
             feed_color, is_feed_high_priority = "0", category_name,
-            complaint_image, complaint_image_height, user_image, voted_count,
-            commented_count, radius, affected, neutral, satisfaction,
+            complaint_image, complaint_image_height, user_image,   radius, affected, neutral, satisfaction,
             un_satisfied, complaint_url, complaint_image_l1,
             complaint_image_l2, latitude, longitude;
     boolean hasFeed;
+    private ArrayList<CommentsData> commentsData = new ArrayList<>();
+
+    public ArrayList<CommentsData> getCommentsData() {
+        return commentsData;
+    }
+
+    public void setCommentsData(ArrayList<CommentsData> commentsData) {
+        this.commentsData = commentsData;
+    }
+
+    public ArrayList<VotedUpData> getVotedUpData() {
+        return votedUpData;
+    }
+
+    public void setVotedUpData(ArrayList<VotedUpData> votedUpData) {
+        this.votedUpData = votedUpData;
+    }
+
+    private  ArrayList<VotedUpData> votedUpData = new ArrayList<>();
 
     /**
      * @return the hasFeed
@@ -295,36 +315,6 @@ public class ComplaintData {
      */
     public void setFeed_description(String feed_description) {
         this.feed_description = feed_description;
-    }
-
-    /**
-     * @return the voted_count
-     */
-    public String getVoted_count() {
-        return voted_count;
-    }
-
-    /**
-     * @param voted_count
-     *            the voted_count to set
-     */
-    public void setVoted_count(String voted_count) {
-        this.voted_count = voted_count;
-    }
-
-    /**
-     * @return the commented_count
-     */
-    public String getCommented_count() {
-        return commented_count;
-    }
-
-    /**
-     * @param commented_count
-     *            the commented_count to set
-     */
-    public void setCommented_count(String commented_count) {
-        this.commented_count = commented_count;
     }
 
     /**

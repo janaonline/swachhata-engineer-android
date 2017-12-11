@@ -636,8 +636,8 @@ public class AppController extends MultiDexApplication {
                 cData.setCreated_at(json_obj.getString("created_at"));
                 cData.setUser_id(json_obj.getInt("user_id") + "");
                 cData.setCategory_id(json_obj.getInt("category_id") + "");
-                cData.setVoted_count(json_obj.getInt("voted_count") + "");
-                cData.setCommented_count(json_obj.getInt("commented_count")
+                cData.setVote_up_count(json_obj.getInt("voted_count") + "");
+                cData.setComment_count(json_obj.getInt("commented_count")
                         + "");
                 cData.setComplaint_url(json_obj.getString("complaint_url"));
                 cData.setAffected(json_obj.get("affected").toString());
@@ -742,7 +742,7 @@ public class AppController extends MultiDexApplication {
     public static final int COMPLAINT_REJECTED = 6;
 
     // Complaint cards
-    public static void customizeVotedUpButton(final Activity activity,
+    public static void customizeChangeStatusDropdown(final Activity activity,
                                               final ComplaintData cData, final LinearLayout resolved,
                                               final Spinner changeStatusSpinner, final TextView neutral,
                                               final TextView satisfaction, final TextView un_satisfied,
@@ -845,6 +845,46 @@ public class AppController extends MultiDexApplication {
         }
     }
 
+    // Mark as resolved or mark as reopen list
+    public static ArrayList<ChangeStatusListData> customizeListData(
+            Activity activity, ArrayList<ChangeStatusListData> cStatusListData) {
+        cStatusListData = new ArrayList<ChangeStatusListData>();
+        cStatusListData.clear();
+        ChangeStatusListData temp = new ChangeStatusListData();
+        int complaintStatusId = Integer
+                .parseInt(AppController.selectedComplaintData
+                        .getComplaint_status_id());
+        if (complaintStatusId == COMPLAINT_OPEN
+                || complaintStatusId == COMPLAINT_REOPEN) {
+            temp = new ChangeStatusListData();
+            temp.setStatus(activity.getResources().getString(
+                    R.string.on_the_job));
+            temp.setStatusID(COMPLAINT_ON_THE_JOB);
+            cStatusListData.add(temp);
+
+            temp = new ChangeStatusListData();
+            temp.setStatus(activity.getResources().getString(R.string.rejected));
+            temp.setStatusID(COMPLAINT_REJECTED);
+            cStatusListData.add(temp);
+
+        } else if (complaintStatusId == COMPLAINT_ON_THE_JOB) {
+            temp = new ChangeStatusListData();
+            temp.setStatus(activity.getResources().getString(R.string.resolved));
+            temp.setStatusID(COMPLAINT_RESOLVED);
+            cStatusListData.add(temp);
+
+            temp = new ChangeStatusListData();
+            temp.setStatus(activity.getResources().getString(R.string.rejected));
+            temp.setStatusID(COMPLAINT_REJECTED);
+            cStatusListData.add(temp);
+        } else if (complaintStatusId == COMPLAINT_REJECTED
+                || complaintStatusId == COMPLAINT_RESOLVED) {
+            cStatusListData.clear();
+        } else {
+            cStatusListData.clear();
+        }
+        return cStatusListData;
+    }
 //    public static void logTrace(Activity activity, String value) {
 //        Log.i(activity.getClass().getSimpleName().toString(), value);
 //    }

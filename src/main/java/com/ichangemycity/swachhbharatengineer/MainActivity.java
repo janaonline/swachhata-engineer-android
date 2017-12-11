@@ -433,20 +433,20 @@ public class MainActivity extends AppCompatActivity
                             if (mJsonObject.optInt("httpCode") == 200 || mJsonObject.optInt("httpCode") == 201) {
                                 try {
                                     Toast.makeText(MainActivity.this,
-                                            mJsonObject.getString("message"),
+                                            mJsonObject.optString("message"),
                                             Toast.LENGTH_LONG).show();
                                     handleSuccessResponse(mJsonObject);
-                                } catch (JSONException e) {
+                                } catch (Exception e) {
                                     // TODO Auto-generated catch block
                                     e.printStackTrace();
                                 }
                             } else {
                                 try {
                                     Toast.makeText(MainActivity.this,
-                                            mJsonObject.getString("message"),
+                                            mJsonObject.optString("message"),
                                             Toast.LENGTH_LONG).show();
 
-                                } catch (JSONException e) {
+                                } catch (Exception e) {
                                     // TODO Auto-generated catch block
                                     e.printStackTrace();
                                 }
@@ -495,11 +495,11 @@ public class MainActivity extends AppCompatActivity
     private void handleSuccessResponse(final JSONObject mJsonObject) {
         try {
             if (mJsonObject.has("engineer")) {
-                String user = mJsonObject.getString("engineer");
+                String user = mJsonObject.optString("engineer");
                 JSONObject userData = new JSONObject(user);
-                String name = userData.getString("name");
+                String name = userData.optString("name");
                 String mobile_number = userData
-                        .getString("mobile_number");
+                        .optString("mobile_number");
                 String latitude = userData.get("latitude")
                         .toString() + "";
                 String roleId = userData.optString("role_id");
@@ -511,15 +511,15 @@ public class MainActivity extends AppCompatActivity
                 // String voted_up_count = userData
                 // .getInt("voted_up_count") + "";
                 String location = userData
-                        .getString("location");
+                        .optString("location");
                 // String language = userData
-                // .getString("language");
+                // .optString("language");
                 String language_code = userData
-                        .getString("lang");
+                        .optString("lang");
                 String imageUrl = userData
-                        .getString("image_urls");
+                        .optString("image_urls");
                 String unReadNotificationCount = userData
-                        .getString("unread_notification_count");
+                        .optString("unread_notification_count");
                 String high_priority_count = userData.get(
                         "high_priority_count").toString();
                 String on_the_job_count = userData.get(
@@ -538,7 +538,7 @@ public class MainActivity extends AppCompatActivity
                 if (!imageUrl.equalsIgnoreCase("")) {
                     JSONObject image_urls = new JSONObject(
                             imageUrl);
-                    imageUrl = image_urls.getString("original");
+                    imageUrl = image_urls.optString("original");
                     ICMyCPreferenceData
                             .setPreference(
                                     MainActivity.this,

@@ -114,5 +114,6 @@
 	<color name="secondary_text_color">#757575</color>
 	<color name="white_edittext">#fafafa</color>
 	<color name="body">#e5e5e5</color>
+	<color name="complaint_id_bgcolor">#e6e6e6</color>
 
 </resources>

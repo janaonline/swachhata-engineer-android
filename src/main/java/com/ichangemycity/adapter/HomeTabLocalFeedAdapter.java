@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.model.ComplaintData;
+import com.ichangemycity.swachhbharatengineer.ComplaintDetail;
 import com.ichangemycity.swachhbharatengineer.MainActivity;
 import com.ichangemycity.swachhbharatengineer.R;
 import com.ichangemycity.webservice.ParseComplaintData;
@@ -157,9 +158,9 @@ public class HomeTabLocalFeedAdapter extends
 
         setBgDrawableForComplaintStatus(cData, v.complaint_status);
 
-        v.votedUpCount.setText(cData.getVoted_count()
+        v.votedUpCount.setText(cData.getVote_up_count()
                 + activity.getResources().getString(R.string._votes) + "");
-        v.commentedCount.setText(cData.getCommented_count()
+        v.commentedCount.setText(cData.getComment_count()
                 + activity.getResources().getString(R.string._comments) + "");
         v.rl_cc_top.setTag(cData);
         v.card.setOnClickListener(new OnClickListener() {
@@ -168,9 +169,9 @@ public class HomeTabLocalFeedAdapter extends
                 // TODO Auto-generated method stub
                 ComplaintData mCData = (ComplaintData) v.rl_cc_top.getTag();
                 AppController.selectedComplaintData = mCData;
-//                Intent toComplaintDetail = new Intent(activity,
-//                        ComplaintDetail.class);
-//                activity.startActivity(toComplaintDetail);
+                Intent toComplaintDetail = new Intent(activity,
+                        ComplaintDetail.class);
+                activity.startActivity(toComplaintDetail);
 
             }
         });
@@ -218,7 +219,7 @@ public class HomeTabLocalFeedAdapter extends
         }
 
         ParseComplaintData.setImage(activity, null,v.complaint_image, cData.getComplaint_image(),false);
-        AppController.customizeVotedUpButton(activity, cData, v.resolved,
+        AppController.customizeChangeStatusDropdown(activity, cData, v.resolved,
                 v.changeStatus, v.neutral, v.satisfaction, v.un_satisfied,
                 v.frameSpinner);
         // }

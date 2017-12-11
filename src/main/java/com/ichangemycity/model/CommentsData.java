@@ -5,6 +5,15 @@ public class CommentsData {
             comment_full_name, comment_description, comment_posted_on,
             comment_complaint_status, comment_complaint_status_id,
             comment_image_url,user_image_url;
+    public String getSpanColorForCoplaintStatus() {
+        return spanColorForCoplaintStatus;
+    }
+
+    public void setSpanColorForCoplaintStatus(String spanColorForCoplaintStatus) {
+        this.spanColorForCoplaintStatus = spanColorForCoplaintStatus;
+    }
+
+    private String spanColorForCoplaintStatus;
 
     /**
      * @return the user_image_url
