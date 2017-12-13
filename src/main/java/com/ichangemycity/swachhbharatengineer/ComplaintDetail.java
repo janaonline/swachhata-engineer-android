@@ -354,9 +354,9 @@ public class ComplaintDetail extends BaseAppCompatActivity {
                 ComplaintData mCData = complaintDetailData;
                 AppController.selectedComplaintData = mCData;
                 AppController.selectedComplaintData.setToChangeStatus(false);
-//                Intent toCommentsActivity = new Intent(activity,
-//                        CommentsActivity.class);
-//                activity.startActivity(toCommentsActivity);
+                Intent toCommentsActivity = new Intent(activity,
+                        CommentsActivity.class);
+                activity.startActivity(toCommentsActivity);
             }
         });
         share.setOnClickListener(new View.OnClickListener() {

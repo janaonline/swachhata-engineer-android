@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.ichangemycity.adapter.CommentsAdapter;
 import com.ichangemycity.appdata.AppController;
+import com.ichangemycity.swachhbharatengineer.CommentsActivity;
 import com.ichangemycity.swachhbharatengineer.ComplaintDetail;
 import com.ichangemycity.swachhbharatengineer.R;
 import com.jude.easyrecyclerview.EasyRecyclerView;
@@ -64,7 +65,7 @@ public class CommentsFragment extends Fragment {
             ((Button)loadMore.findViewById(R.id.loadmore)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    startActivity(new Intent(ComplaintDetail.activity, CommentsActivity.class));
+                    startActivity(new Intent(ComplaintDetail.activity, CommentsActivity.class));
                 }
             });
             layout.addView(loadMore);

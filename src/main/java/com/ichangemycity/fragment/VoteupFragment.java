@@ -21,6 +21,7 @@ import com.ichangemycity.adapter.VoteupsAdapter;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.swachhbharatengineer.ComplaintDetail;
 import com.ichangemycity.swachhbharatengineer.R;
+import com.ichangemycity.swachhbharatengineer.VoteupsActivity;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 
 /**
@@ -72,7 +73,7 @@ public class VoteupFragment extends Fragment {
             ((Button) loadMore.findViewById(R.id.loadmore)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    startActivity(new Intent(activity, VoteupsActivity.class));
+                    startActivity(new Intent(activity, VoteupsActivity.class));
                 }
             });
             layout.addView(loadMore);

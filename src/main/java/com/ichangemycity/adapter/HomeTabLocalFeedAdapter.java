@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.model.ComplaintData;
+import com.ichangemycity.swachhbharatengineer.CommentsActivity;
 import com.ichangemycity.swachhbharatengineer.ComplaintDetail;
 import com.ichangemycity.swachhbharatengineer.MainActivity;
 import com.ichangemycity.swachhbharatengineer.R;
@@ -39,7 +40,7 @@ public class HomeTabLocalFeedAdapter extends
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
 
-    public HomeTabLocalFeedAdapter(Activity activity ) {
+    public HomeTabLocalFeedAdapter(Activity activity) {
         HomeTabLocalFeedAdapter.activity = activity;
     }
 
@@ -75,9 +76,9 @@ public class HomeTabLocalFeedAdapter extends
                 votedUpCount, commentedCount, share;
         ImageView image1, image2, image3;
         RelativeLayout rl_cc_top, rl_top_feed;
-        NetworkImageView complaint_image ;
+        NetworkImageView complaint_image;
         ImageView feed_flag;
-      // LinearLayout cta_btn, cta_feedback, card;
+        // LinearLayout cta_btn, cta_feedback, card;
         LinearLayout resolved;
         TextView satisfaction, un_satisfied, neutral;
         View viewLine;
@@ -193,19 +194,19 @@ public class HomeTabLocalFeedAdapter extends
             @Override
             public void onClick(View m) {
                 // TODO Auto-generated method stub
-                ComplaintData mCData = (ComplaintData) v.rl_cc_top.getTag();
+                final ComplaintData mCData = (ComplaintData) v.rl_cc_top.getTag();
                 AppController.selectedComplaintData = mCData;
                 AppController.selectedComplaintData.setToChangeStatus(false);
-//                Intent toCommentsActivity = new Intent(activity,
-//                        CommentsActivity.class);
-//                activity.startActivity(toCommentsActivity);
+                Intent toCommentsActivity = new Intent(activity,
+                        CommentsActivity.class);
+                activity.startActivity(toCommentsActivity);
             }
         });
         v.share.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View m) {
-                ComplaintData mCData = (ComplaintData) v.rl_cc_top.getTag();
+                final ComplaintData mCData = (ComplaintData) v.rl_cc_top.getTag();
                 ParseComplaintData.shareComplaint(activity, mCData);
             }
         });
@@ -219,7 +220,7 @@ public class HomeTabLocalFeedAdapter extends
                     v.feed_flag);
         }
 
-        ParseComplaintData.setImage(activity, null,v.complaint_image, cData.getComplaint_image(),false);
+        ParseComplaintData.setImage(activity, null, v.complaint_image, cData.getComplaint_image(), false);
         AppController.customizeChangeStatusDropdown(activity, cData, v.resolved,
                 v.changeStatus, v.neutral, v.satisfaction, v.un_satisfied,
                 v.frameSpinner);
