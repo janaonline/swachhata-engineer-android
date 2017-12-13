@@ -255,10 +255,12 @@ public class MainActivity extends AppCompatActivity
     private static MenuItem menuItem;
 
 
-    TextView on_the_job, resolved, rejected, re_opened;
+    TextView on_the_job, resolved, rejected, re_opened,high_priority;
     NavigationView navigationView;
 
     private void initializeCountForNavItems() {
+        high_priority = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().
+                findItem(R.id.high_priority));
         on_the_job = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().
                 findItem(R.id.on_the_job));
         resolved = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().
@@ -308,6 +310,12 @@ public class MainActivity extends AppCompatActivity
 
 
     private void setPropertyForNavItemCount() {
+
+        high_priority.setGravity(Gravity.CENTER_VERTICAL);
+        high_priority.setTypeface(null, Typeface.BOLD);
+        high_priority.setTextColor(getResources().getColor(R.color.secondary_text_color));
+        high_priority.setText(SecurePrefManager.with(activity).get(ICMyCPreferenceData.high_priority_count).defaultValue("0").go());
+
         on_the_job.setGravity(Gravity.CENTER_VERTICAL);
         on_the_job.setTypeface(null, Typeface.BOLD);
         on_the_job.setTextColor(getResources().getColor(R.color.secondary_text_color));
@@ -338,6 +346,9 @@ public class MainActivity extends AppCompatActivity
         if (!isFirstTime) {
             int id = item.getItemId();
             switch (id) {
+                case R.id.high_priority:
+                    complaintFilter.setSelection(2);
+                    break;
                 case R.id.on_the_job:
                     complaintFilter.setSelection(3);
                     break;

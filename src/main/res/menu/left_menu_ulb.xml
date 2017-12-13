@@ -5,7 +5,11 @@
     <group
         android:id="@+id/gr1"
         android:checkableBehavior="single">
-        
+        <item
+            android:id="@+id/high_priority"
+            android:icon="@mipmap/ic_complaint_posted"
+            android:title="@string/high_priority_complaints"
+            app:actionViewClass="android.widget.TextView" />
         <item
             android:id="@+id/on_the_job"
             android:icon="@mipmap/ic_complaint_posted"
@@ -26,7 +30,7 @@
         <item
             android:id="@+id/re_opened"
             android:icon="@mipmap/ic_complaint_posted"
-            android:title="@string/re_opened"
+            android:title="@string/re_opened_complaints"
             app:actionViewClass="android.widget.TextView" />
 
     </group>

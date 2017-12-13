@@ -95,7 +95,8 @@ public class ComplaintDetail extends BaseAppCompatActivity {
     private Spinner changeStatus;
     FrameLayout frameSpinner;
     TextView satisfaction, un_satisfied, neutral;
-    TextView comment,share;
+    TextView comment, share;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,8 +147,8 @@ public class ComplaintDetail extends BaseAppCompatActivity {
         setToolbarAndCustomizeTitle(toolbar, " ");
         runGetComplaintWebService();
 
-            comment = (TextView) findViewById(R.id.comment);
-            share = (TextView) findViewById(R.id.share);
+        comment = (TextView) findViewById(R.id.comment);
+        share = (TextView) findViewById(R.id.share);
 
     }
 
