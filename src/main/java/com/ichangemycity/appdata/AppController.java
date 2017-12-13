@@ -101,7 +101,7 @@ public class AppController extends MultiDexApplication {
     public static ComplaintData selectedComplaintData = new ComplaintData();
     public static ArrayList<CommentsData> commentData = new ArrayList<>();
     public static ArrayList<VotedUpData> votedUpData = new ArrayList<>();
-    public static ChangeStatusListData selectedComplaintChangeStatusOptions = new ChangeStatusListData();
+    public static ChangeStatusModel selectedComplaintChangeStatusOptions = new ChangeStatusModel();
     public static final int PURPOSE_POST_COMPLAINT = 0;
     public static final int PURPOSE_POST_COMMENT = 1;
     public static final int PURPOSE_CHANGE_STATUS = 2;
@@ -282,10 +282,10 @@ public class AppController extends MultiDexApplication {
         try {
             JSONObject responseObject = new JSONObject(new String(volleyError.networkResponse.data));
             JSONArray mData = null;
-            if (responseObject.has("data")) {
+            if (responseObject.has("errors")) {
                 try {
-                    mData = responseObject.getJSONArray("data");
-                } catch (JSONException e1) {
+                    mData = responseObject.optJSONArray("errors");
+                } catch (Exception e1) {
                     // TODO Auto-generated catch
                     // block
                     e1.printStackTrace();
@@ -326,7 +326,12 @@ public class AppController extends MultiDexApplication {
 
         if (message != null) {
             try {
-                Snackbar.make(layout, message, Snackbar.LENGTH_LONG).setActionTextColor(Color.WHITE).show();
+                Snackbar snackbar =  Snackbar.make(layout, message,Snackbar.LENGTH_LONG);
+                View snackbarView = snackbar.getView();
+                snackbar.setActionTextColor(Color.WHITE);
+                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setMaxLines(8);
+                snackbar.show();
             } catch (Exception e) {
                 AppController.traceLog("ERROR_VOLLEYERROR", message);
                 Toast.makeText(act, message, Toast.LENGTH_SHORT).show();
@@ -817,7 +822,6 @@ public class AppController extends MultiDexApplication {
             changeStatusSpinner.setAdapter(mAdapter);
         }
     }
-
     public static void setSmileCounts(final ComplaintData cData,
                                       final TextView neutral, final TextView satisfaction,
                                       final TextView un_satisfied, final boolean isToClick,

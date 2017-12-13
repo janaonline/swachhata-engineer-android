@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/parentLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/transparent"
+                android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="240dp"
+        android:layout_height="96dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="8dp"
+        android:background="@drawable/edittext_locationbg"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+        <com.andexert.library.RippleView
+            android:id="@+id/rippleViewCamera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/camera"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:maxLines="1"
+                android:padding="8dp"
+                android:text="@string/take_a_picture"
+                android:textColor="@color/black"/>
+        </com.andexert.library.RippleView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/black"/>
+
+        <com.andexert.library.RippleView
+            android:id="@+id/rippleViewGallery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/gallery"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:maxLines="1"
+                android:padding="8dp"
+                android:text="@string/gallery"
+                android:textColor="@color/black"/>
+
+        </com.andexert.library.RippleView>
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:visibility="gone"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateBehavior="cycle"
+        android:indeterminateTintMode="multiply" />
+</RelativeLayout>

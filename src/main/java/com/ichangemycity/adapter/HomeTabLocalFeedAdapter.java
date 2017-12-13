@@ -87,6 +87,7 @@ public class HomeTabLocalFeedAdapter extends
         LinearLayout card;
         CircleImageView user_image;
 
+
         public ViewHolder(View convertView, int type) {
             super(convertView);
             if (type == TYPE_ITEM) {

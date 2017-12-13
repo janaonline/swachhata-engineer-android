@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/layout_bg">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/black"
+        android:focusableInTouchMode="true"
+        android:titleTextColor="@color/white"
+        app:layout_collapseMode="pin"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:subtitleTextColor="@color/white"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+
+    <GridView
+        android:id="@+id/PhoneImageGrid"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/toolbar"
+        android:gravity="center"
+        android:horizontalSpacing="1dp"
+        android:listSelector="#A1FFFFFF"
+        android:numColumns="2"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp"/>
+
+    <TextView
+        android:id="@+id/empty_list_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/no_data"
+        android:textColor="@color/yellow"
+        android:textSize="16sp"
+        android:visibility="gone"/>
+
+    <FrameLayout
+        android:id="@+id/frameLoader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#A1000000">
+
+        <TextView android:layout_gravity="center"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:text="@string/loading" android:gravity="center"
+                  android:textColor="@color/white"
+                  android:textSize="18sp"/>
+    </FrameLayout>
+
+</RelativeLayout>

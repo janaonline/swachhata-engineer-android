@@ -294,7 +294,7 @@
                             <TextView
                                 android:id="@+id/dropdown"
                                 android:layout_width="16dp"
-                                android:layout_height="16dp"
+                                android:layout_height="16dp" android:visibility="gone"
                                 android:layout_gravity="center|right"
                                 android:background="@mipmap/ic_arrow_drop_down_black_24dp" />
 

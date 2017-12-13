@@ -389,18 +389,18 @@ public class MainActivity extends AppCompatActivity
                         activity.startActivity(Intent.createChooser(emailIntent,
                                 "Report bug using"));
 
-                        AppController.trackEvent(AppController.REPORT_BUG,
-                                AppController.REPORT_BUG_LANDED,
-                                AppController.REPORT_BUG_LANDED);
+//                        AppController.trackEvent(AppController.REPORT_BUG,
+//                                AppController.REPORT_BUG_LANDED,
+//                                AppController.REPORT_BUG_LANDED);
 
                     } catch (Exception e) { // e.toString();
                     }
                     break;
                 case R.id.nav_logout:
-                    AppController.trackEvent(
-                            AppController.LOGOUT,
-                            AppController.LOGGED_OUT_SUCCESS,
-                            AppController.LOGGED_OUT_SUCCESS);
+//                    AppController.trackEvent(
+//                            AppController.LOGOUT,
+//                            AppController.LOGGED_OUT_SUCCESS,
+//                            AppController.LOGGED_OUT_SUCCESS);
                     SecurePrefManager.with(activity).clear().confirm();
 
                     activity.startActivity(new Intent(activity, Splashscreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));

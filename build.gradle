@@ -5,6 +5,7 @@ android {
     defaultConfig {
         applicationId "com.ichangemycity.swachhbharatengineer"
         minSdkVersion 14
+        multiDexEnabled true
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"

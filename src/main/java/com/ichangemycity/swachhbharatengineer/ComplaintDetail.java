@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -28,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -37,7 +37,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
-import com.ichangemycity.adapter.ChangeStatusListAdapter;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
 import com.ichangemycity.base.BaseAppCompatActivity;
@@ -62,6 +61,8 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+//import com.ichangemycity.adapter.ChangeStatusListAdapter;
+
 
 /**
  * Created by pattabi.raman on 19-10-2017.
@@ -85,13 +86,16 @@ public class ComplaintDetail extends BaseAppCompatActivity {
     NetworkImageView complaint_image;
     public ViewPagerAdapter adapters;
     //  vote up/ feedback
-    LinearLayout cta_btn, cta_feedback;
-    TextView locationText,locationlandmark;
+    LinearLayout /*cta_btn, cta_feedback, */resolved;
+    TextView locationText, locationlandmark;
     ImageView change_status;
     ImageView locateComplaint, navigateComplaint;
     View viewLine;
     public static boolean isToRefresh = false;
-
+    private Spinner changeStatus;
+    FrameLayout frameSpinner;
+    TextView satisfaction, un_satisfied, neutral;
+    TextView comment,share;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,8 +104,12 @@ public class ComplaintDetail extends BaseAppCompatActivity {
         activity = ComplaintDetail.this;
         BaseAppCompatActivity.activity = activity;
         d = new Dialog(activity);
-        locateComplaint = (ImageView)findViewById(R.id.locateComplaint);
-        navigateComplaint = (ImageView)findViewById(R.id.navigateComplaint);
+        satisfaction = (TextView) findViewById(R.id.satisfaction);
+        un_satisfied = (TextView) findViewById(R.id.un_satisfied);
+        neutral = (TextView) findViewById(R.id.neutral);
+        frameSpinner = (FrameLayout) findViewById(R.id.frameSpinner);
+        locateComplaint = (ImageView) findViewById(R.id.locateComplaint);
+        navigateComplaint = (ImageView) findViewById(R.id.navigateComplaint);
         change_status = (ImageView) findViewById(R.id.change_status);
         framePictures = (FrameLayout) findViewById(R.id.framePictures);
         complaint_image = (NetworkImageView) findViewById(R.id.complaint_image);
@@ -114,7 +122,7 @@ public class ComplaintDetail extends BaseAppCompatActivity {
         viewPager = (WrapContentViewPager) findViewById(R.id.viewpager);
         adapters = new ViewPagerAdapter(getSupportFragmentManager());
         tabLayout.setupWithViewPager(viewPager);
-
+        resolved = (LinearLayout) findViewById(R.id.resolved);
         hours_ago = (TextView) findViewById(R.id.hours_ago);
         user_image = (CircleImageView) findViewById(R.id.user_image);
         complaintLocation = (TextView) findViewById(R.id.complaintLocation);
@@ -124,18 +132,23 @@ public class ComplaintDetail extends BaseAppCompatActivity {
         appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
         complaint_status = (TextView) findViewById(R.id.complaint_status);
         //voteup/feedback
-        cta_btn = (LinearLayout) ComplaintDetail.this
-                .findViewById(R.id.not_resolved);
-        cta_feedback = (LinearLayout) ComplaintDetail.this
-                .findViewById(R.id.resolved);
-        locationText = (TextView)findViewById(R.id.locationText);
-        locationlandmark = (TextView)findViewById(R.id.locationlandmark);
+//        cta_btn = (LinearLayout) ComplaintDetail.this
+//                .findViewById(R.id.not_resolved);
+//        cta_feedback = (LinearLayout) ComplaintDetail.this
+//                .findViewById(R.id.resolved);
+        locationText = (TextView) findViewById(R.id.locationText);
+        locationlandmark = (TextView) findViewById(R.id.locationlandmark);
         viewLine = (View) ComplaintDetail.this.findViewById(R.id.view);
+        changeStatus = (Spinner) findViewById(R.id.changeStatus);
         change_status.setVisibility(View.GONE);
         locateComplaint.setColorFilter(Color.parseColor("#757575"));
         navigateComplaint.setColorFilter(Color.parseColor("#757575"));
         setToolbarAndCustomizeTitle(toolbar, " ");
         runGetComplaintWebService();
+
+            comment = (TextView) findViewById(R.id.comment);
+            share = (TextView) findViewById(R.id.share);
+
     }
 
     @Override
@@ -313,7 +326,8 @@ public class ComplaintDetail extends BaseAppCompatActivity {
     private void loadDataIntoComponents() {
         AppController.hideProgressDialog(activity);
         setupViewPager();
-
+        AppController.customizeChangeStatusDropdown(activity, complaintDetailData, resolved, changeStatus, neutral, satisfaction, un_satisfied,
+                frameSpinner);
         setOffsetChangeListenerWhileScroll(true);
         appBarLayout.setExpanded(true);
 
@@ -331,7 +345,26 @@ public class ComplaintDetail extends BaseAppCompatActivity {
         comments.setText(complaintDetailData.getComment_count() + " " + getString(R.string.comments));
         ParseComplaintData.setImage(activity, null, complaint_image, complaintDetailData.getComplaint_image(), false);
         ParseComplaintData.setBgDrawableForComplaintStatus(activity, complaintDetailData, complaint_status);
+        comment.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View m) {
+                // TODO Auto-generated method stub
+                ComplaintData mCData = complaintDetailData;
+                AppController.selectedComplaintData = mCData;
+                AppController.selectedComplaintData.setToChangeStatus(false);
+//                Intent toCommentsActivity = new Intent(activity,
+//                        CommentsActivity.class);
+//                activity.startActivity(toCommentsActivity);
+            }
+        });
+        share.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View m) {
+                ParseComplaintData.shareComplaint(activity, complaintDetailData);
+            }
+        });
 
         locateComplaint.setOnClickListener(new View.OnClickListener() {
 
@@ -415,9 +448,9 @@ public class ComplaintDetail extends BaseAppCompatActivity {
         protected void onPostExecute(Void result) {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
-            ChangeStatusListAdapter adapter = new ChangeStatusListAdapter(
-                    ComplaintDetail.this, cStatusListData);
-            list.setAdapter(adapter);
+//            ChangeStatusListAdapter adapter = new ChangeStatusListAdapter(
+//                    ComplaintDetail.this, cStatusListData);
+//            list.setAdapter(adapter);
             d.show();
         }
     }

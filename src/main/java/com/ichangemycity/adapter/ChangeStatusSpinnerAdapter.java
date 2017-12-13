@@ -1,10 +1,7 @@
 package com.ichangemycity.adapter;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,7 +12,12 @@ import android.widget.TextView;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.model.ChangeStatusModel;
 import com.ichangemycity.model.ComplaintData;
+import com.ichangemycity.swachhbharatengineer.ChangeStatusActivity;
 import com.ichangemycity.swachhbharatengineer.R;
+
+import java.util.ArrayList;
+
+import static com.ichangemycity.appdata.AppController.selectedComplaintChangeStatusOptions;
 
 public class ChangeStatusSpinnerAdapter extends BaseAdapter {
     private ArrayList<ChangeStatusModel> changeStatusModel = new ArrayList<ChangeStatusModel>();
@@ -23,7 +25,7 @@ public class ChangeStatusSpinnerAdapter extends BaseAdapter {
     ComplaintData cData;
 
     public ChangeStatusSpinnerAdapter(Activity activity, ComplaintData cData,
-            ArrayList<ChangeStatusModel> changeStatusModel) {
+                                      ArrayList<ChangeStatusModel> changeStatusModel) {
         this.activity = activity;
         this.cData = cData;
         this.changeStatusModel = changeStatusModel;
@@ -63,9 +65,10 @@ public class ChangeStatusSpinnerAdapter extends BaseAdapter {
                     R.layout.inflate_change_status, parent, false);
             view.setTag("DROPDOWN");
         }
-        TextView textViewColor = (TextView) view.findViewById(R.id.statusColor);
+        final TextView textViewColor = (TextView) view.findViewById(R.id.statusColor);
         textViewColor.setBackgroundColor(changeStatusModel.get(position)
                 .getColor());
+        textViewColor.setTag(changeStatusModel.get(position));
         final View view1 = (View) view.findViewById(R.id.view);
         view1.setVisibility(View.VISIBLE);
         view1.setTag(cData);
@@ -85,11 +88,13 @@ public class ChangeStatusSpinnerAdapter extends BaseAdapter {
                 AppController.selectedComplaintData = (ComplaintData) view1
                         .getTag();
                 AppController.selectedComplaintData.setToChangeStatus(true);
-//                activity.startActivity(new Intent(activity,
-//                        CommentsActivity.class));
+                selectedComplaintChangeStatusOptions = (ChangeStatusModel) textViewColor.getTag();
+                activity.startActivity(new Intent(activity,
+                        ChangeStatusActivity.class));
             }
         });
         view.setTag(changeStatusModel.get(position));
+
         return view;
     }
 
@@ -104,7 +109,7 @@ public class ChangeStatusSpinnerAdapter extends BaseAdapter {
                 .findViewById(android.R.id.text1);
         TextView textViewColor = (TextView) view.findViewById(R.id.statusColor);
         final View view1 = (View) view.findViewById(R.id.view);
-        view1.setTag(cData);
+        view1.setTag(changeStatusModel.get(position));
         view1.setVisibility(View.GONE);
         // textViewColor.setBackgroundColor(changeStatusModel.get(position)
         // .getCurrentStatusColor());
@@ -121,7 +126,6 @@ public class ChangeStatusSpinnerAdapter extends BaseAdapter {
         return view;
     }
 
-     
 
     private String getTitle(int position) {
         return position >= 0 && position < changeStatusModel.size() ? changeStatusModel
