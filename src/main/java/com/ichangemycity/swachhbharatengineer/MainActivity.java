@@ -245,7 +245,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.notifs) {
+            activity.startActivity(new Intent(activity, NotificationActivity.class));
             return true;
         }
 
@@ -255,7 +256,7 @@ public class MainActivity extends AppCompatActivity
     private static MenuItem menuItem;
 
 
-    TextView on_the_job, resolved, rejected, re_opened,high_priority;
+    TextView on_the_job, resolved, rejected, re_opened, high_priority;
     NavigationView navigationView;
 
     private void initializeCountForNavItems() {
@@ -343,82 +344,83 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        if (!isFirstTime) {
-            int id = item.getItemId();
-            switch (id) {
-                case R.id.high_priority:
-                    complaintFilter.setSelection(2);
-                    break;
-                case R.id.on_the_job:
-                    complaintFilter.setSelection(3);
-                    break;
-                case R.id.resolved:
-                    complaintFilter.setSelection(5);
-                    break;
-                case R.id.rejected:
-                    complaintFilter.setSelection(6);
-                    break;
-                case R.id.re_opened:
-                    complaintFilter.setSelection(4);
-                    break;
-                case R.id.rate_us_on_playstore:
-                    String appPackageName = activity.getPackageName();
-                    try {
-                        activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri
-                                .parse("http://play.google.com/store/apps/details?id="
-                                        + appPackageName)));
+        if (item != null)
+            if (!isFirstTime) {
+                int id = item.getItemId();
+                switch (id) {
+                    case R.id.high_priority:
+                        complaintFilter.setSelection(2);
+                        break;
+                    case R.id.on_the_job:
+                        complaintFilter.setSelection(3);
+                        break;
+                    case R.id.resolved:
+                        complaintFilter.setSelection(5);
+                        break;
+                    case R.id.rejected:
+                        complaintFilter.setSelection(6);
+                        break;
+                    case R.id.re_opened:
+                        complaintFilter.setSelection(4);
+                        break;
+                    case R.id.rate_us_on_playstore:
+                        String appPackageName = activity.getPackageName();
+                        try {
+                            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri
+                                    .parse("http://play.google.com/store/apps/details?id="
+                                            + appPackageName)));
 //                        AppController.trackEvent(AppController.RATE_US_ON_PLAYSTORE,
 //                                AppController.RATE_US_ON_PLAYSTORE_LANDED,
 //                                AppController.RATE_US_ON_PLAYSTORE_LANDED);
-                    } catch (android.content.ActivityNotFoundException anfe) {
+                        } catch (android.content.ActivityNotFoundException anfe) {
 
-                    }
-                    break;
-                case R.id.nav_privacypolicy:
-                    try {
-                        activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri
-                                .parse("http://www.ichangemycity.com/privacy-policy-mobile?app=sbmengineer")));
-                    } catch (android.content.ActivityNotFoundException anfe) {
+                        }
+                        break;
+                    case R.id.nav_privacypolicy:
+                        try {
+                            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri
+                                    .parse("http://www.ichangemycity.com/privacy-policy-mobile?app=sbmengineer")));
+                        } catch (android.content.ActivityNotFoundException anfe) {
 
-                    }
-                    break;
+                        }
+                        break;
 
-                case R.id.report_bug:
-                    try {
-                        Intent emailIntent = new Intent(
-                                Intent.ACTION_SENDTO,
-                                Uri.fromParts(
-                                        "mailto",
-                                        "champa.r@janaagraha.org,pattabi.raman@janaagraha.org",
-                                        null));
-                        String sAux = "\n";
-                        sAux = sAux + "Bug : \n";
-                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, activity
-                                .getResources().getString(R.string.app_name)
-                                + " - Android App - Bug Report");
-                        emailIntent.putExtra(Intent.EXTRA_TEXT, sAux);
-                        activity.startActivity(Intent.createChooser(emailIntent,
-                                "Report bug using"));
+                    case R.id.report_bug:
+                        try {
+                            Intent emailIntent = new Intent(
+                                    Intent.ACTION_SENDTO,
+                                    Uri.fromParts(
+                                            "mailto",
+                                            "champa.r@janaagraha.org,pattabi.raman@janaagraha.org",
+                                            null));
+                            String sAux = "\n";
+                            sAux = sAux + "Bug : \n";
+                            emailIntent.putExtra(Intent.EXTRA_SUBJECT, activity
+                                    .getResources().getString(R.string.app_name)
+                                    + " - Android App - Bug Report");
+                            emailIntent.putExtra(Intent.EXTRA_TEXT, sAux);
+                            activity.startActivity(Intent.createChooser(emailIntent,
+                                    "Report bug using"));
 
 //                        AppController.trackEvent(AppController.REPORT_BUG,
 //                                AppController.REPORT_BUG_LANDED,
 //                                AppController.REPORT_BUG_LANDED);
 
-                    } catch (Exception e) { // e.toString();
-                    }
-                    break;
-                case R.id.nav_logout:
+                        } catch (Exception e) { // e.toString();
+                        }
+                        break;
+                    case R.id.nav_logout:
 //                    AppController.trackEvent(
 //                            AppController.LOGOUT,
 //                            AppController.LOGGED_OUT_SUCCESS,
 //                            AppController.LOGGED_OUT_SUCCESS);
-                    SecurePrefManager.with(activity).clear().confirm();
+                        SecurePrefManager.with(activity).clear().confirm();
 
-                    activity.startActivity(new Intent(activity, Splashscreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                    activity.finish();
-                    break;
+                        activity.startActivity(new Intent(activity, Splashscreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        activity.finish();
+                        break;
+                }
             }
-        }
         if (isFirstTime)
 
         {
@@ -701,6 +703,10 @@ public class MainActivity extends AppCompatActivity
                         @Override
                         public void onResponse(final JSONObject response) {
                             AppController.traceLog("home", url + " ---> " + response);
+                            if (isToScroll) {
+                                data.clear();
+                                mRecyclerView.getAdapter().notifyDataSetChanged();
+                            }
                             new ParseJSONResponse(response, isToScroll).execute();
 
                         }
@@ -744,7 +750,7 @@ public class MainActivity extends AppCompatActivity
         JSONObject jsonObject = new JSONObject();
         boolean isToScroll;
 
-        public ParseJSONResponse(JSONObject response, boolean isToScroll) {
+        public ParseJSONResponse(JSONObject response, final boolean isToScroll) {
             this.jsonObject = response;
             this.isToScroll = isToScroll;
         }

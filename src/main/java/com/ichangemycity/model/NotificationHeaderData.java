@@ -8,7 +8,21 @@ public class NotificationHeaderData {
     private int notificationId, contentId;
     String feedCreatedOn, contentCreatedOn, feedType, redirectTo, textMsg;
     boolean isRead;
-    int imageIcon;
+    int imageIcon, bgColor;
+
+    /**
+     * @return the bgColor
+     */
+    public int getBgColor() {
+        return bgColor;
+    }
+
+    /**
+     * @param bgColor the bgColor to set
+     */
+    public void setBgColor(int bgColor) {
+        this.bgColor = bgColor;
+    }
 
     /**
      * @return the imageIcon

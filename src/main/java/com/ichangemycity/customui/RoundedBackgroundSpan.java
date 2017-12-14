@@ -14,7 +14,7 @@ public class RoundedBackgroundSpan extends ReplacementSpan {
     private int bgColor;
 
     public RoundedBackgroundSpan(CharSequence text, int start, int end,
-            int bgColor) {
+                                 int bgColor) {
         this.text = text;
         this.start = start;
         this.end = end;
@@ -23,7 +23,7 @@ public class RoundedBackgroundSpan extends ReplacementSpan {
 
     @Override
     public int getSize(Paint paint, CharSequence text, int start, int end,
-            Paint.FontMetricsInt fm) {
+                       Paint.FontMetricsInt fm) {
         text = this.text;
         start = this.start;
         end = this.end;
@@ -39,17 +39,17 @@ public class RoundedBackgroundSpan extends ReplacementSpan {
 
     @Override
     public void draw(Canvas canvas, CharSequence text, int start, int end,
-            float x, int top, int y, int bottom, Paint paint) {
+                     float x, int top, int y, int bottom, Paint paint) {
         text = this.text;
         start = this.start;
         end = this.end;
         paint.setStyle(Style.STROKE);
-        
-        RectF rect = new RectF(x, top, MeasureText(paint,text.toString(),start,end),
+
+        RectF rect = new RectF(x, top, MeasureText(paint, text.toString(), start, end),
                 bottom);
         paint.setColor(bgColor);
-        canvas.drawRoundRect(rect, 8, 8, paint);
-         paint.setColor(bgColor);
+        canvas.drawRect(rect, paint);
+        paint.setColor(bgColor);
         canvas.drawText(text, start, end, x, y, paint);
     }
 

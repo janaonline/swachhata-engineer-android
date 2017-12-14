@@ -609,6 +609,11 @@ public class AppController extends MultiDexApplication {
                     (activity.findViewById(R.id.viewEmpty)).setVisibility(View.GONE);
                 } catch (Exception e) {
                 }
+                try{
+                    recyclerView.setEmptyView(null);
+                }catch (Exception e){
+
+                }
             }
         }
     }
