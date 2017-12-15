@@ -39,6 +39,7 @@ import com.ichangemycity.model.CommentsData;
 import com.ichangemycity.model.ComplaintData;
 import com.ichangemycity.model.SelectedImageModel;
 import com.ichangemycity.webservice.AppHelper;
+import com.ichangemycity.webservice.ParseComplaintData;
 import com.ichangemycity.webservice.URLData;
 import com.ichangemycity.webservice.VolleyMultipartRequest;
 import com.ichangemycity.webservice.VolleySingleton;
@@ -563,6 +564,13 @@ public class CommentsActivity extends BaseAppCompatActivity {
                         if (commentsJsonObject.has("user_image_url"))
                             ccData.setUser_image_url(commentsJsonObject
                                     .getString("user_image_url"));
+                        try {
+                            ccData.setSpanColorForCoplaintStatus(ParseComplaintData.getSpanColorForStatusTitle(activity, Integer
+                                    .parseInt(ccData
+                                            .getComment_complaint_status_id())));
+                        } catch (NumberFormatException w) {
+                            ccData.setSpanColorForCoplaintStatus("#00000000");
+                        }
                         AppController.commentData.add(ccData);
 
                     } catch (Exception e) {

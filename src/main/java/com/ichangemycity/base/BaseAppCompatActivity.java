@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.permission.GetPermissionResult;
 import com.karan.churi.PermissionManager.PermissionManager;
 
@@ -34,7 +35,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
-//        AppController.assignLanguage(activity);
+        AppController.assignLanguage(BaseAppCompatActivity.this);
     }
 
     public void runtimePermissionManager(Activity activity, List<String> customPermission, GetPermissionResult onGetPermissionResult) {

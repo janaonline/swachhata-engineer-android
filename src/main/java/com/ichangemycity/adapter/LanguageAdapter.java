@@ -103,29 +103,19 @@ public class LanguageAdapter extends BaseAdapter {
 
             @Override
             public void onComplete(RippleView rippleView) {
-
-                finalView.performClick();
-            }
-
-        });
-        view.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-//                textView.setBackgroundColor(activity.getResources().getColor(
-//                        R.color.blue_pressed_bottom));
-
                 int sid = (int) textView.getTag();
                 LanguageData languageData = mLanguage.get(sid);
                 ICMyCPreferenceData.setPreference(activity,
                         ICMyCPreferenceData.selectedLanguage,
                         languageData.getLanguage_code());
+
                 ICMyCPreferenceData.setPreference(activity,
                         ICMyCPreferenceData.selectedLanguagePosition, sid + "");
                 activity.startActivity(new Intent(activity,
                         UserMobileNumber.class));
 
             }
+
         });
         return view;
     }

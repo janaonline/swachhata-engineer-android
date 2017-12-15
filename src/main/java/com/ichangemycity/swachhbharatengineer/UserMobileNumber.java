@@ -3,7 +3,11 @@ package com.ichangemycity.swachhbharatengineer;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -39,8 +43,10 @@ public class UserMobileNumber extends BaseAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
+        AppController.assignLanguage(UserMobileNumber.this);
         setContentView(R.layout.mobile_number);
         activity = UserMobileNumber.this;
+
         mobileNumber = (EditText) findViewById(R.id.et_mobno);
         submit = (Button) findViewById(R.id.done);
         mobileNumber.addTextChangedListener(new TextWatcher() {
@@ -78,7 +84,7 @@ public class UserMobileNumber extends BaseAppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (validateMobileNumber()) {
-                     String url = (URLData.BASE_URL
+                    String url = (URLData.BASE_URL
                             + URLData.CHECK_ACTIVE_ENGINEER
                             + mobileNumber.getText().toString()
                             + "&deviceToken="
@@ -230,6 +236,26 @@ public class UserMobileNumber extends BaseAppCompatActivity {
             }
 
         });
+        setToolbarAndCustomizeTitle((Toolbar)findViewById(R.id.toolbar)," ");
+    }
+
+
+    private void setToolbarAndCustomizeTitle(Toolbar toolbar, String title) {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(title);
+        toolbar.setBackgroundColor(Color.WHITE);
+//        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
+        toolbar.setNavigationOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.finish();
+            }
+        });
+        final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
+        upArrow.setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
     }
 
     private boolean validateMobileNumber() {

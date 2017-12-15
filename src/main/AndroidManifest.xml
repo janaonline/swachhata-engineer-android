@@ -90,7 +90,7 @@
             android:name=".UserMobileNumber"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
         <activity
             android:name=".UserOTPVerification"
             android:screenOrientation="portrait"
@@ -145,6 +145,24 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>
         </provider>
+        <!-- GCM Notifications -->
+        <service android:name="com.ichangemycity.swachhbharatengineer.GcmIntentService" />
+
+        <receiver
+            android:name="com.ichangemycity.swachhbharatengineer.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND"
+            android:process=".remote" >
+            <intent-filter>
+
+                <!-- Receives the actual messages. -->
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <!-- Receives the registration id. -->
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="com.ichangemycity.swachhbharatengineer" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

@@ -11,7 +11,7 @@ import com.prashantsolanki.secureprefmanager.SecurePrefManager;
  */
 
 public class ICMyCPreferenceData {
-
+public static final String preferenceName="preferenceName";
     public static final String selectedLanguage = "selectedLanguage";
     public static final String selectedLanguagePosition = "selectedLanguagePosition";
     public static final String deviceUniqueID = "deviceUniqueID";

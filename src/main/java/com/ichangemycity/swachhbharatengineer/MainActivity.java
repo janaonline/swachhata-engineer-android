@@ -41,6 +41,7 @@ import com.ichangemycity.appdata.AppUtils;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
 import com.ichangemycity.model.ComplaintData;
 import com.ichangemycity.model.ComplaintFilterModel;
+import com.ichangemycity.webservice.ParseComplaintData;
 import com.ichangemycity.webservice.URLData;
 import com.prashantsolanki.secureprefmanager.SecurePrefManager;
 
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppController.assignLanguage(MainActivity.this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -103,7 +105,31 @@ public class MainActivity extends AppCompatActivity
 
         getProfileDetailsAndRunHomeFeed();
         setSpinnerData();
+        if (ICMyCPreferenceData.getPreferenceItem(
+                MainActivity.activity,
+                ICMyCPreferenceData.isDeeplinked, "0").equalsIgnoreCase("1")) {
+            ICMyCPreferenceData.setPreference(
+                    MainActivity.activity,
+                    ICMyCPreferenceData.isDeeplinked, "0");
+            startActivity(new Intent(MainActivity.activity,
+                    ComplaintDetail.class));
+        }
 
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        String action = intent.getAction();
+        String data = intent.getDataString();
+        if (data != null) {
+            if (Intent.ACTION_VIEW.equals(action) && data != null) {
+                AppController.selectedComplaintData.setComplaintId(data
+                        .substring(data.lastIndexOf("/") + 1));
+                startActivity(new Intent(activity, ComplaintDetail.class));
+            }
+        } else {
+            // do nothing
+        }
 
     }
 
@@ -464,7 +490,7 @@ public class MainActivity extends AppCompatActivity
                                     e.printStackTrace();
                                 }
                             }
-
+                            onNewIntent(getIntent());
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -864,7 +890,7 @@ public class MainActivity extends AppCompatActivity
                 isLoadMore = false;
             } else {
 
-                data.addAll(AppController
+                data.addAll(ParseComplaintData
                         .getParsedComplaintData(json_comp_array));
                 isLoadMore = true;
             }

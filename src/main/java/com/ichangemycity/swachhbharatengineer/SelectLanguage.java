@@ -25,6 +25,7 @@ public class SelectLanguage extends BaseAppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.select_language);
         languageListView = (ListView) findViewById(R.id.sp_language);
         act = SelectLanguage.this;

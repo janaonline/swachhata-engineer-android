@@ -49,6 +49,7 @@ public class UserOTPVerification extends BaseAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
+        AppController.assignLanguage(UserOTPVerification.this);
         setContentView(R.layout.otp_verification);
         activity = UserOTPVerification.this;
         toolbar = (Toolbar) findViewById(R.id.toolbar);

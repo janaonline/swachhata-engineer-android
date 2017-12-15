@@ -77,7 +77,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // setHasOptionsMenu(true);
-
+        AppController.assignLanguage(NotificationActivity.this);
         setContentView(R.layout.notification_activity);
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         activity = NotificationActivity.this;

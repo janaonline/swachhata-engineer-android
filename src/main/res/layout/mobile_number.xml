@@ -1,170 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:truesdk="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/parentLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_marginTop="48dp"
-                android:background="@color/white" >
+                android:background="@color/white">
 
-    <!--
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@android:color/white"
-            android:minHeight="?attr/actionBarSize"/>
-    -->
-    <!--
-        <ScrollView
-            android:id="@+id/scrollView"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true" android:layout_centerInParent="true"
-            android:layout_marginTop="52dp" android:layout_below="@+id/toolbar"
-            android:paddingBottom="20dp">-->
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white"
+        android:minHeight="?attr/actionBarSize"/>
+
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical">
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="20dp">
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
 
-            <ScrollView
-                android:id="@+id/scroll"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:elevation="8dp"
-                android:scrollbars="none">
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
 
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:orientation="vertical"
-                    android:weightSum="2">
+                <ScrollView
+                    android:id="@+id/scroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:elevation="8dp"
+                    android:scrollbars="none">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/welcomes_you_some_text_goes_here"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:text="@string/your_mobile_number_is_safe_with_us"
-                        android:textColor="@color/lt_gray"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center"
-                        android:text="@string/we_won_t_share_your_details_with_any_one"
-                        android:textColor="@color/lt_gray"/>
-
-                    <FrameLayout
+                    <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginTop="18dp"
-                        android:layout_weight="1">
+                        android:layout_margin="16dp"
+                        android:orientation="vertical"
+                        android:weightSum="2">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="16dp"
-                            android:gravity="center_vertical"
-                            android:text="+91 "
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/welcomes_you_some_text_goes_here"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_default"/>
+                            android:textSize="20sp"
+                            android:textStyle="bold"/>
 
-                        <EditText
-                            android:id="@+id/et_mobno"
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="@string/your_mobile_number_is_safe_with_us"
+                            android:textColor="@color/lt_gray"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="@string/we_won_t_share_your_details_with_any_one"
+                            android:textColor="@color/lt_gray"/>
+
+                        <FrameLayout
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
-                            android:background="@drawable/edittext_bg_"
-                            android:ems="10"
-                            android:hint="@string/_10_digit_mobile_number"
-                            android:imeOptions="actionNext"
-                            android:includeFontPadding="true"
-                            android:inputType="number"
-                            android:maxLength="10"
-                            android:maxLines="1"
-                            android:paddingBottom="8dp"
-                            android:paddingLeft="38dp"
-                            android:paddingTop="8dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_default">
+                            android:layout_marginRight="8dp"
+                            android:layout_marginTop="18dp"
+                            android:layout_weight="1">
 
-                            <requestFocus/>
-                        </EditText>
-                    </FrameLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="16dp"
+                                android:gravity="center_vertical"
+                                android:text="+91 "
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_default"/>
 
-                    <com.andexert.library.RippleView
-                        android:id="@+id/rippleView"
-                        rv_centered="true"
-                        android:layout_width="match_parent"
-                        android:layout_height="?android:actionBarSize"
-                        android:layout_below="@+id/scrollView"
-                        android:layout_margin="16dp"
-                        android:layout_toLeftOf="@+id/more2">
+                            <EditText
+                                android:id="@+id/et_mobno"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:background="@drawable/edittext_bg_"
+                                android:ems="10"
+                                android:hint="@string/_10_digit_mobile_number"
+                                android:imeOptions="actionNext"
+                                android:includeFontPadding="true"
+                                android:inputType="number"
+                                android:maxLength="10"
+                                android:maxLines="1"
+                                android:paddingBottom="8dp"
+                                android:paddingLeft="38dp"
+                                android:paddingTop="8dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_default">
 
-                        <Button
-                            android:id="@+id/done"
-                            style="?android:attr/button"
+                                <requestFocus/>
+                            </EditText>
+                        </FrameLayout>
+
+                        <com.andexert.library.RippleView
+                            android:id="@+id/rippleView"
+                            rv_centered="true"
                             android:layout_width="match_parent"
+                            android:layout_height="?android:actionBarSize"
+                            android:layout_below="@+id/scrollView"
+                            android:layout_margin="16dp"
+                            android:layout_toLeftOf="@+id/more2">
+
+                            <Button
+                                android:id="@+id/done"
+                                style="?android:attr/button"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:background="@drawable/signup_with_fb_bg"
+                                android:maxLines="1"
+                                android:padding="16dp"
+                                android:stateListAnimator="@anim/depression_angle"
+                                android:text="@string/get_started"
+                                android:textAllCaps="true"
+                                android:textColor="@color/white"
+                                android:textSize="16sp"/>
+                        </com.andexert.library.RippleView>
+
+                        <!--  <com.truecaller.android.sdk.TrueButton
+                              android:id="@+id/com_truecaller_android_sdk_truebutton"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_margin="16dp"
+                              truesdk:truebutton_text="autoFill"/>-->
+
+                        <ImageView
+                            android:id="@+id/icmycText"
+                            android:layout_width="240dp"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:background="@drawable/signup_with_fb_bg"
-                            android:maxLines="1"
-                            android:padding="16dp"
-                            android:stateListAnimator="@anim/depression_angle"
-                            android:text="@string/get_started"
-                            android:textAllCaps="true"
-                            android:textColor="@color/white"
-                            android:textSize="16sp"/>
-                    </com.andexert.library.RippleView>
-
-                  <!--  <com.truecaller.android.sdk.TrueButton
-                        android:id="@+id/com_truecaller_android_sdk_truebutton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        truesdk:truebutton_text="autoFill"/>-->
-
-                    <ImageView
-                        android:id="@+id/icmycText"
-                        android:layout_width="240dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="16dp"
-                        android:drawingCacheQuality="auto"
-                        android:scaleType="fitCenter"
-                        android:src="@mipmap/moud"/>
-                </LinearLayout>
+                            android:layout_gravity="center"
+                            android:layout_margin="16dp"
+                            android:drawingCacheQuality="auto"
+                            android:scaleType="fitCenter"
+                            android:src="@mipmap/moud"/>
+                    </LinearLayout>
 
 
-            </ScrollView>
-        </RelativeLayout>
+                </ScrollView>
+            </RelativeLayout>
 
 
-    </LinearLayout>
-    <!-- </ScrollView>-->
+        </LinearLayout>
+    </ScrollView>
 
 
 </RelativeLayout>

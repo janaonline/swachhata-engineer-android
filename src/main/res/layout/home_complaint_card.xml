@@ -183,9 +183,9 @@
                             android:layout_width="72dp"
                             android:layout_height="72dp"
                             android:layout_marginRight="8dp"
-                            android:background="@color/transparent"
-                            android:scaleType="fitXY"
-                            android:src="@mipmap/comp_image" />
+                            android:background="@drawable/editbackground_top"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/loading" />
                     </RelativeLayout>
 
                     <RelativeLayout

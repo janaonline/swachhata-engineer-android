@@ -52,7 +52,6 @@ public class AndroidCustomGalleryActivity extends BaseAppCompatActivity {
   setContentView(R.layout.custom_gallery);
   activity = AndroidCustomGalleryActivity.this;
   BaseAppCompatActivity.activity = activity;
-  AppController.assignLanguage(activity);
   frameLoader = (FrameLayout) findViewById(R.id.frameLoader);
   frameLoader.setVisibility(View.VISIBLE);
   toolbar = (Toolbar) findViewById(R.id.toolbar);

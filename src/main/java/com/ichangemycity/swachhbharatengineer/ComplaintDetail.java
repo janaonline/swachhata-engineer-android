@@ -571,6 +571,13 @@ public class ComplaintDetail extends BaseAppCompatActivity {
                                 if (commentsJsonObject.has("user_image_url"))
                                     ccData.setUser_image_url(commentsJsonObject
                                             .optString("user_image_url"));
+                                try {
+                                    ccData.setSpanColorForCoplaintStatus(ParseComplaintData.getSpanColorForStatusTitle(activity, Integer
+                                            .parseInt(ccData
+                                                    .getComment_complaint_status_id())));
+                                } catch (NumberFormatException w) {
+                                    ccData.setSpanColorForCoplaintStatus("#00000000");
+                                }
                                 AppController.commentData.add(ccData);
                             }
                             complaintDetailData.setCommentsData(AppController.commentData);

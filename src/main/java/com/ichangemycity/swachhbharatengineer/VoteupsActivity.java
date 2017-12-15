@@ -57,6 +57,7 @@ public class VoteupsActivity extends BaseAppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppController.assignLanguage(VoteupsActivity.this);
         setContentView(R.layout.comments_activity);
 //        AppController.trackEvent(GAData.VOTEUP, GAData.SCREEN_REACHED, GAData.SCREEN_REACHED);
         activity = VoteupsActivity.this;
