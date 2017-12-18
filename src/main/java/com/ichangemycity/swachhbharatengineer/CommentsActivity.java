@@ -256,7 +256,7 @@ public class CommentsActivity extends BaseAppCompatActivity {
                                     case 201:
                                         JSONObject fileJsonObject = (JSONObject) result
                                                 .get("file");
-                                        int fileId = fileJsonObject.getInt("id");
+                                        int fileId = fileJsonObject.optInt("id");
                                         ICMyCPreferenceData
                                                 .setPreference(
                                                         CommentsActivity.this,
@@ -548,22 +548,22 @@ public class CommentsActivity extends BaseAppCompatActivity {
                         ccData.setComment_id(commentsJsonObject.optInt("id")
                                 + "");
                         ccData.setComment_user_id(commentsJsonObject
-                                .getInt("user_id") + "");
+                                .optInt("user_id") + "");
                         ccData.setComment_full_name(commentsJsonObject
-                                .getString("full_name"));
+                                .optString("full_name"));
                         ccData.setComment_description(commentsJsonObject
-                                .getString("description"));
+                                .optString("description"));
                         ccData.setComment_posted_on(commentsJsonObject
-                                .getString("posted_on"));
+                                .optString("posted_on"));
                         ccData.setComment_complaint_status(commentsJsonObject
-                                .getString("complaint_status"));
+                                .optString("complaint_status"));
                         ccData.setComment_complaint_status_id(commentsJsonObject
                                 .get("complaint_status_id").toString() + "");
                         ccData.setComment_image_url(commentsJsonObject
-                                .getString("comment_image_url"));
+                                .optString("comment_image_url"));
                         if (commentsJsonObject.has("user_image_url"))
                             ccData.setUser_image_url(commentsJsonObject
-                                    .getString("user_image_url"));
+                                    .optString("user_image_url"));
                         try {
                             ccData.setSpanColorForCoplaintStatus(ParseComplaintData.getSpanColorForStatusTitle(activity, Integer
                                     .parseInt(ccData

@@ -4,7 +4,6 @@
 	<string name="app_name">SBM-Engineer App</string>
 	<string name="crash_toast_text">App crashed, click Send E-mail button to report issue</string>
 	<string name="welcome">Welcome</string>
-	<string name="set_your_swachh_bharath_in_nyour_favourite_language">Choose your preferred language</string>
 	<string name="done">Done</string>
 	<string name="welcomes_you_some_text_goes_here">Enter your mobile number</string>
 	<string name="mobile_number_cannot_be_empty">Mobile number cannot be empty</string>
@@ -74,33 +73,5 @@
 	<string name="ok">Ok</string>
 	<string name="yes">Yes</string>
 	<string name="no">No</string>
-	<string name="un_assigned_complaints">Un-Assigned Complaints</string>
-	<string name="powered_by_">"powered by "</string>
-	<string name="mobile_number_not_registered">Mobile Number Not Registered</string>
-	<string name="registration">Registration</string>
-	<string name="designation">Designation</string>
-	<string name="send_your_details_for_the_registration_purpose">Send your details for the registration purpose</string>
-	<string name="continue_">CONTINUE</string>
-	<string name="category">Category</string>
-	<string name="location">Location</string>
-	<string name="ward">Ward Number</string>
-	<string name="cancel">CANCEL</string>
-	<string name="request">REQUEST</string>
-	<string name="email_id">Email ID</string>
-	<string name="thank_you">Thank You!</string>
-	<string name="your_details_are">Your details are successfully sent to the authorised people. We will get back to you soon</string>
-	<string name="close">Close</string>
-	<string name="send_your_details_for_regist">Send your details for the registration purpose</string>
-	<string name="email_id_cannot_be_empty">Email ID Cannot be Empty</string>
-	<string name="location_cannot_be_empty">Location Cannot be Empty</string>
-	<string name="name_cannot_be_empty">Name Cannot be Empty</string>
-	<string name="ward_number_cannot_be_empty">Ward Number Cannot be Empty</string>
-	<string name="please_select_a_designation">Please select a designation</string>
-	<string name="please_select_atleast_one_category">Please select atleast one category</string>
-	<string name="invalid_email_id">Invalid Email ID</string>
-	<string name="please_select_a_location_from_suggestion_only">Please select a location from suggestion only</string>
-	<string name="name">Name</string>
-	<string name="ward_eg_110_21_73_">Ward Eg:(110,21,73)</string>
-    <string name="_complaints">Complaints</string>
-	
+
 </resources>

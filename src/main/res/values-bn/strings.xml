@@ -4,7 +4,7 @@
 	<string name="app_name">স্বচ্ছ ভারত</string>
 	<string name="crash_toast_text">অ্যাপ্লিকেশান ক্রাশ হয়ে গেছে, ই-মেইল বাটন ক্লিক করে এই বিষয়ে রিপোর্ট করুন</string>
 	<string name="welcome">স্বাগত</string>
-	<string name="set_your_swachh_bharath_in_your_favourite_language">আপনার পছন্দের ভাষা নির্বাচন করুন।</string>
+
 	<string name="done">হয়ে গেছে</string>
 	<string name="welcomes_you_some_text_goes_here">আপনার মোবাইল নং এন্টার করুন।</string>
 	<string name="mobile_number_cannot_be_empty">মোবাইল নম্বর ফাঁকা রাখা যাবে না</string>
@@ -74,34 +74,5 @@
 	<string name="ok">ঠিক আছে</string>
 	<string name="yes">হ্যাঁ </string>
 	<string name="no">না</string>
-	<string name="un_assigned_complaints">নির্দিষ্ট কাউকে না দেওয়া অভিযোগ</string>
-	<string name="powered_by_">"দ্বারা ক্ষমতাপ্রাপ্ত "</string>
-	<string name="mobile_number_not_registered">মোবাইল নম্বর নিবন্ধিত নয়।</string>
-	<string name="registration">নিবন্ধন</string>
-	<string name="designation">পদাধিকার</string>
-	<string name="send_your_details_for_the_registration_purpose">নিবন্ধনের জন্য আপনার বিবরণ পাঠান</string>
-	<string name="continue_">চালিয়ে যান</string>
-	<string name="category">বিভাগ</string>
-	<string name="location">অবস্থান</string>
-	<string name="ward">ওয়ার্ড নম্বর</string>
-	<string name="cancel">বাতিল করুন</string>
-	<string name="request">অনুরোধ</string>
-	<string name="email_id">ইমেল আইডি</string>
-	<string name="thank_you">ধন্যবাদ!</string>
-	<string name="your_details_are">আপনার বিবরণ সফলভাবে অনুমোদিত লোকেদের কাছে পাঠান হয়েছে। আমরা শীঘ্রই আপনাকে জানাব। </string>
-	<string name="close">বন্ধ করুন</string>
-	<string name="send_your_details_for_regist">নিবন্ধনের জন্য আপনার বিবরণ পাঠান</string>
-	<string name="email_id_cannot_be_empty">ইমেল আইডি খালি থাকতে পারে না</string>
-	<string name="location_cannot_be_empty">অবস্থান খালি থাকতে পারে না</string>
-	<string name="name_cannot_be_empty">নাম খালি হতে পারে না</string>
-	<string name="ward_number_cannot_be_empty">ওয়ার্ড নম্বর খালি থাকতে পা্রে না</string>
-	<string name="please_select_a_designation">অনুগ্রহ করে একটি পদাধিকার নির্বাচন করুন</string>
-	<string name="please_select_atleast_one_category">কমপক্ষে একটি বিভাগ নির্বাচন করুন</string>	
-	<string name="invalid_email_id">অবৈধ ইমেল আইডি</string>
-    <string name="please_select_a_location_from_suggestion_only">অনুগ্রহ করে শুধুমাত্র প্রস্তাবনা(সাজেশান) থেকে একটি অবস্থান নির্বাচন করুন </string>
-    <string name="name">নাম</string>
-	<string name="ward_eg_110_21_73_">ওয়ার্ড যেমনঃ(110,21,73)</string>
-	<string name="nearby_complaints">কাছাকাছি অভিযোগসমূহ</string>
-	    <string name="_complaints">Complaints</string>
-	
+
 </resources>

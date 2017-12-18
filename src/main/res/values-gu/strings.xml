@@ -4,7 +4,7 @@
     <string name="app_name">સ્વચ્છ ભારત</string>
     <string name="crash_toast_text">એપ્લી. ક્રેશ્ડ, સમસ્યાની નોંધણી કરવા માટે Send E-mail (ઇમેઇલ મોકલો)</string>
     <string name="welcome">સુસ્વાગતમ્</string>
-    <string name="set_your_swachh_bharath_in_your_favourite_language">તમારી પસંદગીની ભાષા પસંદ કરો</string>
+
     <string name="done">પૂર્ણ</string>
     <string name="welcomes_you_some_text_goes_here">તમારો ફોન નંબર એન્ટર કરો</string>
     <string name="mobile_number_cannot_be_empty">મોબાઇલ નંબર ખાલી રહી શકશે નહીં</string>
@@ -74,34 +74,5 @@
     <string name="ok">ઓકે</string>
     <string name="yes">હા </string>
     <string name="no">કોઈ</string>
-    <string name="un_assigned_complaints">ફાળવણી ન થયેલ ફરિયાદો</string>
-    <string name="powered_by_">પાવર્ડ બાય</string>
-    <string name="mobile_number_not_registered">મોબાઇલ નંબર રજીસ્ટર્ડ નથી.</string>
-    <string name="registration">રજીસ્ટ્રેશન</string>
-    <string name="designation">પદ</string>
-    <string name="send_your_details_for_the_registration_purpose">રજીસ્ટ્રેશન હેતુ માટે તમારી વિગતો મોકલો</string>
-    <string name="continue_">ચાલુ રાખો</string>
-    <string name="category">શ્રેણી</string>
-    <string name="location">સ્થાન</string>
-    <string name="ward">વોર્ડ નંબર</string>
-    <string name="cancel">રદ્દ કરો</string>
-    <string name="request">વિનંતી</string>
-    <string name="email_id">ઇમેઇલ આઇડી</string>
-    <string name="thank_you">તમારો આભાર!</string>
-    <string name="your_details_are">અધિકૃત લોકો પાસે તમારી વિગતો સફળતાપૂર્વક મોકલાઇ છે. અમે તમને તુરંતમાં ફરી મળીશું.</string>
-    <string name="close">બંધ કરો</string>
-    <string name="send_your_details_for_regist">રજીસ્ટ્રેશન હેતુ માટે તમારી વિગતો મોકલો</string>
-    <string name="email_id_cannot_be_empty">ઇમેઇલ આઇડી ખાલી રહી શકશે નહીં</string>
-    <string name="location_cannot_be_empty">સ્થાન ખાલી રહી શકશે નહીં</string>
-    <string name="name_cannot_be_empty">નામ ખાલી રહી શકશે નહીં</string>
-    <string name="ward_number_cannot_be_empty">વોર્ડ નંબર ખાલી રહી શકશે નહીં</string>
-    <string name="please_select_a_designation">કૃપા કરી એક પદ પસંદ કરો</string>
-    <string name="please_select_atleast_one_category">કૃપા કરી કમસે કમ એક શ્રેણી પસંદ કરો</string>
-    <string name="invalid_email_id">અમાન્ય ઇમેઇલ આઇડી</string>
-    <string name="please_select_a_location_from_suggestion_only">માત્ર સૂચનોમાંથી કૃપા કરી સ્થાન પસંદ કરો</string>
-    <string name="name">નામ</string>
-    <string name="ward_eg_110_21_73_">વોર્ડ જેમ કેઃ(110,21,73)</string>
-    <string name="nearby_complaints">નજીકની ફરિયાદો</string>
-    <string name="_complaints">Complaints</string>
 
 </resources>

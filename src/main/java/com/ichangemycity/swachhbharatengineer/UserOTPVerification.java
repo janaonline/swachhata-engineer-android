@@ -105,9 +105,9 @@ public class UserOTPVerification extends BaseAppCompatActivity {
                                     public void onResponse(final JSONObject mJsonObject) {
                                         try {
                                             AppController.hideProgressDialog(activity);
-                                            if (mJsonObject.getInt("httpCode") == 200
+                                            if (mJsonObject.optInt("httpCode") == 200
                                                     || mJsonObject
-                                                    .getInt("httpCode") == 201) {
+                                                    .optInt("httpCode") == 201) {
 
                                                 String userData = mJsonObject
                                                         .optString("engineer");
@@ -320,8 +320,8 @@ public class UserOTPVerification extends BaseAppCompatActivity {
 
     private void handleResendOTPResponse(JSONObject mJsonObject) {
         try {
-            if (mJsonObject.getInt("httpCode") == 200
-                    || mJsonObject.getInt("httpCode") == 201) {
+            if (mJsonObject.optInt("httpCode") == 200
+                    || mJsonObject.optInt("httpCode") == 201) {
                 if (!mJsonObject.getString(ICMyCPreferenceData.otp).isEmpty()) {
                     /*
                      * ICMyCPreferenceData.setPreference(UserOTPVerification.this
@@ -348,8 +348,8 @@ public class UserOTPVerification extends BaseAppCompatActivity {
 			 * }
 			 */
             JSONObject mJsonObject = new JSONObject(response);
-            if (mJsonObject.getInt("httpCode") == 200
-                    || mJsonObject.getInt("httpCode") == 201) {
+            if (mJsonObject.optInt("httpCode") == 200
+                    || mJsonObject.optInt("httpCode") == 201) {
                 String userData = mJsonObject.optString("engineer");
                 JSONObject userDataJsonObject = new JSONObject(userData);
 

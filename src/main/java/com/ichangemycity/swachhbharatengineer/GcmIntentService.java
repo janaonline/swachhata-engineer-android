@@ -19,19 +19,12 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
-import com.ichangemycity.customui.RoundedBackgroundSpan;
 
 public class GcmIntentService extends IntentService {
 	public static final String TAG = "GCM ";
@@ -43,7 +36,8 @@ public class GcmIntentService extends IntentService {
 	SharedPreferences mSharedPreferences = null;
 	private String Message_Recieved = "";
 	String ContentId = null, pushImage = null;
-
+	public static boolean isToOpenFeedback = false;
+	String title = "";
 	public GcmIntentService() {
 		super("GcmIntentService");
 		// TODO Auto-generated constructor stub
@@ -62,7 +56,7 @@ public class GcmIntentService extends IntentService {
 		try {
 			jobj = new JSONObject(msg);
 			Message_Recieved = jobj.getString("message");
-			ContentId = jobj.getString("contentId");
+			ContentId = jobj.optString("contentId");
 			if (jobj.has("image_url")) {
 				pushImage = jobj.getString("image_url");
 			} else {
@@ -70,6 +64,9 @@ public class GcmIntentService extends IntentService {
 			}
 			if(jobj.has("url")){
 				url = jobj.optString("url");
+			}
+			if(jobj.has("title")){
+				title = jobj.optString("title");
 			}
 			redirect = jobj.getString("redirect");
 
@@ -100,15 +97,15 @@ public class GcmIntentService extends IntentService {
 					// This loop represents the service doing some work.
 					for (int i = 0; i < 5; i++) {
 
-						Log.i(TAG, "Working... " + (i + 1) + "/5 @ "
-								+ SystemClock.elapsedRealtime());
+						// Log.i(TAG, "Working... " + (i + 1) + "/5 @ "
+						// + SystemClock.elapsedRealtime());
 						try {
 							Thread.sleep(500);
 						} catch (InterruptedException e) {
 						}
 					}
-					Log.i(TAG,
-							"Completed work @ " + SystemClock.elapsedRealtime());
+					// Log.i(TAG,
+					// "Completed work @ " + SystemClock.elapsedRealtime());
 					// Post notification of received message.
 					// sendNotification("Received: " + extras.toString());
 
@@ -123,7 +120,7 @@ public class GcmIntentService extends IntentService {
 					if (shared_pref_notifications_ckeckboxstate == false) {
 						sendNotification(Message_Recieved, ContentId, pushImage);
 					}
-					Log.i(TAG, "Received: " + extras.toString());
+					// Log.i(TAG, "Received: " + extras.toString());
 				}
 			}
 			GcmBroadcastReceiver.completeWakefulIntent(intent);
@@ -150,7 +147,7 @@ public class GcmIntentService extends IntentService {
 					this)
 					.setSmallIcon(R.mipmap.ic_launcher)
 					.setContentTitle(
-							getResources().getString(R.string.app_name))
+							title)
 					.setStyle(
 							new NotificationCompat.BigTextStyle().bigText(msg))
 					.setContentText(msg)
@@ -166,7 +163,7 @@ public class GcmIntentService extends IntentService {
 	}
 
 	private Notification setBigPictureStyleNotification(String msg,
-			String ContentId, String pushImage) {
+														String ContentId, String pushImage) {
 
 		Bitmap remote_picture = null;
 
@@ -193,31 +190,25 @@ public class GcmIntentService extends IntentService {
 	}
 
 	private PendingIntent getNotificationPendingIntent(String msg,
-			String ContentId) {
+													   String ContentId) {
 		// Creates an explicit intent for an Activity in your app
 		Intent myintent = new Intent(GcmIntentService.this,
 				MainActivity.class);
 		TaskStackBuilder stackBuilder = TaskStackBuilder
 				.create(GcmIntentService.this);
+		AppController.selectedComplaintData.setComplaintId(ContentId);
 		stackBuilder.addParentStack(MainActivity.class);
-		ICMyCPreferenceData.setPreference(GcmIntentService.this,
-				ICMyCPreferenceData.isDeeplinked, "1");
+		if (redirect.equalsIgnoreCase("Detail")) {
+			AppController.selectedComplaintData.setComplaintId(ContentId);
+			ICMyCPreferenceData.setPreference(GcmIntentService.this,
+					ICMyCPreferenceData.isDeeplinked, "1");
+			myintent = new Intent(GcmIntentService.this, Splashscreen.class);
+			// .putExtra("openFeedback", true);//
+			// ComplaintDetailFromPushNotification
+			isToOpenFeedback = true;
 
-		if (redirect.equalsIgnoreCase("Nearby")) {
-			AppController.selectedComplaintData.setComplaintId(ContentId);
-			myintent = new Intent(GcmIntentService.this, Splashscreen.class)
-					.putExtra("openFeedback", true);// ComplaintDetailFromPushNotification
-		} else if (redirect.equalsIgnoreCase("Detail")
-				&& Message_Recieved.contains("RESOLVED")) {
-			AppController.selectedComplaintData.setComplaintId(ContentId);
-			myintent = new Intent(GcmIntentService.this, Splashscreen.class)
-					.putExtra("openFeedback", true);// ComplaintDetailFromPushNotification
-		} else if (redirect.equalsIgnoreCase("Detail")
-				&& !(Message_Recieved.contains("RESOLVED"))) {
-			AppController.selectedComplaintData.setComplaintId(ContentId);
-			myintent = new Intent(GcmIntentService.this, Splashscreen.class);// ComplaintDetailFromPushNotification
-		} else if (redirect.equalsIgnoreCase("playstore")) {
-			String appPackageName = "com.ichangemycity.swachhbharatengineer";
+		}  else if (redirect.equalsIgnoreCase("playstore")) {
+			String appPackageName = "com.ichangemycity.swachhbharat";
 			try {
 				myintent = (new Intent(
 						Intent.ACTION_VIEW,
@@ -226,7 +217,7 @@ public class GcmIntentService extends IntentService {
 			} catch (android.content.ActivityNotFoundException anfe) {
 
 			}
-		}else if(redirect.equalsIgnoreCase("playstore")){
+		}else if(redirect.equalsIgnoreCase("url")){
 			try {
 				myintent = (new Intent(
 						Intent.ACTION_VIEW,
@@ -247,6 +238,5 @@ public class GcmIntentService extends IntentService {
 				PendingIntent.FLAG_UPDATE_CURRENT);
 
 	}
-
 
 }

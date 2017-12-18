@@ -4,7 +4,6 @@
     <string name="app_name">స్వచ్ఛ భారత్</string>
     <string name="crash_toast_text">అప్లికేషన్ కుప్పకూలింది, సమస్యను నివేదించడానికి ఇ-మెయిల్ పంపు అనే బటన్ క్లిక్ చేయండి</string>
     <string name="welcome">సుస్వాగతం</string>
-    <string name="set_your_swachh_bharath_in_your_favourite_language">మీకిష్టమైన భాషను ఎంచుకోండి.</string>
     <string name="done">సరే</string>
     <string name="welcomes_you_some_text_goes_here">మొబైల్ నంబర్ ఎంటర్ చేయండి.</string>
     <string name="mobile_number_cannot_be_empty">మొబైల్ నంబరు ఖాళీగా ఉండకూడదు</string>
@@ -74,34 +73,6 @@
     <string name="ok">సరే</string>
     <string name="yes">అవును</string>
     <string name="no">కాదు</string>
-    <string name="un_assigned_complaints">నియోగించని ఫిర్యాదులు</string>
-    <string name="powered_by_">పవర్డ్ బై</string>
-    <string name="mobile_number_not_registered">మొబైల్ నంబరు నమోదు కాలేదు.</string>
-    <string name="registration">రిజిస్ట్రేషన్</string>
-    <string name="designation">హోదా</string>
-    <string name="send_your_details_for_the_registration_purpose">రిజిస్ట్రేషన్ కొరకు మీ వివరాలు పంపండి</string>
-    <string name="continue_">కొనసాగింపు</string>
-    <string name="category">విభాగము</string>
-    <string name="location">ప్రాంతము</string>
-    <string name="ward">వార్డు నంబరు</string>
-    <string name="cancel">రద్దు</string>
-    <string name="request">అభ్యర్థన</string>
-    <string name="email_id">ఇమెయిల్ ఐడి</string>
-    <string name="thank_you">ధన్యవాదములు!</string>
-    <string name="your_details_are">మీ వివరాలు, అధీకృత వ్యక్తులకు విజయవంతంగా పంపబడ్డాయి. మేము త్వరలోనే మీకు తెలుపగలము</string>
-    <string name="close">మూసివేయి</string>
-    <string name="send_your_details_for_regist">రిజిస్ట్రేషన్ కొరకు మీ వివరాలు పంపండి	</string>
-    <string name="email_id_cannot_be_empty">ఇమెయిల్ ఐడి ఖాళీగా ఉండకూడదు</string>
-    <string name="location_cannot_be_empty">ప్రాంతము ఖాళీగా ఉండకూడదు</string>
-    <string name="name_cannot_be_empty">పేరు ఖాళీగా ఉండకూడదు</string>
-    <string name="ward_number_cannot_be_empty">దయచేసి ఒక హోదాను ఎంచుకోండి</string>
-    <string name="please_select_a_designation">కనీసం ఒక విభాగాన్ని ఎంచుకోండి</string>
-    <string name="please_select_atleast_one_category">కనీసం ఒక విభాగాన్ని ఎంచుకోండి</string>
-    <string name="invalid_email_id">చెల్లుబాటుకాని ఇమెయిల్ ఐడి</string>
-    <string name="please_select_a_location_from_suggestion_only">దయచేసి ఒక ప్రదేశాన్ని సూచననుండి మాత్రమే ఎంచుకోండి </string>
-    <string name="name">పేరు</string>
-    <string name="ward_eg_110_21_73_">వార్డ్ ఉదా:(110,21,73)</string>
-    <string name="nearby_complaints">సమీపంలోని ఫిర్యాదులు</string>
-    <string name="_complaints">Complaints</string>
+
 
 </resources>

@@ -105,9 +105,9 @@ public class UserMobileNumber extends BaseAppCompatActivity {
                                 @Override
                                 public void onResponse(final JSONObject mJsonObject) {
                                     try {
-                                        if (mJsonObject.getInt("httpCode") == 200
+                                        if (mJsonObject.optInt("httpCode") == 200
                                                 || mJsonObject
-                                                .getInt("httpCode") == 201) {
+                                                .optInt("httpCode") == 201) {
                                             ICMyCPreferenceData
                                                     .setPreference(
                                                             UserMobileNumber.this,

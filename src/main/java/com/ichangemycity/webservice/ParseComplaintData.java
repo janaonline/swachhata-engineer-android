@@ -39,74 +39,74 @@ public class ParseComplaintData {
             for (int i = 0; i < json_comp_array.length(); i++) {
                 JSONObject json_obj = json_comp_array.getJSONObject(i);
                 ComplaintData cData = ComplaintData.getInstance();
-                cData.setComplaintId(json_obj.getInt("complaintId") + "");
-                cData.setGeneric_id(json_obj.getString("generic_id"));
-                cData.setCity_id(json_obj.getInt("city_id") + "");
-                cData.setCreated_at(json_obj.getString("created_at"));
-                cData.setUser_id(json_obj.getInt("user_id") + "");
-                cData.setCategory_id(json_obj.getInt("category_id") + "");
-                cData.setVote_up_count(json_obj.getInt("voted_count") + "");
-                cData.setComment_count(json_obj.getInt("commented_count")
+                cData.setComplaintId(json_obj.optInt("complaintId") + "");
+                cData.setGeneric_id(json_obj.optString("generic_id"));
+                cData.setCity_id(json_obj.optInt("city_id") + "");
+                cData.setCreated_at(json_obj.optString("created_at"));
+                cData.setUser_id(json_obj.optInt("user_id") + "");
+                cData.setCategory_id(json_obj.optInt("category_id") + "");
+                cData.setVote_up_count(json_obj.optInt("voted_count") + "");
+                cData.setComment_count(json_obj.optInt("commented_count")
                         + "");
-                cData.setComplaint_url(json_obj.getString("complaint_url"));
+                cData.setComplaint_url(json_obj.optString("complaint_url"));
                 cData.setAffected(json_obj.get("affected").toString());
-                cData.setCategory_name(json_obj.getString("category_name"));
+                cData.setCategory_name(json_obj.optString("category_name"));
                 if (json_obj.has("complaint_image"))
                     cData.setComplaint_image(json_obj
-                            .getString("complaint_image"));
+                            .optString("complaint_image"));
                 else
                     cData.setComplaint_image("http://icmycsaasqa.ichangemycity.com/android/garbage.jpg");
 
                 cData.setComplaint_image_l1(json_obj
-                        .getString("complaint_image_l1"));
+                        .optString("complaint_image_l1"));
                 cData.setComplaint_image_l1(json_obj
-                        .getString("complaint_image_l2"));
+                        .optString("complaint_image_l2"));
 
                 if (json_obj.has("complaint_image_height"))
                     cData.setComplaint_image_height(json_obj
-                            .getInt("complaint_image_height") + "");
+                            .optInt("complaint_image_height") + "");
                 else
                     cData.setComplaint_image_height(300 + "");
 
-                cData.setLocation(json_obj.getString("location"));
+                cData.setLocation(json_obj.optString("location"));
                 cData.setLatitude(json_obj.get("latitude").toString());
                 cData.setLongitude(json_obj.get("longitude").toString());
 
                 if (json_obj.has("landmark"))
-                    cData.setLandmark(json_obj.getString("landmark"));
+                    cData.setLandmark(json_obj.optString("landmark"));
                 else
                     cData.setLandmark("Landmark missing in web service");
-                cData.setParent_id(json_obj.getString("parent_id"));
-                cData.setFull_name(json_obj.getString("full_name"));
+                cData.setParent_id(json_obj.optString("parent_id"));
+                cData.setFull_name(json_obj.optString("full_name"));
                 if (json_obj.has("user_image"))
-                    cData.setUser_image(json_obj.getString("user_image"));
+                    cData.setUser_image(json_obj.optString("user_image"));
                 else
                     cData.setUser_image("http://icmycsaasqa.ichangemycity.com/android/account.png");
 
                 cData.setComplaint_status_id(json_obj
-                        .getString("complaint_status_id"));
+                        .optString("complaint_status_id"));
                 cData.setComplaint_status(json_obj
-                        .getString("complaint_status"));
-                cData.setRadius("" + json_obj.getInt("radius"));
+                        .optString("complaint_status"));
+                cData.setRadius("" + json_obj.optInt("radius"));
                 if (json_obj.has("feed")) {
-                    String feed = json_obj.getString("feed");
+                    String feed = json_obj.optString("feed");
                     try {
                         cData.setHasFeed(true);
                         JSONObject mComplaintFeedJsonObject = new JSONObject(
                                 feed);
                         cData.setFeed_id(mComplaintFeedJsonObject
-                                .getString("feed_id"));
+                                .optString("feed_id"));
                         // cData.setFeed_user_id(mComplaintFeedJsonObject
-                        // .getString("feed_user_id"));
+                        // .optString("feed_user_id"));
                         cData.setFeed_description(mComplaintFeedJsonObject
-                                .getString("feed_description"));
+                                .optString("feed_description"));
                         cData.setFeed_full_name(""/*
 												 * mComplaintFeedJsonObject
 												 * .getString
 												 * ("feed_user_full_name")
 												 */);
                         cData.setFeed_color(mComplaintFeedJsonObject
-                                .getString("feed_color"));
+                                .optString("feed_color"));
                         cData.set_is_feed_high_priority(mComplaintFeedJsonObject
                                 .get("is_feed_high_priority").toString());
                     } catch (Exception e) {
@@ -118,12 +118,12 @@ public class ParseComplaintData {
                 }
                 if (json_obj.has("feedback_count")) {
                     String feedback_count = json_obj
-                            .getString("feedback_count");
+                            .optString("feedback_count");
                     JSONObject feedback = new JSONObject(feedback_count);
                     cData.setFeedback_count(true);
-                    cData.setNeutral(feedback.getInt("neutral") + "");
-                    cData.setSatisfaction(feedback.getInt("satisfaction") + "");
-                    cData.setUn_satisfied(feedback.getInt("un_satisfied") + "");
+                    cData.setNeutral(feedback.optInt("neutral") + "");
+                    cData.setSatisfaction(feedback.optInt("satisfaction") + "");
+                    cData.setUn_satisfied(feedback.optInt("un_satisfied") + "");
                 } else {
                     cData.setFeedback_count(false);
                     cData.setNeutral("0");
@@ -131,7 +131,7 @@ public class ParseComplaintData {
                     cData.setUn_satisfied("0");
                 }
                 // if (!complaintId.contains(json_obj
-                // .getString("complaintId"))) {
+                // .optString("complaintId"))) {
                 data.add(cData);
                 // }
 

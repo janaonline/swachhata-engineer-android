@@ -4,7 +4,6 @@
 	<string name="app_name">தூய்மை இந்தியா</string>
 	<string name="crash_toast_text">பயன்பாடு செயலிழந்துவிட்டது, இந்தச் சிக்கலை அறிவிக்க மின்னஞ்சல் அனுப்புக பொத்தானை கிளிக் செய்யவும்</string>
 	<string name="welcome">வணக்கம்</string>
-	<string name="set_your_swachh_bharath_in_your_favourite_language">நீங்கள் விரும்பும் மொழியைத் தெரிவுசெய்க</string>
 	<string name="done">முடிந்தது</string>
 	<string name="welcomes_you_some_text_goes_here">உங்கள் செல்லிடப்பேசி எண்ணை உள்ளிடவும்</string>
 	<string name="mobile_number_cannot_be_empty">செல்லிடப்பேசி எண் காலியாக இருக்கக்கூடாது</string>
@@ -74,36 +73,5 @@
 	<string name="ok">சரி</string>
 	<string name="yes">ஆம்</string>
 	<string name="no">இல்லை</string>
-	<string name="un_assigned_complaints">ஒதுக்கப்படாத புகார்கள்</string>
-	<string name="powered_by_">ஆற்றளிப்பது</string>
-	<string name="mobile_number_not_registered">செல்லிடப்பேசி எண் பதிவு செய்யப்படவில்லை.</string>
-	<string name="registration">பதிவு செய்தல்</string>
-	<string name="designation">பதவி</string>
-	<string name="send_your_details_for_the_registration_purpose">பதிவு செய்வதற்காக உங்கள் விவரங்களை அனுப்பவும்</string>
-	<string name="continue_">தொடர்க</string>
-	<string name="category">வகை</string>
-	<string name="location">அமைவிடம்</string>
-	<string name="ward">வார்டு எண்</string>
-	<string name="cancel">இரத்து செய்க</string>
-	<string name="request">கோரிக்கை</string>
-	<string name="email_id">மின்னஞ்சல் முகவரி</string>
-	<string name="thank_you">நன்றி!</string>
-	<string name="your_details_are">உங்கள் விவரங்கள் அங்கீகாரம் பெற்ற நபர்களுக்கு வெற்றிகரமாக அனுப்பப்பட்டது. நாங்கள் விரைவில் உங்களைத் தொடர்புகொள்வோம்.</string>
-	<string name="close">மூடு</string>
-	<string name="send_your_details_for_regist">பதிவு செய்வதற்காக உங்கள் விவரங்களை அனுப்பவும</string>
-	<string name="email_id_cannot_be_empty">மின்னஞ்சல் முகவரி காலியாக இருக்கக்கூடாது</string>
-	<string name="location_cannot_be_empty">அமைவிடம் காலியாக இருக்கக்கூடாது</string>
-	<string name="name_cannot_be_empty">பெயர் காலியாக இருக்கக்கூடாது</string>
-	<string name="ward_number_cannot_be_empty">வார்டு எண் காலியாக இருக்கக் கூடாது</string>
-	<string name="please_select_a_designation">தயவுசெய்து ஒரு பதவியைத் தெரிவு செய்யவும்</string>
-	<string name="please_select_atleast_one_category">தயவுசெய்து குறைந்தபட்சம் ஒரு வகையைத் தெரிவு செய்யவும்</string>
-	<string name="invalid_email_id">செல்லத்தகாத மின்னஞ்சல் முகவரி</string>
-    <string name="please_select_a_location_from_suggestion_only">கூறப்பட்டதிலிருந்து மட்டும் ஒரு அமைவிடத்தைத் தெரிவு செய்யவும்</string>
-	<string name="name">பெயர்</string>
-	<string name="ward_eg_110_21_73_">வார்டு உதாரணம்:(110,21,73)</string>
-	<string name="nearby_complaints">அருகாமை புகார்கள்</string>
-	<string name="select_your_location">Select your location</string>
-	<string name="your_activity">Your Activity</string>
-	<string name="give_your_feedback_">Give your Feedback</string>
-	 <string name="_complaints">Complaints</string>
+
 </resources>

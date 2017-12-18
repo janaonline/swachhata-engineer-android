@@ -256,7 +256,7 @@ public class VoteupsActivity extends BaseAppCompatActivity {
 
         try {
             String complaintString = json_comp_object
-                    .getString("vote_up_users");
+                    .optString("vote_up_users");
 
             JSONArray jsonArray = new JSONArray(complaintString);
             if (jsonArray.length() == 0) {
@@ -270,18 +270,18 @@ public class VoteupsActivity extends BaseAppCompatActivity {
 
                         VotedUpData mVotedUpData = new VotedUpData();
                         mVotedUpData.setId(voted_up_usersJsonObject
-                                .getInt("id") + "");
+                                .optInt("id") + "");
                         mVotedUpData
                                 .setComplaint_count(voted_up_usersJsonObject
-                                        .getString("complaint_count") + "");
+                                        .optString("complaint_count") + "");
                         mVotedUpData.setFull_name(voted_up_usersJsonObject
-                                .getString("full_name"));
+                                .optString("full_name"));
                         mVotedUpData.setUser_id(voted_up_usersJsonObject
-                                .getInt("user_id") + "");
+                                .optInt("user_id") + "");
                         mVotedUpData.setUser_image_url(voted_up_usersJsonObject
-                                .getString("user_image_url"));
+                                .optString("user_image_url"));
                         mVotedUpData.setVoted_up_on(voted_up_usersJsonObject
-                                .getString("voted_up_on"));
+                                .optString("voted_up_on"));
                         AppController.votedUpData.add(mVotedUpData);
                     } catch (Exception e) {
                         e.printStackTrace();

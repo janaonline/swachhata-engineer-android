@@ -59,6 +59,7 @@ import static android.R.color.holo_blue_bright;
 import static android.R.color.holo_green_light;
 import static android.R.color.holo_orange_light;
 import static android.R.color.holo_red_light;
+import static com.ichangemycity.swachhbharatengineer.ComplaintDetail.isToRefresh;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
@@ -330,7 +331,7 @@ public class MainActivity extends AppCompatActivity
                         .string.you)).go());
         textViewLocation.setText(SecurePrefManager.with(activity).get(ICMyCPreferenceData
                 .location).defaultValue
-                (getString(R.string.location)).go());
+                ("").go());
 
 
     }
@@ -546,9 +547,9 @@ public class MainActivity extends AppCompatActivity
                 String longitude = userData.get("longitude")
                         .toString() + "";
                 // String complaint_count = userData
-                // .getInt("complaint_count") + "";
+                // .optInt("complaint_count") + "";
                 // String voted_up_count = userData
-                // .getInt("voted_up_count") + "";
+                // .optInt("voted_up_count") + "";
                 String location = userData
                         .optString("location");
                 // String language = userData
@@ -695,6 +696,20 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
         onNavigationItemSelected(menuItem);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try{
+            if(isToRefresh) {
+                isToRefresh = false;
+                runHomeFeedWebService(complaintFilterModel.get(
+                        complaintFilter.getSelectedItemPosition()).getComplaintType(), true);
+            }
+        }catch (Exception e){
+
+        }
     }
 
     private int currentPage;

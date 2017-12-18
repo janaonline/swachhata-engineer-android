@@ -45,6 +45,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import static com.ichangemycity.swachhbharatengineer.ComplaintDetail.isToRefresh;
+
 public class ChangeStatusActivity extends BaseAppCompatActivity {
     Toolbar toolbar;
     public static Activity activity;
@@ -171,7 +173,7 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
                                                     activity,
                                                     ICMyCPreferenceData.commentUploadedImageFile,
                                                     "");
-                                    ComplaintDetail.isToRefresh = true;
+                                    isToRefresh = true;
                                     activity.finish();
                                 }
                                 Toast.makeText(activity,
@@ -346,6 +348,7 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
             @Override
             public void onClick(View v) {
                 activity.finish();
+                isToRefresh = false;
             }
         });
         final Drawable upArrow = getResources().getDrawable(R.mipmap.back);

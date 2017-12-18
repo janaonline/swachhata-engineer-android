@@ -498,20 +498,20 @@ public class ComplaintDetail extends BaseAppCompatActivity {
                     JSONObject json_obj = new JSONObject(complaintString);
 
 
-                    complaintDetailData.setComplaintId(json_obj.getInt("id") + "");
+                    complaintDetailData.setComplaintId(json_obj.optInt("id") + "");
                     complaintDetailData.setLatitude(json_obj.get("latitude").toString());
                     complaintDetailData.setLongitude(json_obj.get("longitude").toString());
 
                     complaintDetailData.setComplaint_url(json_obj.optString("complaint_url"));
                     complaintDetailData.setGeneric_id(json_obj.optString("generic_id"));
-                    complaintDetailData.setCity_id(json_obj.getInt("city_id") + "");
-                    complaintDetailData.setUser_id(json_obj.getInt("user_id") + "");
+                    complaintDetailData.setCity_id(json_obj.optInt("city_id") + "");
+                    complaintDetailData.setUser_id(json_obj.optInt("user_id") + "");
                     complaintDetailData.setPosted_on(json_obj.optString("posted_on"));
                     complaintDetailData.setAccess_token(json_obj.optString("access_token"));
 
-                    complaintDetailData.setCategory_id(json_obj.getInt("category_id") + "");
-                    complaintDetailData.setVote_up_count(json_obj.getInt("vote_up_count") + "");
-                    complaintDetailData.setComment_count(json_obj.getInt("comment_count") + "");
+                    complaintDetailData.setCategory_id(json_obj.optInt("category_id") + "");
+                    complaintDetailData.setVote_up_count(json_obj.optInt("vote_up_count") + "");
+                    complaintDetailData.setComment_count(json_obj.optInt("comment_count") + "");
                     complaintDetailData.setCategory_name(json_obj.optString("category_name"));
                     if (json_obj.has("complaint_image"))
                         complaintDetailData.setComplaint_image(json_obj
@@ -527,13 +527,13 @@ public class ComplaintDetail extends BaseAppCompatActivity {
 
                     if (json_obj.has("complaint_image_height"))
                         complaintDetailData.setComplaint_image_height(json_obj
-                                .getInt("complaint_image_height") + "");
+                                .optInt("complaint_image_height") + "");
                     else
                         complaintDetailData.setComplaint_image_height(320 + "");
 
                     complaintDetailData.setParent_id(json_obj.optString("parent_id"));
                     complaintDetailData.setFull_name(json_obj.optString("full_name"));
-                    complaintDetailData.setAffected(json_obj.getInt("affected") + "");
+                    complaintDetailData.setAffected(json_obj.optInt("affected") + "");
                     if (json_obj.has("user_image"))
                         complaintDetailData.setUser_image(json_obj.optString("user_image"));
                     else
@@ -543,7 +543,7 @@ public class ComplaintDetail extends BaseAppCompatActivity {
                             .optString("complaint_status_id"));
                     complaintDetailData.setComplaint_status(json_obj
                             .optString("complaint_status"));
-                    complaintDetailData.setRadius("" + json_obj.getInt("radius"));
+                    complaintDetailData.setRadius("" + json_obj.optInt("radius"));
                     if (json_obj.has("comments")) {
                         String comments = json_obj.optString("comments");
                         JSONArray commentsArray = new JSONArray(comments);
@@ -553,9 +553,9 @@ public class ComplaintDetail extends BaseAppCompatActivity {
                                         .getJSONObject(j);
                                 CommentsData ccData = new CommentsData();
                                 ccData.setComment_id(commentsJsonObject
-                                        .getInt("id") + "");
+                                        .optInt("id") + "");
                                 ccData.setComment_user_id(commentsJsonObject
-                                        .getInt("user_id") + "");
+                                        .optInt("user_id") + "");
                                 ccData.setComment_full_name(commentsJsonObject
                                         .optString("full_name"));
                                 ccData.setComment_description(commentsJsonObject
@@ -594,14 +594,14 @@ public class ComplaintDetail extends BaseAppCompatActivity {
                                     .getJSONObject(m);
                             VotedUpData mVotedUpData = new VotedUpData();
                             mVotedUpData.setId(voted_up_usersJsonObject
-                                    .getInt("id") + "");
+                                    .optInt("id") + "");
                             mVotedUpData
                                     .setComplaint_count(voted_up_usersJsonObject
                                             .optString("complaint_count") + "");
                             mVotedUpData.setFull_name(voted_up_usersJsonObject
                                     .optString("full_name"));
                             mVotedUpData.setUser_id(voted_up_usersJsonObject
-                                    .getInt("user_id") + "");
+                                    .optInt("user_id") + "");
                             mVotedUpData.setUser_image_url(voted_up_usersJsonObject
                                     .optString("user_image_url"));
                             mVotedUpData.setVoted_up_on(voted_up_usersJsonObject
@@ -615,9 +615,9 @@ public class ComplaintDetail extends BaseAppCompatActivity {
                                 .optString("feedback_count");
                         JSONObject feedback = new JSONObject(feedback_count);
                         complaintDetailData.setFeedback_count(true);
-                        complaintDetailData.setNeutral(feedback.getInt("neutral") + "");
-                        complaintDetailData.setSatisfaction(feedback.getInt("satisfaction") + "");
-                        complaintDetailData.setUn_satisfied(feedback.getInt("un_satisfied") + "");
+                        complaintDetailData.setNeutral(feedback.optInt("neutral") + "");
+                        complaintDetailData.setSatisfaction(feedback.optInt("satisfaction") + "");
+                        complaintDetailData.setUn_satisfied(feedback.optInt("un_satisfied") + "");
                     } else {
                         complaintDetailData.setFeedback_count(false);
                         complaintDetailData.setNeutral("0");

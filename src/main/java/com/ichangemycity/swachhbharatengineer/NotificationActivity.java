@@ -511,11 +511,11 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                                 .getJSONObject(i);
                         NotificationHeaderData notificationHeaderData0 = new NotificationHeaderData();
                         notificationHeaderData0.setHeaderTitle(mJsonObject
-                                .getString("header-title"));
+                                .optString("header-title"));
                         notificationHeaderData0.setDateValue(mJsonObject
-                                .getString("date-value"));
+                                .optString("date-value"));
                         String notificationDataString = mJsonObject
-                                .getString("notification-data");
+                                .optString("notification-data");
                         notificationHeaderData0.setTYPE_ITEM(0);// HEADER
                         data.add(notificationHeaderData0);
 
@@ -529,25 +529,25 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                                     .getJSONObject(j);
                             notificationHeaderData
                                     .setNotificationId(notificationDataJsonObject
-                                            .getInt("notificationId"));
+                                            .optInt("notificationId"));
                             notificationHeaderData
                                     .setContentId(notificationDataJsonObject
-                                            .getInt("contentId"));
+                                            .optInt("contentId"));
                             notificationHeaderData
                                     .setFeedCreatedOn(notificationDataJsonObject
-                                            .getString("feedCreatedOn"));
+                                            .optString("feedCreatedOn"));
                             notificationHeaderData
                                     .setContentCreatedOn(notificationDataJsonObject
-                                            .getString("contentCreatedOn"));
+                                            .optString("contentCreatedOn"));
                             notificationHeaderData
                                     .setFeedType(notificationDataJsonObject
-                                            .getString("feedType"));
+                                            .optString("feedType"));
                             notificationHeaderData
                                     .setRedirectTo(notificationDataJsonObject
-                                            .getString("redirectTo"));
+                                            .optString("redirectTo"));
                             notificationHeaderData
                                     .setTextMsg(notificationDataJsonObject
-                                            .getString("textMsg").replace(" ",
+                                            .optString("textMsg").replace(" ",
                                                     "-"));
 
                             notificationHeaderData.setRead(readStatus);
