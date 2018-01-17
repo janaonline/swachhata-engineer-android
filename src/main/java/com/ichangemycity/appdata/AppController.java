@@ -228,8 +228,6 @@ public class AppController extends MultiDexApplication {
             MultiDex.install(this);
             AnalyticsTracker.initialize(this);
             AnalyticsTracker.getInstance().get(AnalyticsTracker.Target.APP);
-            StrictMode smo = new StrictMode();
-            smo.StrictModeMethod();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -282,17 +280,34 @@ public class AppController extends MultiDexApplication {
         try {
             JSONObject responseObject = new JSONObject(new String(volleyError.networkResponse.data));
             JSONArray mData = null;
-            if (responseObject.has("errors")) {
+            if (responseObject.has("data")) {
                 try {
-                    mData = responseObject.optJSONArray("errors");
-                } catch (Exception e1) {
+                    mData = responseObject.getJSONArray("data");
+                } catch (JSONException e1) {
                     // TODO Auto-generated catch
                     // block
                     e1.printStackTrace();
                 }
                 for (int i = 0; i < mData.length(); i++) {
                     try {
-                        message += mData.getJSONObject(i).optString("message") + ", ";
+                        message += mData.getJSONObject(i).optString("message") + " ";
+                    } catch (JSONException e) {
+                        // TODO Auto-generated catch
+                        // block
+                        e.printStackTrace();
+                    }
+                }
+            }else if(responseObject.has("errors")){
+                try {
+                    mData = responseObject.getJSONArray("errors");
+                } catch (JSONException e1) {
+                    // TODO Auto-generated catch
+                    // block
+                    e1.printStackTrace();
+                }
+                for (int i = 0; i < mData.length(); i++) {
+                    try {
+                        message += mData.getJSONObject(i).optString("message") + " ";
                     } catch (JSONException e) {
                         // TODO Auto-generated catch
                         // block
@@ -326,22 +341,18 @@ public class AppController extends MultiDexApplication {
 
         if (message != null) {
             try {
-                Snackbar snackbar =  Snackbar.make(layout, message,Snackbar.LENGTH_LONG);
-                View snackbarView = snackbar.getView();
-                snackbar.setActionTextColor(Color.WHITE);
-                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setMaxLines(8);
-                snackbar.show();
+                Toast.makeText(act, message, Toast.LENGTH_SHORT).show();
+//                Snackbar.make(layout, message, Snackbar.LENGTH_LONG).setActionTextColor(Color.WHITE).show();
             } catch (Exception e) {
                 AppController.traceLog("ERROR_VOLLEYERROR", message);
                 Toast.makeText(act, message, Toast.LENGTH_SHORT).show();
             }
-            if (isToLogOut && !SecurePrefManager.with(act).get(ICMyCPreferenceData.token).defaultValue("NA").go().equalsIgnoreCase("NA")) {
+            if (isToLogOut && !ICMyCPreferenceData.getPreferenceItem(act,ICMyCPreferenceData.token,"NA").equalsIgnoreCase("NA")) {
                 act.startActivity(new Intent(act, Splashscreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                SecurePrefManager.with(act).clear().confirm();
+                ICMyCPreferenceData.clearPreferences(act,ICMyCPreferenceData.preferenceName);
                 act.finish();
                 try {
-                    MainActivity.activity.finish();
+//                   (MainActivity)getActivity().finish();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -376,13 +387,13 @@ public class AppController extends MultiDexApplication {
                 && mobileNumber.length() < 10) {
             isValid = false;
             Snackbar.make(relativeLayout, R.string.mobile_number_needs_10_digits, Snackbar.LENGTH_SHORT).setActionTextColor(Color.WHITE).show();
-        } else if (!(mobnobegin.equalsIgnoreCase("7"))
+        } /*else if (!(mobnobegin.equalsIgnoreCase("7"))
                 && !(mobnobegin.equalsIgnoreCase("8"))
                 && !(mobnobegin.equalsIgnoreCase("9"))) {
             isValid = false;
             Snackbar.make(relativeLayout, R.string.mobile_number_must_begin_with_7_or_8_or_9, Snackbar.LENGTH_LONG).setActionTextColor(Color.WHITE)
                     .show();
-        } else {
+        } */else {
             isValid = true;
         }
         return isValid;

@@ -16,7 +16,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
-import com.ichangemycity.appdata.StrictMode;
 import com.ichangemycity.base.BaseAppCompatActivity;
 import com.ichangemycity.model.LanguageData;
 import com.ichangemycity.webservice.URLData;
@@ -42,8 +41,6 @@ public class Splashscreen extends BaseAppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StrictMode smo = new StrictMode();
-        smo.StrictModeMethod();
         setContentView(R.layout.splash);
         activity = Splashscreen.this;
         proceedAfterPermissionGranted();

@@ -208,7 +208,7 @@ public class GcmIntentService extends IntentService {
 			isToOpenFeedback = true;
 
 		}  else if (redirect.equalsIgnoreCase("playstore")) {
-			String appPackageName = "com.ichangemycity.swachhbharat";
+			String appPackageName = "com.ichangemycity.swachhbharatengineer";
 			try {
 				myintent = (new Intent(
 						Intent.ACTION_VIEW,

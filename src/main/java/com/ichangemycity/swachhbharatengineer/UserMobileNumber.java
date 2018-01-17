@@ -317,7 +317,7 @@ public class UserMobileNumber extends BaseAppCompatActivity {
             // mMobileNumber.setError("Password cannot be empty");
             mobileNumber.setFocusable(true);
             mobileNumber.requestFocus();
-        } else if (!(mobnobegin.equalsIgnoreCase("7"))
+        }/* else if (!(mobnobegin.equalsIgnoreCase("7"))
                 && !(mobnobegin.equalsIgnoreCase("8"))
                 && !(mobnobegin.equalsIgnoreCase("9"))) {
             isValid = false;
@@ -341,7 +341,7 @@ public class UserMobileNumber extends BaseAppCompatActivity {
             // .showErrorAlert("Mobile number must begin with 7 or 8 or 9");
             mobileNumber.setFocusable(true);
             mobileNumber.requestFocus();
-        } else {
+        }*/ else {
             isValid = true;
         }
         return isValid;
