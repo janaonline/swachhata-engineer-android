@@ -15,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
@@ -211,7 +213,7 @@ public class AppController extends MultiDexApplication {
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private static AppController mInstance;
-    public static int MY_SOCKET_TIMEOUT_MS = 864000;
+    public static int MY_SOCKET_TIMEOUT_MS = 864000*2;
     //    public static ArrayList<String> images = new ArrayList<>();
     public static SelectedImageModel mSelectedImageModels = new SelectedImageModel();
     private Tracker mTracker;
@@ -258,6 +260,10 @@ public class AppController extends MultiDexApplication {
 
     public <T> void addToRequestQueue(Request<T> req, String tag) {
         // set the default tag if tag is empty
+        req.setRetryPolicy(new DefaultRetryPolicy(
+                AppController.MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
         getRequestQueue().add(req);
     }

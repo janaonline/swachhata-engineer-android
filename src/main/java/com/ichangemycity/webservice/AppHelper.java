@@ -30,7 +30,7 @@ public class AppHelper {
         Drawable drawable = ContextCompat.getDrawable(context, id);
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 40, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
 
@@ -47,7 +47,7 @@ public class AppHelper {
         try {
 
             bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(),path.getUriOfImage());
-            bitmap.compress(Bitmap.CompressFormat.JPEG,80, byteArrayOutputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG,40, byteArrayOutputStream);
             bitmap.recycle();
         } catch (IOException e) {
             e.printStackTrace();
