@@ -27,7 +27,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
+import com.ichangemycity.appdata.AppUtils;
 import com.ichangemycity.customui.RoundedBackgroundSpan;
 import com.ichangemycity.model.NotificationHeaderData;
 import com.ichangemycity.swachhbharatengineer.ComplaintDetail;
@@ -185,6 +187,7 @@ public class NotificationAdapter extends
                             nData.setRead(true);
                             data.set(index, nData);
                             NotificationActivity.data.set(index, nData);
+                            AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,responseJsonObject.get("message").toString());
                             // notifyItemChanged(index);
                             // Toast.makeText(
                             // activity,
@@ -193,9 +196,9 @@ public class NotificationAdapter extends
                             // Toast.LENGTH_SHORT).show();
                             redirectToAppropriateScreens(nData);
 
-                            Toast.makeText(activity,
-                                    responseJsonObject.get("message").toString(),
-                                    Toast.LENGTH_LONG).show();
+//                            Toast.makeText(activity,
+//                                    responseJsonObject.get("message").toString(),
+//                                    Toast.LENGTH_LONG).show();
 
                         } catch (JSONException e) {
                             e.printStackTrace();

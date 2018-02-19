@@ -19,10 +19,12 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
 import com.ichangemycity.base.BaseAppCompatActivity;
@@ -205,6 +207,11 @@ public class UserMobileNumber extends BaseAppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             AppController.handleVolleyError(activity, (RelativeLayout) findViewById(R.id.parentLayout), error);
+                            NetworkResponse networkResponse = error.networkResponse;
+                            if (retryCount < AppConstant.MAX_RETRY_API_REQUEST && networkResponse != null) {
+                                retryCount++;
+                                submit.performClick();
+                            }
                         }
 
                     }) {
@@ -236,9 +243,10 @@ public class UserMobileNumber extends BaseAppCompatActivity {
             }
 
         });
-        setToolbarAndCustomizeTitle((Toolbar)findViewById(R.id.toolbar)," ");
+        setToolbarAndCustomizeTitle((Toolbar) findViewById(R.id.toolbar), " ");
     }
 
+    int retryCount;
 
     private void setToolbarAndCustomizeTitle(Toolbar toolbar, String title) {
         setSupportActionBar(toolbar);

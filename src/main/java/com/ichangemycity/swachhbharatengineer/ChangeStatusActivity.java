@@ -27,7 +27,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
+import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
+import com.ichangemycity.appdata.AppUtils;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
 import com.ichangemycity.base.BaseAppCompatActivity;
 import com.ichangemycity.callback.OnButtonClick;
@@ -88,8 +90,10 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
                     AppController.showProgressDialog(activity, "");
                     new InitiateChangeStatus().execute();
                 } else {
-                    Toast.makeText(activity, getResources().getString(R.string.write_a_comment), Toast
-                            .LENGTH_SHORT).show();
+                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,activity.getResources().getString(R.string.write_a_comment));
+
+//                    Toast.makeText(activity, getResources().getString(R.string.write_a_comment), Toast
+//                            .LENGTH_SHORT).show();
                 }
 
             }
@@ -149,7 +153,8 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
                     if (!TextUtils.isEmpty(((EditText) findViewById(R.id.textComment)).getText().toString()))
                         changeStatus(false);
                     else
-                        Toast.makeText(activity, getResources().getString(R.string.write_a_comment), Toast.LENGTH_SHORT).show();
+                        AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, getResources().getString(R.string.write_a_comment));
+//                    Toast.makeText(activity, getResources().getString(R.string.write_a_comment), Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -176,9 +181,10 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
                                     isToRefresh = true;
                                     activity.finish();
                                 }
-                                Toast.makeText(activity,
-                                        responseJsonObject.get("message").toString(),
-                                        Toast.LENGTH_LONG).show();
+                                AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, responseJsonObject.optString("message"));
+//                                Toast.makeText(activity,
+//                                        responseJsonObject.get("message").toString(),
+//                                        Toast.LENGTH_LONG).show();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

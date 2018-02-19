@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -14,6 +15,7 @@ import com.ichangemycity.swachhbharatengineer.R;
 import com.prashantsolanki.secureprefmanager.SecurePrefManager;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.dmoral.toasty.Toasty;
 
 /**
  * Created by pattabi.raman on 03-10-2017.
@@ -126,6 +128,19 @@ public class AppUtils {
         return ("#607D8B");
     }
 
+    public static void showToast(final Activity activity, final int type, final String message) {
+        switch (type) {
+            case AppConstant.TOAST_TYPE_ERROR:
+                Toasty.error(activity.getApplicationContext(), message, Toast.LENGTH_SHORT, true).show();
+                break;
+            case AppConstant.TOAST_TYPE_INFO:
+                Toasty.info(activity.getApplicationContext(), message, Toast.LENGTH_SHORT, true).show();
+                break;
+            case AppConstant.TOAST_TYPE_SUCCESS:
+                Toasty.success(activity.getApplicationContext(), message, Toast.LENGTH_SHORT, true).show();
+                break;
+        }
+    }
     public static void shareComplaint(Activity activity, ComplaintData cdata) {
         try {
             Intent i = new Intent(Intent.ACTION_SEND);

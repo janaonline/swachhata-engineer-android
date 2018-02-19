@@ -77,6 +77,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import es.dmoral.toasty.Toasty;
+
 /**
  * Created by pattabi.raman on 23-09-2017.
  */
@@ -280,9 +282,10 @@ public class AppController extends MultiDexApplication {
     }
 
     public static void handleVolleyError(Activity act, final RelativeLayout layout, VolleyError volleyError) {
-        VolleyLog.d(TAG, "Error: " + volleyError.getMessage());
+        VolleyLog.d(AppController.TAG, "Error: " + volleyError.getMessage());
         String message = "";
         boolean isToLogOut = false;
+        int type = AppConstant.TOAST_TYPE_INFO;
         try {
             JSONObject responseObject = new JSONObject(new String(volleyError.networkResponse.data));
             JSONArray mData = null;
@@ -303,7 +306,7 @@ public class AppController extends MultiDexApplication {
                         e.printStackTrace();
                     }
                 }
-            }else if(responseObject.has("errors")){
+            } else if (responseObject.has("errors")) {
                 try {
                     mData = responseObject.getJSONArray("errors");
                 } catch (JSONException e1) {
@@ -329,46 +332,65 @@ public class AppController extends MultiDexApplication {
             AppController.traceLog("vollyErrorTrace", responseObject + "");
         } catch (JSONException e) {
             e.printStackTrace();
+            message = "Error : "+e.getMessage();
+            type = AppConstant.TOAST_TYPE_ERROR;
         } catch (NullPointerException ex) {
             if (volleyError instanceof NetworkError) {
-                message = act.getString(R.string.internet_is_offline);
+                message = volleyError.getLocalizedMessage();//act.getString(R.string.network_error);
             } else if (volleyError instanceof ServerError) {
                 message = "The server could not be found. Please try again after some time!!";
+                type = AppConstant.TOAST_TYPE_ERROR;
             } else if (volleyError instanceof AuthFailureError) {
-                message = "Cannot connect to Internet...Please check your connection!";
+                message = volleyError.getLocalizedMessage();
+//                message = "Cannot connect to Internet...Please check your connection!";
+                type = AppConstant.TOAST_TYPE_ERROR;
             } else if (volleyError instanceof ParseError) {
                 message = "Parsing error! Please try again after some time!!";
+                type = AppConstant.TOAST_TYPE_ERROR;
             } else if (volleyError instanceof NoConnectionError) {
                 message = "Cannot connect to Internet...Please check your connection!";
+                type = AppConstant.TOAST_TYPE_INFO;
             } else if (volleyError instanceof TimeoutError) {
-                message = "Connection TimeOut! Please check your internet connection.";
+                message = "Connection TimeOut";
+                type = AppConstant.TOAST_TYPE_INFO;
             }
         }
 
         if (message != null) {
             try {
-                Toast.makeText(act, message, Toast.LENGTH_SHORT).show();
+                if(message.trim().length()<=0){
+                    message = volleyError.getMessage();
+                    type=AppConstant.TOAST_TYPE_ERROR;
+                }
+                AppUtils.showToast(act, type, message);
 //                Snackbar.make(layout, message, Snackbar.LENGTH_LONG).setActionTextColor(Color.WHITE).show();
             } catch (Exception e) {
                 AppController.traceLog("ERROR_VOLLEYERROR", message);
-                Toast.makeText(act, message, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(act, message, Toast.LENGTH_SHORT).show();
+                type=AppConstant.TOAST_TYPE_ERROR;
+                AppUtils.showToast(act, type, message);
             }
-            if (isToLogOut && !ICMyCPreferenceData.getPreferenceItem(act,ICMyCPreferenceData.token,"NA").equalsIgnoreCase("NA")) {
+            if (isToLogOut && !ICMyCPreferenceData.getPreferenceItem(act, ICMyCPreferenceData.token, "NA").equalsIgnoreCase("NA")) {
                 act.startActivity(new Intent(act, Splashscreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                ICMyCPreferenceData.clearPreferences(act,ICMyCPreferenceData.preferenceName);
+                ICMyCPreferenceData.clearPreferences(act);
                 act.finish();
-                try {
-//                   (MainActivity)getActivity().finish();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
-//            AppController.logTrace(act, "error---->" + message);
-
-//            Toast.makeText(act, message,Toast.LENGTH_LONG).show();
         }
     }
 
+    public static void showToast(final Activity activity, final int type, final String message) {
+        switch (type) {
+            case AppConstant.TOAST_TYPE_ERROR:
+                Toasty.error(activity.getApplicationContext(), message, Toast.LENGTH_SHORT, true).show();
+                break;
+            case AppConstant.TOAST_TYPE_INFO:
+                Toasty.info(activity.getApplicationContext(), message, Toast.LENGTH_SHORT, true).show();
+                break;
+            case AppConstant.TOAST_TYPE_SUCCESS:
+                Toasty.success(activity.getApplicationContext(), message, Toast.LENGTH_SHORT, true).show();
+                break;
+        }
+    }
     public static void setUniqueIDToPreference(Activity act) {
         final String address = Settings.Secure
                 .getString(act.getContentResolver(), Settings.Secure.ANDROID_ID);

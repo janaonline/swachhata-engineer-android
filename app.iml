@@ -214,6 +214,7 @@
     <orderEntry type="library" name="com.google.android.gms:play-services-location-11.0.4" level="project" />
     <orderEntry type="module" module-name="circleimageview" />
     <orderEntry type="module" module-name="RippleEffectLibrary" />
+    <orderEntry type="module" module-name="toasty" />
     <orderEntry type="module" module-name="secureprefs" />
     <orderEntry type="module" module-name="easyrecyclerview" />
     <orderEntry type="module" module-name="otpview" />

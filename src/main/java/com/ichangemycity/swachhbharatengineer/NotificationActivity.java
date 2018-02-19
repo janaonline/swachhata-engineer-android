@@ -32,7 +32,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.ichangemycity.adapter.NotificationAdapter;
+import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
+import com.ichangemycity.appdata.AppUtils;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
 import com.ichangemycity.base.BaseAppCompatActivity;
 import com.ichangemycity.model.NotificationHeaderData;
@@ -745,10 +747,11 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                 // }
                 //
                 // });
-                Toast.makeText(
-                        activity,
-                        getResources().getString(R.string.no_read_notification),
-                        Toast.LENGTH_LONG).show();
+                AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,  getResources().getString(R.string.no_read_notification));
+//                Toast.makeText(
+//                        activity,
+//                        getResources().getString(R.string.no_read_notification),
+//                        Toast.LENGTH_LONG).show();
             }
             mAdapter2 = new NotificationAdapter(activity, data1);
             mRecyclerView2.setAdapter(mAdapter2);
@@ -858,11 +861,12 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                     @Override
                     public void onResponse(final JSONObject response) {
                         try {
-                            Toast.makeText(
-                                    activity,
-                                    (response).optString("message")
-                                    , Toast.LENGTH_SHORT)
-                                    .show();
+                            AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,(response).optString("message"));
+//                            Toast.makeText(
+//                                    activity,
+//                                    (response).optString("message")
+//                                    , Toast.LENGTH_SHORT)
+//                                    .show();
                             data.clear();
                             ICMyCPreferenceData.setPreference(activity,
                                     ICMyCPreferenceData.unreadNotificationsCnt,

@@ -92,7 +92,7 @@ public static final String preferenceName="preferenceName";
         Log.i(key, value);
     }
 
-    public static void clearPreferences(Context activity, String preferenceName) {
+    public static void clearPreferences(Context activity ) {
         SecurePrefManager.with(activity).clear().confirm();
     }
 

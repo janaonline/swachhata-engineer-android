@@ -30,12 +30,14 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.ichangemycity.adapter.ComplaintFilterSpinnerAdapter;
 import com.ichangemycity.adapter.HomeTabLocalFeedAdapter;
+import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.AppUtils;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
@@ -472,9 +474,10 @@ public class MainActivity extends AppCompatActivity
                         try {
                             if (mJsonObject.optInt("httpCode") == 200 || mJsonObject.optInt("httpCode") == 201) {
                                 try {
-                                    Toast.makeText(MainActivity.this,
-                                            mJsonObject.optString("message"),
-                                            Toast.LENGTH_LONG).show();
+                                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,mJsonObject.optString("message"));
+//                                    Toast.makeText(MainActivity.this,
+//                                            mJsonObject.optString("message"),
+//                                            Toast.LENGTH_LONG).show();
                                     handleSuccessResponse(mJsonObject);
                                 } catch (Exception e) {
                                     // TODO Auto-generated catch block
@@ -482,9 +485,10 @@ public class MainActivity extends AppCompatActivity
                                 }
                             } else {
                                 try {
-                                    Toast.makeText(MainActivity.this,
-                                            mJsonObject.optString("message"),
-                                            Toast.LENGTH_LONG).show();
+                                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, mJsonObject.optString("message"));
+//                                    Toast.makeText(MainActivity.this,
+//                                            mJsonObject.optString("message"),
+//                                            Toast.LENGTH_LONG).show();
 
                                 } catch (Exception e) {
                                     // TODO Auto-generated catch block
@@ -701,13 +705,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        try{
-            if(isToRefresh) {
+        try {
+            if (isToRefresh) {
                 isToRefresh = false;
                 runHomeFeedWebService(complaintFilterModel.get(
                         complaintFilter.getSelectedItemPosition()).getComplaintType(), true);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
@@ -757,8 +761,14 @@ public class MainActivity extends AppCompatActivity
                 public void onErrorResponse(final VolleyError volleyError) {
 //                AppController.hideProgressDialog(activity);
                     hideSwipeProgress();
+                    AppController.setEmptyViewForRecyclerView(activity, mRecyclerView);
                     AppController.handleVolleyError(activity, (RelativeLayout) activity.findViewById(R.id.parentLayout), volleyError);
-
+                    NetworkResponse networkResponse = volleyError.networkResponse;
+                    if (retryCount < AppConstant.MAX_RETRY_API_REQUEST && currentPage == 1 && networkResponse != null) {
+                        retryCount++;
+                        showSwipeProgress();
+                        runHomeFeedWebService(ComplaintType, true);
+                    }
                 }
 
             }) {
@@ -786,6 +796,8 @@ public class MainActivity extends AppCompatActivity
 
         }
     }
+
+    int retryCount;
 
     private class ParseJSONResponse extends AsyncTask<Void, Void, Void> {
         JSONObject jsonObject = new JSONObject();

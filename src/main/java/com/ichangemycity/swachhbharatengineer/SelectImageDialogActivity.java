@@ -22,7 +22,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
+import com.ichangemycity.appdata.AppUtils;
 import com.ichangemycity.base.BaseAppCompatActivity;
 import com.ichangemycity.callback.OnButtonClick;
 import com.ichangemycity.model.CustomGallery;
@@ -76,7 +78,7 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
         runtimePermissionManager(activity, permissionsRequired, new GetPermissionResult() {
             @Override
             public void resultPermissionSuccess() {
-                Toast.makeText(activity, "Thanks for allowing permissions", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(activity, "Thanks for allowing permissions", Toast.LENGTH_SHORT).show();
                 rippleViewCamera.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
                     @Override
                     public void onComplete(RippleView rippleView) {
@@ -96,7 +98,8 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
 
             @Override
             public void resultPermissionRevoked() {
-                Toast.makeText(activity, "We suggest to allow permissions to make app work as expected", Toast.LENGTH_LONG).show();
+                AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,"We suggest to allow permissions to make app work as expected");
+//                Toast.makeText(activity, "We suggest to allow permissions to make app work as expected", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -238,11 +241,15 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     previewCapturedImage();
                 } else if (resultCode == RESULT_CANCELED) {
-                    Toast.makeText(getApplicationContext(), "You have cancelled image selection",
-                            Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "You have cancelled image selection",
+//                            Toast.LENGTH_SHORT).show();
+                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,"You have cancelled image selection");
+
                 } else {
-                    Toast.makeText(getApplicationContext(), R.string.select_an_image,
-                            Toast.LENGTH_SHORT).show();
+                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,activity.getResources().getString(R.string.select_an_image));
+
+//                    Toast.makeText(getApplicationContext(), R.string.select_an_image,
+//                            Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

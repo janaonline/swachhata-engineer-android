@@ -32,7 +32,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.ichangemycity.adapter.CommentsAdapter;
+import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
+import com.ichangemycity.appdata.AppUtils;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
 import com.ichangemycity.base.BaseAppCompatActivity;
 import com.ichangemycity.model.CommentsData;
@@ -107,8 +109,10 @@ public class CommentsActivity extends BaseAppCompatActivity {
                     AppController.showProgressDialog(activity, "");
                     new InitiatePostComment().execute();
                 } else {
-                    Toast.makeText(activity, getResources().getString(R.string.write_a_comment), Toast
-                            .LENGTH_SHORT).show();
+                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,activity.getResources().getString(R.string.write_a_comment));
+
+//                    Toast.makeText(activity, getResources().getString(R.string.write_a_comment), Toast
+//                            .LENGTH_SHORT).show();
                 }
 
             }
@@ -157,7 +161,9 @@ public class CommentsActivity extends BaseAppCompatActivity {
                 if (!TextUtils.isEmpty(((EditText) findViewById(R.id.textComment)).getText().toString()))
                     postComment(false);
                 else
-                    Toast.makeText(activity, getResources().getString(R.string.write_a_comment), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(activity, getResources().getString(R.string.write_a_comment), Toast.LENGTH_SHORT).show();
+                AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,activity.getResources().getString(R.string.write_a_comment));
+
             }
         }
     }
@@ -181,8 +187,11 @@ public class CommentsActivity extends BaseAppCompatActivity {
 //                                AppController.trackEvent(GAData.POST_A_COMMENT, GAData.DONE, GAData.DONE);
                             }
                             responseJsonObject = new JSONObject(response);
-                            Toast.makeText(activity, responseJsonObject.optString("message"), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(activity, responseJsonObject.optString("message"), Toast.LENGTH_SHORT).show();
+                            AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, responseJsonObject.optString("message"));
+
                             parseData(responseJsonObject, true);
+
                             if (recycler_view != null)
                                 if (recycler_view.getAdapter() != null)
                                     recycler_view.getAdapter().notifyDataSetChanged();
@@ -403,6 +412,12 @@ public class CommentsActivity extends BaseAppCompatActivity {
                 if (isToScroll)
                     AppController.hideProgressDialog(activity);
                 AppController.handleVolleyError(activity, (RelativeLayout) findViewById(R.id.parentLayout), volleyError);
+                NetworkResponse networkResponse = volleyError.networkResponse;
+                AppController.setEmptyViewForRecyclerView(activity, recycler_view);
+                if (retryCount < AppConstant.MAX_RETRY_API_REQUEST && currentPage == 1 && networkResponse != null) {
+                    retryCount++;
+                    runCommentFeedWebService(true);
+                }
             }
 
         }) {
@@ -432,6 +447,8 @@ public class CommentsActivity extends BaseAppCompatActivity {
                 TAG);
 //        }
     }
+
+    int retryCount;
 
     private class ParseResponse extends AsyncTask<Void, Void, Void> {
         JSONObject jsonObject;
@@ -580,7 +597,7 @@ public class CommentsActivity extends BaseAppCompatActivity {
                     }
                 }
                 AppController.selectedComplaintData.setCommentsData(AppController.commentData);
-                AppController.selectedComplaintData.setComment_count(AppController.commentData.size()+"");
+                AppController.selectedComplaintData.setComment_count(AppController.commentData.size() + "");
             }
 
         } catch (JSONException e) {

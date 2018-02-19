@@ -25,7 +25,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
+import com.ichangemycity.appdata.AppUtils;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
 import com.ichangemycity.base.BaseAppCompatActivity;
 import com.ichangemycity.callback.OnButtonClick;
@@ -130,12 +132,14 @@ public class UserOTPVerification extends BaseAppCompatActivity {
                                                 }
 
                                             } else {
-                                                Toast.makeText(
-                                                        UserOTPVerification.this,
-                                                        mJsonObject
-                                                                .optString("message"),
-                                                        Toast.LENGTH_LONG)
-                                                        .show();
+                                                AppUtils.showToast( UserOTPVerification.this, AppConstant.TOAST_TYPE_INFO,  mJsonObject
+                                                        .optString("message"));
+//                                                Toast.makeText(
+//                                                        UserOTPVerification.this,
+//                                                        mJsonObject
+//                                                                .optString("message"),
+//                                                        Toast.LENGTH_LONG)
+//                                                        .show();
                                                 String errors = "";
                                                 try { // more than one error
                                                     errors = (mJsonObject)
@@ -271,7 +275,9 @@ public class UserOTPVerification extends BaseAppCompatActivity {
                             AppController.hideProgressDialog(activity);
                             responseJsonObject = new JSONObject(response);
                             handleResponse(response);
-                            Toast.makeText(activity, responseJsonObject.optString("message"), Toast.LENGTH_SHORT).show();
+                            AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,  responseJsonObject
+                                    .optString("message"));
+//                            Toast.makeText(activity, responseJsonObject.optString("message"), Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
