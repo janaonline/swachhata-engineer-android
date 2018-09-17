@@ -64,7 +64,6 @@ public class HomeTabLocalFeedAdapter extends
 
     @Override
     public int getItemViewType(int position) {
-        // TODO Auto-generated method stub
         // if (position == 0)
         // return TYPE_HEADER;
         return TYPE_ITEM;
@@ -234,8 +233,7 @@ public class HomeTabLocalFeedAdapter extends
             rl_top_feed.setVisibility(View.VISIBLE);
             if (cData.get_is_feed_high_priority().equalsIgnoreCase("1")) {
                 feed_flag.setVisibility(View.VISIBLE);
-                feed_flag.setColorFilter(activity.getResources().getColor(
-                        R.color.red_reopn_open));
+                feed_flag.setColorFilter(activity.getResources().getColor(R.color.red_reopn_open));
             } else {
                 feed_flag.setVisibility(View.GONE);
             }
@@ -315,8 +313,7 @@ public class HomeTabLocalFeedAdapter extends
         }
         complaintStatusTextView.setTextColor(complaintStatusTextColor);
         complaintStatusTextView.setText(cData.getComplaint_status());
-        complaintStatusTextView
-                .setBackgroundResource(complaintStatusBgDrawable);
+        complaintStatusTextView.setBackgroundResource(complaintStatusBgDrawable);
         return complaintStatusBgDrawable;
 
     }

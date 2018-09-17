@@ -25,20 +25,16 @@ import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.ichangemycity.adapter.NotificationAdapter;
 import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.AppUtils;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
 import com.ichangemycity.base.BaseAppCompatActivity;
+import com.ichangemycity.callback.OnResponseListener;
 import com.ichangemycity.model.NotificationHeaderData;
 import com.ichangemycity.webservice.URLData;
+import com.ichangemycity.webservice.WebserviceHelper;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 import org.json.JSONArray;
@@ -47,11 +43,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 @SuppressWarnings("deprecation")
 public class NotificationActivity extends BaseAppCompatActivity implements
-        android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener {
     public static int btn_acknowledged_position;
     Context context_activity;
 
@@ -91,18 +86,13 @@ public class NotificationActivity extends BaseAppCompatActivity implements
         mLayoutManager2 = new LinearLayoutManager(activity);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
         mRecyclerView2.setLayoutManager(mLayoutManager2);
         mRecyclerView2.setItemAnimator(new DefaultItemAnimator());
-
-
         slideHandleButton = (Button) findViewById(R.id.slideHandleButton);
         slidingDrawer = (SlidingDrawer) findViewById(R.id.SlidingDrawer);
-
         pb_loader = (ProgressWheel) findViewById(R.id.pb_loader);
         pb_loader.setBarColor(Color.rgb(85, 146, 251));
         pb_loader.setVisibility(View.VISIBLE);
-
         runHomeFeedWebService();
         setToolbarAndCustomizeTitle((Toolbar) findViewById(R.id.toolbar), getResources().getString(R.string.notification));
     }
@@ -121,13 +111,11 @@ public class NotificationActivity extends BaseAppCompatActivity implements
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.markAllAsRead) {
-           markAllAsRead(activity);
+            markAllAsRead(activity);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -137,7 +125,6 @@ public class NotificationActivity extends BaseAppCompatActivity implements
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(title);
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,50 +142,22 @@ public class NotificationActivity extends BaseAppCompatActivity implements
         String url = URLData.BASE_URL
                 + URLData.ENGINEER_NOTIFICATION + URLData.PAGE
                 + current_page + URLData.NOTIFICATION_STATUS + URLData.UNREAD;
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                url, null,
-                new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(final JSONObject response) {
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        new ParseJSONResponse(response).execute();
-                    }
-                }, new Response.ErrorListener() {
-
+        new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
             @Override
-            public void onErrorResponse(final VolleyError error) {
-
+            public void OnResponseFailure(JSONObject response) {
                 AppController.hideProgressDialog(activity);
-                AppController.handleVolleyError(activity, (RelativeLayout) findViewById(R.id.parentLayout), error);
-            }
-
-        }) {
-
-            /**
-             * Passing some request headers
-             * */
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                return URLData.getHeaders(activity);
+                //  AppController.handleVolleyError(activity, (RelativeLayout) findViewById(R.id.parentLayout), error);
             }
 
             @Override
-            protected Map<String, String> getParams() {
-                return null;
+            public void OnResponseSuccess(JSONObject response) {
+                mRecyclerView.setVisibility(View.VISIBLE);
+                new ParseJSONResponse(response).execute();
             }
-
-        };
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                AppController.MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq,
-                TAG);
+        }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
 
     }
+
 
     private void runMoreHomeFeedWebService() {
         current_page += 1;
@@ -206,50 +165,20 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                 + URLData.ENGINEER_NOTIFICATION + URLData.PAGE + current_page + URLData.NOTIFICATION_STATUS
                 + URLData.UNREAD;
         // currentPosition = data.size() - 1;
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                url, null,
-                new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(final JSONObject response) {
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        new ParseMoreJSONResponse(response).execute();
-                    }
-                }, new Response.ErrorListener() {
-
+        new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
             @Override
-            public void onErrorResponse(final VolleyError error) {
-
+            public void OnResponseFailure(JSONObject response) {
                 AppController.hideProgressDialog(activity);
-                AppController.handleVolleyError(activity, (RelativeLayout) findViewById(R.id.parentLayout), error);
-            }
-
-        }) {
-
-            /**
-             * Passing some request headers
-             * */
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                return URLData.getHeaders(activity);
             }
 
             @Override
-            protected Map<String, String> getParams() {
-                return null;
+            public void OnResponseSuccess(JSONObject response) {
+                mRecyclerView.setVisibility(View.VISIBLE);
+                new ParseMoreJSONResponse(response).execute();
             }
-
-        };
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                AppController.MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq,
-                TAG);
-
+        }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
     }
+
 
     private class ParseJSONResponse extends AsyncTask<Void, Void, Void> {
         JSONObject response = new JSONObject();
@@ -282,7 +211,6 @@ public class NotificationActivity extends BaseAppCompatActivity implements
             mAdapter = new NotificationAdapter(activity, data);
             mRecyclerView.setAdapter(mAdapter);
             // mAdapter.notifyDataSetChanged();
-
             onProgressUpdate();
             mRecyclerView
                     .setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -306,7 +234,6 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                             }
                             if (!isDrawerOpened)
                                 refreshLayout.setEnabled(enable);
-
                             if (isLoadMore) {
                                 if ((visibleItemCount + pastVisiblesItems) >= (totalItemCount - 5)) {
                                     isLoadMore = false;
@@ -337,7 +264,6 @@ public class NotificationActivity extends BaseAppCompatActivity implements
 
             }
             hideSwipeProgress();
-
             slidingDrawer.setOnDrawerOpenListener(new OnDrawerOpenListener() {
 
                 @Override
@@ -346,7 +272,6 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                     isDrawerOpened = true;
                 }
             });
-
             slidingDrawer.setOnDrawerCloseListener(new OnDrawerCloseListener() {
 
                 @Override
@@ -412,9 +337,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
             // lv_readcomplaints.getLastVisiblePosition();
             if (pb_loader.isShown()) {
                 pb_loader.setVisibility(View.GONE);
-
 //                linear.startAnimation(upBottom);
-
             }
             hideSwipeProgress();
         }
@@ -423,12 +346,10 @@ public class NotificationActivity extends BaseAppCompatActivity implements
     private ArrayList<NotificationHeaderData> GetParsedJsonFromResponse(
             JSONObject json_comp_object, ArrayList<NotificationHeaderData> data,
             boolean readStatus) {
-
         try {
             // Log.i("page", "------------------------------->" + current_page);
             // apiResponse = IChangeMyCity.loadJSONFromAsset(Notifs.this,
             // "complaints");
-
             JSONArray json_comp_array = json_comp_object
                     .getJSONArray("notifications");
             if (json_comp_array.length() == 0) {
@@ -439,7 +360,6 @@ public class NotificationActivity extends BaseAppCompatActivity implements
             } else {
                 Log.i("page", "------------------------------->"
                         + json_comp_array.toString());
-
                 data.addAll(getParsedNotificationData(json_comp_array,
                         readStatus));
                 isLoadMore = true;
@@ -454,7 +374,6 @@ public class NotificationActivity extends BaseAppCompatActivity implements
     }
 
     int lastListItemPosition = 0;
-
     // int currentPosition;
 
     private void initSwipeOptions() {
@@ -496,7 +415,6 @@ public class NotificationActivity extends BaseAppCompatActivity implements
             runHomeFeedWebService();
             // else
             // runReadNotifWebService();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -520,10 +438,8 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                                 .optString("notification-data");
                         notificationHeaderData0.setTYPE_ITEM(0);// HEADER
                         data.add(notificationHeaderData0);
-
                         final JSONArray notificationDataJsonArray = new JSONArray(
                                 notificationDataString);
-
                         for (int j = 0; j < notificationDataJsonArray.length(); j++) {
                             NotificationHeaderData notificationHeaderData = new NotificationHeaderData();
                             notificationHeaderData.setTYPE_ITEM(1);// ITEM TYPE
@@ -551,7 +467,6 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                                     .setTextMsg(notificationDataJsonObject
                                             .optString("textMsg").replace(" ",
                                                     "-"));
-
                             notificationHeaderData.setRead(readStatus);
                             if (notificationHeaderData.getFeedType()
                                     .equalsIgnoreCase("Posted")) {
@@ -593,48 +508,18 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                 + URLData.USERS + URLData.NOTIFICATION + URLData.PAGE
                 + current_page_read + URLData.NOTIFICATION_STATUS
                 + URLData.READ;
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(final JSONObject response) {
-                        new ParseReadNotifJSONResponse(response).execute();
-                    }
-                }, new Response.ErrorListener() {
-
+        new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
             @Override
-            public void onErrorResponse(final VolleyError volleyError) {
-
+            public void OnResponseFailure(JSONObject response) {
                 AppController.hideProgressDialog(activity);
-                AppController.handleVolleyError(activity, (RelativeLayout) findViewById(R.id.parentLayout), volleyError);
-            }
-
-        }) {
-
-            /**
-             * Passing some request headers
-             */
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                return URLData.getHeaders(activity);
 
             }
 
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                return params;
+            public void OnResponseSuccess(JSONObject response) {
+                new ParseReadNotifJSONResponse(response).execute();
             }
-
-        };
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                AppController.MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq,
-                TAG);
-
+        }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
     }
 
     private void runMoreReadNotifWebService() {
@@ -644,53 +529,21 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                 + URLData.ENGINEER_NOTIFICATION + URLData.PAGE
                 + current_page_read + URLData.NOTIFICATION_STATUS
                 + URLData.READ;
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(final JSONObject response) {
-                        new ParseMoreReadNotifJSONResponse(response).execute();
-                    }
-                }, new Response.ErrorListener() {
-
+        new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
             @Override
-            public void onErrorResponse(final VolleyError volleyError) {
-
+            public void OnResponseFailure(JSONObject response) {
                 AppController.hideProgressDialog(activity);
-                AppController.handleVolleyError(activity, (RelativeLayout) findViewById(R.id.parentLayout), volleyError);
-            }
-
-        }) {
-
-            /**
-             * Passing some request headers
-             */
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                return URLData.getHeaders(activity);
-
             }
 
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                return params;
+            public void OnResponseSuccess(JSONObject response) {
+                new ParseMoreReadNotifJSONResponse(response).execute();
             }
-
-        };
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                AppController.MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq,
-                TAG);
-
+        }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
     }
 
     @Override
     public void onResume() {
-        // TODO Auto-generated method stub
         super.onResume();
         runHomeFeedWebService();
     }
@@ -718,14 +571,12 @@ public class NotificationActivity extends BaseAppCompatActivity implements
             // TODO Auto-generated method stub
             super.onProgressUpdate(values);
             // mAdapter2.notifyDataSetChanged();
-
         }
 
         @Override
         protected void onPostExecute(Void result) {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
-
             // refreshLayout.setEnabled(true);
             if (data1.size() <= 0) {
                 // HandleWebService.showAlert(Notifs.this, "", getResources()
@@ -747,7 +598,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                 // }
                 //
                 // });
-                AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,  getResources().getString(R.string.no_read_notification));
+                AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, getResources().getString(R.string.no_read_notification));
 //                Toast.makeText(
 //                        activity,
 //                        getResources().getString(R.string.no_read_notification),
@@ -779,7 +630,6 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                             }
                             if (isDrawerOpened)
                                 refreshLayout.setEnabled(enable);
-
                             if (isLoadMore) {
                                 if ((visibleItemCount + pastVisiblesItems) >= (totalItemCount - 5)) {
                                     isLoadMore = false;
@@ -847,75 +697,47 @@ public class NotificationActivity extends BaseAppCompatActivity implements
             if (pb_loader.isShown()) {
                 pb_loader.setVisibility(View.GONE);
 //                linear.startAnimation(upBottom);
-
             }
             hideSwipeProgress();
         }
     }
 
     private void markAllAsRead(final Activity activity) {
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.PUT, URLData.BASE_URL
-                + URLData.NOTIFICATION_STATUS_READ
-                , null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(final JSONObject response) {
-                        try {
-                            AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,(response).optString("message"));
+        final String url = URLData.BASE_URL+ URLData.NOTIFICATION_STATUS_READ;
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("allReadStatus", Integer
+                .toString(1));
+        params.put("apiKey", URLData.API_KEY);
+        //return params;
+        new WebserviceHelper(activity, WebserviceHelper.METHOD_PUT, url,params, new OnResponseListener() {
+            @Override
+            public void OnResponseFailure(JSONObject response) {
+                AppController.hideProgressDialog(activity);
+            }
+
+            @Override
+            public void OnResponseSuccess(JSONObject response) {
+                try {
+                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, (response).optString("message"));
 //                            Toast.makeText(
 //                                    activity,
 //                                    (response).optString("message")
 //                                    , Toast.LENGTH_SHORT)
 //                                    .show();
-                            data.clear();
-                            ICMyCPreferenceData.setPreference(activity,
-                                    ICMyCPreferenceData.unreadNotificationsCnt,
-                                    data.size() + "");
-                            mAdapter.notifyDataSetChanged();
+                    data.clear();
+                    ICMyCPreferenceData.setPreference(activity,
+                            ICMyCPreferenceData.unreadNotificationsCnt,
+                            data.size() + "");
+                    mAdapter.notifyDataSetChanged();
 
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(final VolleyError volleyError) {
-
-                AppController.hideProgressDialog(activity);
-                AppController.handleVolleyError(activity, (RelativeLayout) findViewById(R.id.parentLayout), volleyError);
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
+        }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
 
-        }) {
-
-            /**
-             * Passing some request headers
-             */
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                return URLData.getHeaders(activity);
-
-            }
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("allReadStatus", Integer
-                        .toString(1));
-                params.put("apiKey", URLData.API_KEY);
-                return params;
-            }
-
-        };
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                AppController.MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq,
-                AppController.TAG);
 
     }
+
 }

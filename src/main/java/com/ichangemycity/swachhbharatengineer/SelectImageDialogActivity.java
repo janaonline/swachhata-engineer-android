@@ -17,19 +17,16 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.andexert.library.RippleView;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.AppUtils;
 import com.ichangemycity.base.BaseAppCompatActivity;
 import com.ichangemycity.callback.OnButtonClick;
+import com.ichangemycity.callback.OnResponseListener;
 import com.ichangemycity.model.CustomGallery;
 import com.ichangemycity.model.SelectedImageModel;
 import com.ichangemycity.permission.GetPermissionResult;
+import com.ichangemycity.webservice.WebserviceHelper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -82,7 +79,6 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
                 rippleViewCamera.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
                     @Override
                     public void onComplete(RippleView rippleView) {
-
                         GenerateFolders();
                         captureImage();
                     }
@@ -90,7 +86,6 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
                 rippleViewGallery.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
                     @Override
                     public void onComplete(RippleView rippleView) {
-
                         startActivity(new Intent(activity, AndroidCustomGalleryActivity.class));
                     }
                 });
@@ -98,9 +93,8 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
 
             @Override
             public void resultPermissionRevoked() {
-                AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,"We suggest to allow permissions to make app work as expected");
+                AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, "We suggest to allow permissions to make app work as expected");
 //                Toast.makeText(activity, "We suggest to allow permissions to make app work as expected", Toast.LENGTH_LONG).show();
-
             }
         });
     }
@@ -150,7 +144,6 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
 
                     @Override
                     public void onNegativeButtonClicked(DialogInterface dialogInterface) {
-
                     }
                 });
             } else {
@@ -161,9 +154,7 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
 
 
     private void redirectAccordingToPurposeOfImageUpload() {
-
         switch (AppController.selectedPurposeToUploadImage) {
-
             case AppController.PURPOSE_CHANGE_STATUS:
                 break;
             case AppController.PURPOSE_POST_COMMENT:
@@ -200,7 +191,6 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
             fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
 
         }
-
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
         startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
     }
@@ -243,11 +233,10 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
                 } else if (resultCode == RESULT_CANCELED) {
 //                    Toast.makeText(getApplicationContext(), "You have cancelled image selection",
 //                            Toast.LENGTH_SHORT).show();
-                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,"You have cancelled image selection");
+                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, "You have cancelled image selection");
 
                 } else {
-                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,activity.getResources().getString(R.string.select_an_image));
-
+                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, activity.getResources().getString(R.string.select_an_image));
 //                    Toast.makeText(getApplicationContext(), R.string.select_an_image,
 //                            Toast.LENGTH_SHORT).show();
                 }
@@ -256,7 +245,6 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
     }
 
     private void previewCapturedImage() {
-
         try {
             String all_path = fileUri.getPath();
             CustomGallery item = new CustomGallery();
@@ -271,6 +259,7 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
             selectedImageModel.setPathOfSelectedImage(myFile.getAbsolutePath());
             selectedImageModel.setUriOfImage(fileUri);
             AppController.mSelectedImageModels = selectedImageModel;
+            activity.finish();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -281,38 +270,25 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
         progress.setVisibility(View.VISIBLE);
         String url = "http://maps.google.com/maps/api/geocode/json?latlng=" + AppController.latitude + ","
                 + AppController.longitude + "&sensor=false";
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(final JSONObject response) {
-                        try {
-//                            AppController.hideProgressDialog(activity);
-                            progress.setVisibility(View.GONE);
-                            AppController.location = (((JSONArray) response.opt("results")).optJSONObject(0)
-                                    .getString("formatted_address"));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        new CheckImageSize().execute();
-                    }
-                }, new Response.ErrorListener() {
-
+        new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
             @Override
-            public void onErrorResponse(final VolleyError volleyError) {
+            public void OnResponseFailure(JSONObject response) {
                 AppController.hideProgressDialog(activity);
-                AppController.handleVolleyError(activity, (RelativeLayout) activity.findViewById(R.id.parentLayout), volleyError);
             }
 
-        }) {
-        };
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                AppController.MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq,
-                activity.getClass().getSimpleName());
+            @Override
+            public void OnResponseSuccess(JSONObject response) {
+                try {
+//                            AppController.hideProgressDialog(activity);
+                    progress.setVisibility(View.GONE);
+                    AppController.location = (((JSONArray) response.opt("results")).optJSONObject(0)
+                            .getString("formatted_address"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                new CheckImageSize().execute();
+            }
+        }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
 
 
     }

@@ -23,28 +23,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.ichangemycity.adapter.ComplaintFilterSpinnerAdapter;
 import com.ichangemycity.adapter.HomeTabLocalFeedAdapter;
 import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.AppUtils;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
+import com.ichangemycity.callback.OnResponseListener;
 import com.ichangemycity.model.ComplaintData;
 import com.ichangemycity.model.ComplaintFilterModel;
 import com.ichangemycity.webservice.ParseComplaintData;
 import com.ichangemycity.webservice.URLData;
+import com.ichangemycity.webservice.WebserviceHelper;
 import com.prashantsolanki.secureprefmanager.SecurePrefManager;
 
 import org.json.JSONArray;
@@ -52,8 +45,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -86,12 +77,13 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         activity = MainActivity.this;
+        clearBackStack();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         // recycler view
         mRecyclerView = (com.jude.easyrecyclerview.EasyRecyclerView) findViewById(R.id.list);
-        refreshLayout = (android.support.v4.widget.SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         mLayoutManager = new LinearLayoutManager(activity);
         mRecyclerView.setLayoutManager(mLayoutManager);
         initSwipeOptions();
@@ -118,6 +110,21 @@ public class MainActivity extends AppCompatActivity
                     ComplaintDetail.class));
         }
 
+    }
+
+    private void clearBackStack() {
+        try {
+            UserMobileNumber.activity.finish();
+        } catch (Exception e) {
+        }
+        try {
+            OTPVerification.activity.finish();
+        } catch (Exception e) {
+        }
+        try {
+            SelectLanguage.act.finish();
+        } catch (Exception e) {
+        }
     }
 
     @Override
@@ -392,6 +399,24 @@ public class MainActivity extends AppCompatActivity
                     case R.id.re_opened:
                         complaintFilter.setSelection(4);
                         break;
+
+//Added by Sindhu BC(ITC Infotech)
+                    case R.id.public_toilet_nearby:
+
+                        startActivity(new Intent(MainActivity.this,
+                                PublicToiletNearbyActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        /*String appPackageName = activity.getPackageName();
+                        try {
+                            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri
+                                    .parse("http://play.google.com/store/apps/details?id="
+                                            + appPackageName)));
+//                        AppController.trackEvent(AppController.RATE_US_ON_PLAYSTORE,
+//                                AppController.RATE_US_ON_PLAYSTORE_LANDED,
+//                                AppController.RATE_US_ON_PLAYSTORE_LANDED);
+                        } catch (android.content.ActivityNotFoundException anfe) {
+
+                        }*/
+                        break;/**/
                     case R.id.rate_us_on_playstore:
                         String appPackageName = activity.getPackageName();
                         try {
@@ -466,7 +491,49 @@ public class MainActivity extends AppCompatActivity
 
 
     private void getProfileDetailsAndRunHomeFeed() {
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+        final String url = URLData.BASE_URL + URLData.USERS + "?apiKey=" + URLData.API_KEY;
+        new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
+            @Override
+            public void OnResponseFailure(JSONObject response) {
+                AppUtils.hideProgressDialog(activity);
+            }
+
+            @Override
+            public void OnResponseSuccess(final JSONObject response) {
+                AppUtils.hideProgressDialog(activity);
+                try {
+                    if (response.optInt("httpCode") == 200 || response.optInt("httpCode") == 201) {
+                        try {
+                            AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, response.optString("message"));
+//                                    Toast.makeText(MainActivity.this,
+//                                            mJsonObject.optString("message"),
+//                                            Toast.LENGTH_LONG).show();
+                            handleSuccessResponse(response);
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, response.optString("message"));
+//                                    Toast.makeText(MainActivity.this,
+//                                            mJsonObject.optString("message"),
+//                                            Toast.LENGTH_LONG).show(
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                    onNewIntent(getIntent());
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
+
+
+      /*  JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 URLData.BASE_URL + URLData.USERS + "?apiKey=" + URLData.API_KEY, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -488,8 +555,7 @@ public class MainActivity extends AppCompatActivity
                                     AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, mJsonObject.optString("message"));
 //                                    Toast.makeText(MainActivity.this,
 //                                            mJsonObject.optString("message"),
-//                                            Toast.LENGTH_LONG).show();
-
+//                                            Toast.LENGTH_LONG).show(
                                 } catch (Exception e) {
                                     // TODO Auto-generated catch block
                                     e.printStackTrace();
@@ -511,9 +577,9 @@ public class MainActivity extends AppCompatActivity
 
         }) {
 
-            /**
-             * Passing some request headers
-             * */
+            *//**
+         * Passing some request headers
+         * *//*
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 return URLData.getHeaders(activity);
@@ -532,7 +598,7 @@ public class MainActivity extends AppCompatActivity
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq,
                 AppController.TAG);
-
+*/
 
     }
 
@@ -700,6 +766,8 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
         onNavigationItemSelected(menuItem);
+        ICMyCPreferenceData.setPreference(
+                activity, ICMyCPreferenceData.activated, "1");
     }
 
     @Override
@@ -740,9 +808,38 @@ public class MainActivity extends AppCompatActivity
             }
             final String url = URLData.BASE_URL
                     + ComplaintType + URLData.PAGE + currentPage;
+            new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
+                @Override
+                public void OnResponseFailure(JSONObject response) {
+
+                    AppController.hideProgressDialog(activity);
+                    hideSwipeProgress();
+                    AppController.setEmptyViewForRecyclerView(activity, mRecyclerView);
+
+                    //need clarify
+        /*AppController.handleVolleyError(activity, (RelativeLayout) activity.findViewById(R.id.parentLayout), volleyError);
+        NetworkResponse networkResponse = volleyError.networkResponse;
+        if (retryCount < AppConstant.MAX_RETRY_API_REQUEST && currentPage == 1 && networkResponse != null) {
+            retryCount++;
+            showSwipeProgress();
+            runHomeFeedWebService(ComplaintType, true);
+        }*/
+                }
+
+                @Override
+                public void OnResponseSuccess(final JSONObject response) {
+                    AppUtils.hideProgressDialog(activity);
+                    AppController.traceLog("home", url + " ---> " + response);
+                    if (isToScroll) {
+                        data.clear();
+                        mRecyclerView.getAdapter().notifyDataSetChanged();
+                    }
+                    new ParseJSONResponse(response, isToScroll).execute();
+                }
+            }, isToScroll, WebserviceHelper.HEADER_TYPE_NORMAL);
 
 
-            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+           /* JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                     url, null,
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -773,9 +870,9 @@ public class MainActivity extends AppCompatActivity
 
             }) {
 
-                /**
-                 * Passing some request headers
-                 * */
+                *//**
+         * Passing some request headers
+         * *//*
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     return URLData.getHeaders(activity);
@@ -793,7 +890,7 @@ public class MainActivity extends AppCompatActivity
             // Adding request to request queue
             AppController.getInstance().addToRequestQueue(jsonObjReq,
                     AppController.TAG);
-
+*/
         }
     }
 

@@ -28,8 +28,6 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.ichangemycity.adapter.CommentsAdapter;
 import com.ichangemycity.appdata.AppConstant;
@@ -37,6 +35,7 @@ import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.AppUtils;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
 import com.ichangemycity.base.BaseAppCompatActivity;
+import com.ichangemycity.callback.OnResponseListener;
 import com.ichangemycity.model.CommentsData;
 import com.ichangemycity.model.ComplaintData;
 import com.ichangemycity.model.SelectedImageModel;
@@ -45,6 +44,7 @@ import com.ichangemycity.webservice.ParseComplaintData;
 import com.ichangemycity.webservice.URLData;
 import com.ichangemycity.webservice.VolleyMultipartRequest;
 import com.ichangemycity.webservice.VolleySingleton;
+import com.ichangemycity.webservice.WebserviceHelper;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 
 import org.json.JSONArray;
@@ -169,78 +169,57 @@ public class CommentsActivity extends BaseAppCompatActivity {
     }
 
     private void postComment(final boolean hasImage) {
-        AppController.showProgressDialog(activity, activity.getResources().getString(R.string.loading));
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URLData.BASE_URL
-                + URLData.COMMENT,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONObject responseJsonObject = null;
-                        try {
-                            AppController.hideProgressDialog(activity);
-                            ((EditText) CommentsActivity.this.findViewById(R.id.textComment)).setText("");
-                            if (hasImage) {
-//                                AppController.trackEvent(GAData.POST_A_COMMENT + GAData.WITH_IMAGE, GAData.DONE, GAData.DONE);
-                                clearSelectedImage();
-                                showSelectedImage();
-                            } else {
-//                                AppController.trackEvent(GAData.POST_A_COMMENT, GAData.DONE, GAData.DONE);
-                            }
-                            responseJsonObject = new JSONObject(response);
-//                            Toast.makeText(activity, responseJsonObject.optString("message"), Toast.LENGTH_SHORT).show();
-                            AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, responseJsonObject.optString("message"));
+        final String url =URLData.BASE_URL + URLData.COMMENT;
 
-                            parseData(responseJsonObject, true);
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("complaintId", AppController.selectedComplaintData.getComplaintId());
+        params.put("apiKey", URLData.API_KEY);
+        params.put("commentTypeId", Integer.toString(1));
+        params.put("commentDescription", ((EditText) findViewById(R.id.textComment)).getText().toString());
 
-                            if (recycler_view != null)
-                                if (recycler_view.getAdapter() != null)
-                                    recycler_view.getAdapter().notifyDataSetChanged();
-                            ((RelativeLayout) findViewById(R.id.postComm)).setVisibility(View.VISIBLE);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        runCommentFeedWebService(true);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+        if (hasImage)
+            params.put("fileId", ICMyCPreferenceData.getPreferenceItem(CommentsActivity.this,
+                            ICMyCPreferenceData.commentUploadedImageFile,""));
+
+        new WebserviceHelper(activity, WebserviceHelper.METHOD_POST, url, params, new OnResponseListener() {
+            @Override
+            public void OnResponseFailure(JSONObject response) {
+
 //                        Toast.makeText(UserMobileNumber.this, error.toString(), Toast.LENGTH_LONG).show();
-                        AppController.hideProgressDialog(activity);
-                        ((RelativeLayout) findViewById(R.id.postComm)).setVisibility(View.VISIBLE);
-                        AppController.handleVolleyError(activity, (RelativeLayout) findViewById(R.id.parentLayout), error);
+                AppController.hideProgressDialog(activity);
+                ((RelativeLayout) findViewById(R.id.postComm)).setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void OnResponseSuccess(JSONObject responseJsonObject) {
+
+                try {
+                    AppController.hideProgressDialog(activity);
+                    ((EditText) CommentsActivity.this.findViewById(R.id.textComment)).setText("");
+                    if (hasImage) {
+//                                AppController.trackEvent(GAData.POST_A_COMMENT + GAData.WITH_IMAGE, GAData.DONE, GAData.DONE);
+                        clearSelectedImage();
+                        showSelectedImage();
+                    } else {
+//                                AppController.trackEvent(GAData.POST_A_COMMENT, GAData.DONE, GAData.DONE);
                     }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("complaintId", AppController.selectedComplaintData.getComplaintId());
-                params.put("apiKey", URLData.API_KEY);
-                params.put("commentTypeId", Integer.toString(1));
-                params.put("commentDescription", ((EditText) findViewById(R.id.textComment)).getText().toString());
-                if (hasImage)
-                    params.put("fileId", ICMyCPreferenceData
-                            .getPreferenceItem(
-                                    CommentsActivity.this,
-                                    ICMyCPreferenceData.commentUploadedImageFile,
-                                    ""));
 
-                return params;
-            }
+//                            Toast.makeText(activity, responseJsonObject.optString("message"), Toast.LENGTH_SHORT).show();
+                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, responseJsonObject.optString("message"));
 
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                String token = "Bearer " + ICMyCPreferenceData.getPreferenceItem(activity, ICMyCPreferenceData.token, "");
-                final HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Authorization", token);
-                return headers;
+                    parseData(responseJsonObject, true);
+
+                    if (recycler_view != null)
+                        if (recycler_view.getAdapter() != null)
+                            recycler_view.getAdapter().notifyDataSetChanged();
+                    ((RelativeLayout) findViewById(R.id.postComm)).setVisibility(View.VISIBLE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                runCommentFeedWebService(true);
+
             }
-        };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                AppController.MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppController.getInstance().addToRequestQueue(stringRequest, TAG);
+        },true,WebserviceHelper.HEADER_TYPE_NORMAL);
     }
 
     private void clearSelectedImage() {
@@ -390,62 +369,30 @@ public class CommentsActivity extends BaseAppCompatActivity {
 //                e.printStackTrace();
 //            }
 //        } else {
-//        AppController.logTrace(activity, url + currentPage);
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                getCommentRequestUrl, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(final JSONObject response) {
+//        AppController.logTrace(activity, url + currentPage);b
 
-                        if (isToScroll) {
-                            AppController.commentData.clear();
-                            AppController.hideProgressDialog(activity);
-                        }
-
-                        new ParseResponse(response, isToScroll).execute();
-
-                    }
-                }, new Response.ErrorListener() {
-
+        new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, getCommentRequestUrl,
+                null, new OnResponseListener() {
             @Override
-            public void onErrorResponse(final VolleyError volleyError) {
+            public void OnResponseFailure(JSONObject response) {
                 if (isToScroll)
                     AppController.hideProgressDialog(activity);
-                AppController.handleVolleyError(activity, (RelativeLayout) findViewById(R.id.parentLayout), volleyError);
-                NetworkResponse networkResponse = volleyError.networkResponse;
-                AppController.setEmptyViewForRecyclerView(activity, recycler_view);
-                if (retryCount < AppConstant.MAX_RETRY_API_REQUEST && currentPage == 1 && networkResponse != null) {
-                    retryCount++;
-                    runCommentFeedWebService(true);
+                    AppController.setEmptyViewForRecyclerView(activity, recycler_view);
+
+            }
+
+            @Override
+            public void OnResponseSuccess(JSONObject response) {
+
+                if (isToScroll) {
+                    AppController.commentData.clear();
+                    AppController.hideProgressDialog(activity);
                 }
-            }
 
-        }) {
-
-            /**
-             * Passing some request headers
-             */
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                return URLData.getHeaders(activity);
+                new ParseResponse(response, isToScroll).execute();
 
             }
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                return params;
-            }
-
-        };
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                AppController.MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq,
-                TAG);
-//        }
+        }, isToScroll, WebserviceHelper.HEADER_TYPE_NORMAL);
     }
 
     int retryCount;

@@ -81,6 +81,16 @@ public class SelectedImageModel {
     private int sizeInMB;
     private double longitude;
 
+    public double getAccuracy() {
+        return Accuracy;
+    }
+
+    public void setAccuracy(double accuracy) {
+        Accuracy = accuracy;
+    }
+
+    private double Accuracy;
+
     public double getLatitude() {
         return latitude;
     }

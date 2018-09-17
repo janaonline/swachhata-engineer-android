@@ -5,28 +5,22 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.widget.RelativeLayout;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
 import com.ichangemycity.base.BaseAppCompatActivity;
+import com.ichangemycity.callback.OnResponseListener;
 import com.ichangemycity.model.LanguageData;
 import com.ichangemycity.webservice.URLData;
+import com.ichangemycity.webservice.WebserviceHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+
 
 import static com.ichangemycity.appdata.AppController.WITHOUT_OTP;
 
@@ -35,7 +29,7 @@ import static com.ichangemycity.appdata.AppController.WITHOUT_OTP;
  */
 
 public class Splashscreen extends BaseAppCompatActivity {
-//    List<String> permissionsRequired = new ArrayList<>();
+    //    List<String> permissionsRequired = new ArrayList<>();
     Activity activity;
 
     @Override
@@ -47,54 +41,27 @@ public class Splashscreen extends BaseAppCompatActivity {
     }
 
     private void proceedAfterPermissionGranted() {
-
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-               "http://api.swachh.city/languages", null,
-                new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(final JSONObject mJsonObject) {
-                        try {
-                           String response = mJsonObject.optString("languages");
-                            new GetParsedData(Splashscreen.this, new JSONObject(response))
-                                    .execute();
-                        } catch (JSONException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-
-                        new RegisterBackground().execute();
-                    }
-                }, new Response.ErrorListener() {
-
+        final String url = "http://api.swachh.city/languages";
+        new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                AppController.handleVolleyError(activity, (RelativeLayout) findViewById(R.id.parentLayout), error);
-            }
+            public void OnResponseFailure(JSONObject response) {
 
-        }) {
-
-            /**
-             * Passing some request headers
-             * */
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                return URLData.getHeaders(activity);
             }
 
             @Override
-            protected Map<String, String> getParams() {
-                return null;
-            }
+            public void OnResponseSuccess(JSONObject response1) {
+                try {
+                    String response = response1.optString("languages");
+                    new GetParsedData(Splashscreen.this, new JSONObject(response))
+                            .execute();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-        };
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                AppController.MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq,
-                AppController.TAG);
+                new RegisterBackground().execute();
+            }
+        }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
+
 
         // Cancelling request
         // ApplicationController.getInstance().getRequestQueue().cancelAll(tag_json_obj);
@@ -111,7 +78,6 @@ public class Splashscreen extends BaseAppCompatActivity {
 
         @Override
         protected String doInBackground(String... arg0) {
-            // TODO Auto-generated method stub
             String msg = "";
             try {
                 performGCMRegistration();
@@ -147,47 +113,18 @@ public class Splashscreen extends BaseAppCompatActivity {
         protected void onPostExecute(String msg) {
 
             isFailure = false;
-            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                  "http://api.swachh.city/languages", null,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(final JSONObject response) {
-                            new GetParsedData(activity, response)
-                                    .execute();
-
-                        }
-                    }, new Response.ErrorListener() {
-
+            final String url = "http://api.swachh.city/languages";
+            new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
                 @Override
-                public void onErrorResponse(final VolleyError volleyError) {
-                    AppController.handleVolleyError(activity, (RelativeLayout) findViewById(R.id.parentLayout), volleyError);
-                }
-
-            }) {
-
-                /**
-                 * Passing some request headers
-                 */
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    return URLData.getHeaders(activity);
+                public void OnResponseFailure(JSONObject response) {
 
                 }
 
                 @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<String, String>();
-                    return params;
+                public void OnResponseSuccess(JSONObject response) {
+                    new GetParsedData(activity, response).execute();
                 }
-
-            };
-            jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                    AppController.MY_SOCKET_TIMEOUT_MS,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            // Adding request to request queue
-            AppController.getInstance().addToRequestQueue(jsonObjReq,
-                    TAG);
+            }, false, WebserviceHelper.HEADER_TYPE_NORMAL);
         }
 
     }
@@ -229,7 +166,6 @@ public class Splashscreen extends BaseAppCompatActivity {
                     }
                 }
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             return null;
@@ -237,7 +173,6 @@ public class Splashscreen extends BaseAppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result) {
-            // TODO Auto-generated method stub
             super.onPostExecute(result);
 //            AppController.hideProgressDialog(activity);
             setConditionToNavigateScreens();
@@ -261,32 +196,11 @@ public class Splashscreen extends BaseAppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result) {
-            // TODO Auto-generated method stub
             super.onPostExecute(result);
-            if (ICMyCPreferenceData.getPreferenceItem(Splashscreen.this,
-                    ICMyCPreferenceData.selectedLanguage, "un").equalsIgnoreCase(
-                    "un")) {
-                startActivity(new Intent(Splashscreen.this,
-                        SelectLanguage.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-            } else if ((ICMyCPreferenceData.getPreferenceItem(Splashscreen.this,
-                    ICMyCPreferenceData.Mobile_No, "")) == ""
-                    || ICMyCPreferenceData.getPreferenceItem(Splashscreen.this,
-                    ICMyCPreferenceData.token, "").equalsIgnoreCase("")) {
-                // startActivity(new Intent(SplashScreen.this,
-                // UserMobileNumber.class));
-                startActivity(new Intent(Splashscreen.this,
-                        SelectLanguage.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-            } /*
-		 * else if (Integer.parseInt(ICMyCPreferenceData.getPreferenceItem(
-		 * SplashScreen.this, ICMyCPreferenceData.activated, "0")) == 1 &&
-		 * ICMyCPreferenceData.getPreferenceItem(SplashScreen.this,
-		 * ICMyCPreferenceData.location, "").equalsIgnoreCase("")) {
-		 * startActivity(new Intent(SplashScreen.this,
-		 * UserSelectLocation.class)); }
-		 */else if (Integer.parseInt(ICMyCPreferenceData.getPreferenceItem(
+            if (Integer.parseInt(ICMyCPreferenceData.getPreferenceItem(
                     Splashscreen.this, ICMyCPreferenceData.activated, "0")) == 0) {
                 startActivity(new Intent(Splashscreen.this,
-                        UserOTPVerification.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        SelectLanguage.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             } else {
                 startActivity(new Intent(Splashscreen.this,
                         MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));

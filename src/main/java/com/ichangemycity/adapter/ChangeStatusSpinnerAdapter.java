@@ -82,7 +82,7 @@ public class ChangeStatusSpinnerAdapter extends BaseAdapter {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
+
                 AppController.selectedComplaintDropdownIndex = (Integer) textView
                         .getTag();
                 AppController.selectedComplaintData = (ComplaintData) view1

@@ -117,4 +117,5 @@
 	<color name="recyclerview_bg">#eaeaea</color>
 	<color name="complaint_id_bgcolor">#e6e6e6</color>
 	<color name="complaint_id_textcolor">#767676</color>
+	<color name="blue_fab_bg">#0981fc</color>
 </resources>

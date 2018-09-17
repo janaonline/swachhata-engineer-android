@@ -16,7 +16,7 @@
     <string name="mobile_verification">Verify</string>
     <string name="enter_verification_code_sent_to_">We\'ve sent a code to your number</string>
     <string name="you_are_changing_the_status_of_the_complaint_please_leave_a_comment_about_your_experience_or_if_you_have_any_remarks_you_can_add_photos_as_well_to_your_comment_">You\'re changing status of the complaint. Please leave a comment and you can add a photo as well.</string>
-    <string name="comments_"  >Comments(</string>
+    <string name="comments_">Comments(</string>
     <string name="enter_otp">Enter OTP</string>
     <string name="loading">Loading</string>
     <string name="resend_code_">Resend Code?</string>
@@ -65,6 +65,12 @@
     <string name="rejected_complaints">Rejected Complaints</string>
     <string name="write_a_comment">Write a comment </string>
     <string name="rate_us_on_playstore">Rate Us on Playstore</string>
+    <string name="public_toilet_nearby"  translatable="false">Public Toilet Nearby</string>
+    <string name="add_public_toilet" translatable="false">Add Public Toilet</string>
+    <string name="add_details" translatable="false">Add Details</string>
+    <string name="toilet_facilities" translatable="false">Toilet Facilities</string>
+    <string name="add_images" translatable="false">Add Images</string>
+    <string name="thankyou" translatable="false">Thank You</string>
     <string name="reject">REJECT</string>
     <string name="on_the_job">On the job</string>
     <string name="resolved">Resolved</string>
@@ -76,11 +82,17 @@
     <string name="ok">Ok</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="un_assigned_complaints"  translatable="false">Un-Assigned Complaints</string>
+    <string name="un_assigned_complaints" translatable="false">Un-Assigned Complaints</string>
     <string name="powered_by_" translatable="false">"powered by "</string>
-    <string name="_complaints" translatable="false" >Complaints</string>
+    <string name="_complaints" translatable="false">Complaints</string>
     <string name="recentimages" translatable="false">Recent Images</string>
     <string name="image_size_exceeded" translatable="false">Image size is more than 8MB to upload, please select lesser memory size</string>
     <string name="select_an_image" translatable="false">Select an Image</string>
     <string name="tracking_id" translatable="false">UA-51350206-11</string>
+    <string name="title_activity_toilet_facilities" translatable="false">ToiletFacilitiesActivity</string>
+    <string name="set_password" translatable="false">Set Password</string>
+    <string name="login_with_password" translatable="false">Login with password</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="password" translatable="false">Password</string>
+    <string name="confirm_password" translatable="false">Confirm password</string>
 </resources>

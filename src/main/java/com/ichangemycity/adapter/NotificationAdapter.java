@@ -19,23 +19,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.AppUtils;
+import com.ichangemycity.callback.OnResponseListener;
 import com.ichangemycity.customui.RoundedBackgroundSpan;
 import com.ichangemycity.model.NotificationHeaderData;
 import com.ichangemycity.swachhbharatengineer.ComplaintDetail;
 import com.ichangemycity.swachhbharatengineer.NotificationActivity;
 import com.ichangemycity.swachhbharatengineer.R;
 import com.ichangemycity.webservice.URLData;
+import com.ichangemycity.webservice.WebserviceHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -174,69 +169,52 @@ public class NotificationAdapter extends
 
     private void markAsRead(final NotificationHeaderData nData) {
         AppController.showProgressDialog(activity, activity.getResources().getString(R.string.loading));
-        StringRequest stringRequest = new StringRequest(Request.Method.PUT, URLData.BASE_URL
-                + URLData.NOTIFICATION_STATUS_READ,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONObject responseJsonObject = null;
-                        try {
-                            AppController.hideProgressDialog(activity);
-                            responseJsonObject = new JSONObject(response);
-                            int index = data.indexOf(nData);
-                            nData.setRead(true);
-                            data.set(index, nData);
-                            NotificationActivity.data.set(index, nData);
-                            AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,responseJsonObject.get("message").toString());
-                            // notifyItemChanged(index);
-                            // Toast.makeText(
-                            // activity,
-                            // new JSONObject(response)
-                            // .getString("message"),
-                            // Toast.LENGTH_SHORT).show();
-                            redirectToAppropriateScreens(nData);
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("apiKey", URLData.API_KEY);
+        params.put("notificationId", Integer
+                .toString(nData.getNotificationId()));
+        final String url=URLData.BASE_URL
+                + URLData.NOTIFICATION_STATUS_READ;
+        new WebserviceHelper(activity, WebserviceHelper.METHOD_PUT, url, params, new OnResponseListener() {
+            @Override
+            public void OnResponseFailure(JSONObject response) {
+                AppController.hideProgressDialog(activity);
+              //  AppController.handleVolleyError(activity, (RelativeLayout) activity.findViewById(R.id.parentLayout), error);
+                try {
+                    redirectToAppropriateScreens(nData);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void OnResponseSuccess(JSONObject response) {
+               // JSONObject responseJsonObject;
+                try {
+                    AppController.hideProgressDialog(activity);
+                  //  responseJsonObject = new JSONObject(response);
+                    int index = data.indexOf(nData);
+                    nData.setRead(true);
+                    data.set(index, nData);
+                    NotificationActivity.data.set(index, nData);
+                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,response.get("message").toString());
+                    // notifyItemChanged(index);
+                    // Toast.makeText(
+                    // activity,
+                    // new JSONObject(response)
+                    // .getString("message"),
+                    // Toast.LENGTH_SHORT).show();
+                    redirectToAppropriateScreens(nData);
 
 //                            Toast.makeText(activity,
 //                                    responseJsonObject.get("message").toString(),
 //                                    Toast.LENGTH_LONG).show();
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        AppController.hideProgressDialog(activity);
-                        AppController.handleVolleyError(activity, (RelativeLayout) activity.findViewById(R.id.parentLayout), error);
-                        try {
-                            redirectToAppropriateScreens(nData);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("apiKey", URLData.API_KEY);
-                params.put("notificationId", Integer
-                        .toString(nData.getNotificationId()));
-                return params;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                return URLData.getHeaders(activity);
-            }
-        };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                AppController.MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppController.getInstance().addToRequestQueue(stringRequest, TAG);
+        },true,WebserviceHelper.HEADER_TYPE_NORMAL);
 
     }
 

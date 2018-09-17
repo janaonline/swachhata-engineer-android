@@ -17,17 +17,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.ichangemycity.adapter.VoteupsAdapter;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.base.BaseAppCompatActivity;
+import com.ichangemycity.callback.OnResponseListener;
 import com.ichangemycity.model.VotedUpData;
 import com.ichangemycity.webservice.URLData;
+import com.ichangemycity.webservice.WebserviceHelper;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 
 import org.json.JSONArray;
@@ -63,7 +59,7 @@ public class VoteupsActivity extends BaseAppCompatActivity {
         activity = VoteupsActivity.this;
         BaseAppCompatActivity.activity = activity;
         send = (ImageView) findViewById(R.id.send);
-        url = 	URLData.BASE_URL
+        url = 	"http://api.swachh.city/sbm/v1/"
                 + URLData.GET_VOTED_UP
                 + AppController.selectedComplaintData
                 .getComplaintId()
@@ -112,7 +108,32 @@ public class VoteupsActivity extends BaseAppCompatActivity {
 
         }
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url + currentPage,
+        final String urlm =url + currentPage;
+        new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, urlm,null, new OnResponseListener() {
+            @Override
+            public void OnResponseFailure(JSONObject response) {
+                AppController.hideProgressDialog(activity);
+            }
+
+            @Override
+            public void OnResponseSuccess(JSONObject response) {
+
+               /* JSONObject responseJsonObject = null;
+                try {
+                    AppController.hideProgressDialog(activity);
+                    responseJsonObject = new JSONObject(response);
+                    new ParseResponse(responseJsonObject, isToScroll).execute();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }*/
+
+                new ParseResponse(response, isToScroll).execute();
+            }
+        },isToScroll,WebserviceHelper.HEADER_TYPE_NORMAL);
+
+
+
+       /* StringRequest stringRequest = new StringRequest(Request.Method.GET, url + currentPage,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -159,7 +180,7 @@ public class VoteupsActivity extends BaseAppCompatActivity {
                 AppController.MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppController.getInstance().addToRequestQueue(stringRequest, TAG);
+        AppController.getInstance().addToRequestQueue(stringRequest, TAG);*/
     }
 
     private class ParseResponse extends AsyncTask<Void, Void, Void> {

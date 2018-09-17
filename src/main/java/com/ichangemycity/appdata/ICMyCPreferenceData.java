@@ -11,7 +11,7 @@ import com.prashantsolanki.secureprefmanager.SecurePrefManager;
  */
 
 public class ICMyCPreferenceData {
-public static final String preferenceName="preferenceName";
+    public static final String preferenceName = "preferenceName";
     public static final String selectedLanguage = "selectedLanguage";
     public static final String selectedLanguagePosition = "selectedLanguagePosition";
     public static final String deviceUniqueID = "deviceUniqueID";
@@ -62,15 +62,33 @@ public static final String preferenceName="preferenceName";
     public static final String complaintUploadedImageFile = "complaintUploadedImageFile";
     public static final String commentUploadedImageFile = "commentUploadedImageFile";
     public static final String shareImage = "shareImage";
-    public static final String deviceWidth= "deviceWidth";
-    public static final String deviceHeight= "deviceHeight";
-    public static final String high_priority_count="high_priority_count";
-    public static final String on_the_job_count="on_the_job_count";
-    public static final String resolved_count="resolved_count";
-    public static final String re_opened_count="re_opened_count";
-    public static final String rejected_count="rejected_count";
+    public static final String deviceWidth = "deviceWidth";
+    public static final String deviceHeight = "deviceHeight";
+    public static final String high_priority_count = "high_priority_count";
+    public static final String on_the_job_count = "on_the_job_count";
+    public static final String resolved_count = "resolved_count";
+    public static final String re_opened_count = "re_opened_count";
+    public static final String rejected_count = "rejected_count";
     public static final String isDeeplinked = "isDeeplinked";
     public static final String assignedCount = "assignedCount";
+    public static final String toiletName = "toiletName";
+    public static final String toiletAddress = "toiletAddress";
+    public static final String wardNo = "wardNo";
+    public static final String toiletPincode = "toiletPincode";
+    public static final String ulbName = "ulbName";
+    public static final String careTakerName = "careTakerName";
+    public static final String careTakerNumber = "careTakerNumber";
+    public static final String organization = "organization";
+    public static final String email = "email";
+    public static final String org_id = "org_id";
+    public static final String is_admin = "is_admin";
+    public static final String profileData = "profileData";
+    public static final String ward_id = "ward_id";
+    public static final String city_id = "city_id";
+    public static final String TOKEN_TYPE = "token_type";
+    public static final String refresh_token = "refresh_token";
+
+
     public static void setPreference(Context activity, String key, String value) {
         SecurePrefManager.with(activity).set(key).value(value).go();
         AppController.traceLog(key, value);
@@ -92,7 +110,7 @@ public static final String preferenceName="preferenceName";
         Log.i(key, value);
     }
 
-    public static void clearPreferences(Context activity ) {
+    public static void clearPreferences(Context activity) {
         SecurePrefManager.with(activity).clear().confirm();
     }
 

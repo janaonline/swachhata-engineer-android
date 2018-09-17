@@ -40,14 +40,12 @@ public class GcmIntentService extends IntentService {
 	String title = "";
 	public GcmIntentService() {
 		super("GcmIntentService");
-		// TODO Auto-generated constructor stub
 	}
 
 	String redirect = "",url="";
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		// TODO Auto-generated method stub
 		mSharedPreferences = GcmIntentService.this.getSharedPreferences(
 				ICMyCPreferenceData.preferenceName, 0);
 		Bundle extras = intent.getExtras();

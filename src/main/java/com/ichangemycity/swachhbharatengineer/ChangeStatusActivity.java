@@ -33,12 +33,14 @@ import com.ichangemycity.appdata.AppUtils;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
 import com.ichangemycity.base.BaseAppCompatActivity;
 import com.ichangemycity.callback.OnButtonClick;
+import com.ichangemycity.callback.OnResponseListener;
 import com.ichangemycity.model.ComplaintData;
 import com.ichangemycity.model.SelectedImageModel;
 import com.ichangemycity.webservice.AppHelper;
 import com.ichangemycity.webservice.URLData;
 import com.ichangemycity.webservice.VolleyMultipartRequest;
 import com.ichangemycity.webservice.VolleySingleton;
+import com.ichangemycity.webservice.WebserviceHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -161,8 +163,59 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
     }
 
     private void changeStatus(final boolean hasImage) {
+        //need clarify
         AppController.showProgressDialog(activity, activity.getResources().getString(R.string.loading));
-        StringRequest stringRequest = new StringRequest(Request.Method.PUT, URLData.BASE_URL + URLData.COMPLAINT_STATUS,
+        final String url=URLData.BASE_URL + URLData.COMPLAINT_STATUS;
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("apiKey", URLData.API_KEY);
+        params.put("statusId", "" + AppController.selectedComplaintChangeStatusOptions.getStatusID());
+        params.put("userId", ICMyCPreferenceData
+                .getPreferenceItem(activity,
+                        ICMyCPreferenceData.id, ""));
+        params.put("complaintId",
+                AppController.selectedComplaintData.getComplaintId());
+        params.put("commentDescription",
+                ((EditText) findViewById(R.id.textComment)).getText().toString());
+
+        if (hasImage)
+            params.put("fileId", ICMyCPreferenceData
+                    .getPreferenceItem(activity,ICMyCPreferenceData.commentUploadedImageFile,""));
+
+        new WebserviceHelper(activity, WebserviceHelper.METHOD_PUT, url, params, new OnResponseListener() {
+            @Override
+            public void OnResponseFailure(JSONObject response) {
+                AppController.hideProgressDialog(activity);
+            }
+
+            @Override
+            public void OnResponseSuccess(JSONObject response) {
+
+              //  JSONObject responseJsonObject = null;
+                try {
+                    AppController.hideProgressDialog(activity);
+                   // responseJsonObject = new JSONObject(response);
+
+                    try {
+                        int httpCode = response.getInt("httpCode");
+                        if (httpCode == 200 || httpCode == 201) {
+                            ICMyCPreferenceData.setPreference(activity,ICMyCPreferenceData.commentUploadedImageFile,
+                                            "");
+                            isToRefresh = true;
+                            activity.finish();
+                        }
+                        AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, response.optString("message"));
+//                                Toast.makeText(activity,responseJsonObject.get("message").toString(),Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        },true,WebserviceHelper.HEADER_TYPE_NORMAL);
+
+
+      /*  StringRequest stringRequest = new StringRequest(Request.Method.PUT, URLData.BASE_URL + URLData.COMPLAINT_STATUS,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -235,7 +288,7 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
                 AppController.MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        AppController.getInstance().addToRequestQueue(stringRequest, TAG);
+        AppController.getInstance().addToRequestQueue(stringRequest, TAG);*/
     }
 
     private void clearSelectedImage() {

@@ -34,12 +34,11 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
 import com.ichangemycity.base.BaseAppCompatActivity;
+import com.ichangemycity.callback.OnResponseListener;
 import com.ichangemycity.customui.WrapContentViewPager;
 import com.ichangemycity.fragment.CommentsFragment;
 import com.ichangemycity.fragment.VoteupFragment;
@@ -49,6 +48,7 @@ import com.ichangemycity.model.ComplaintData;
 import com.ichangemycity.model.VotedUpData;
 import com.ichangemycity.webservice.ParseComplaintData;
 import com.ichangemycity.webservice.URLData;
+import com.ichangemycity.webservice.WebserviceHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -179,51 +179,25 @@ public class ComplaintDetail extends BaseAppCompatActivity {
                 + ICMyCPreferenceData.getPreferenceItem(
                 ComplaintDetail.this, ICMyCPreferenceData.id,
                 "");
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                url, null,
-                new Response.Listener<JSONObject>() {
 
-                    @Override
-                    public void onResponse(final JSONObject response) {
-
-//                        AppController.logTrace(activity, url + " ---> " + response);
-
-                        new ParseComplaintDetailResponse(response).execute();
-                    }
-                }, new Response.ErrorListener() {
-
+        new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
             @Override
-            public void onErrorResponse(final VolleyError error) {
+            public void OnResponseFailure(JSONObject response) {
                 frameLoading.setVisibility(View.GONE);
                 AppController.hideProgressDialog(activity);
-                AppController.handleVolleyError(activity, (RelativeLayout) findViewById(R.id.parentLayout), error);
-            }
-
-        }) {
-
-            /**
-             * Passing some request headers
-             * */
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                return URLData.getHeaders(activity);
             }
 
             @Override
-            protected Map<String, String> getParams() {
-                return null;
+            public void OnResponseSuccess(JSONObject response) {
+               // AppController.logTrace(activity, url + " ---> " + response);
+
+                new ParseComplaintDetailResponse(response).execute();
             }
 
-        };
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
-                AppController.MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        },true,WebserviceHelper.HEADER_TYPE_NORMAL);
+}
 
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq,
-                TAG);
-    }
+
 
     private class ParseComplaintDetailResponse extends AsyncTask<Void, Void, Void> {
 

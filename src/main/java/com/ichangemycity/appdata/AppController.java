@@ -60,8 +60,10 @@ import com.ichangemycity.model.LanguageData;
 import com.ichangemycity.model.SelectedImageModel;
 import com.ichangemycity.model.VotedUpData;
 import com.ichangemycity.swachhbharatengineer.MainActivity;
+import com.ichangemycity.swachhbharatengineer.OTPVerification;
 import com.ichangemycity.swachhbharatengineer.R;
 import com.ichangemycity.swachhbharatengineer.Splashscreen;
+import com.ichangemycity.swachhbharatengineer.UserMobileNumber;
 import com.ichangemycity.webservice.GPSTracker;
 import com.ichangemycity.webservice.LruBitmapCache;
 import com.jude.easyrecyclerview.EasyRecyclerView;
@@ -282,98 +284,105 @@ public class AppController extends MultiDexApplication {
     }
 
     public static void handleVolleyError(Activity act, final RelativeLayout layout, VolleyError volleyError) {
-        VolleyLog.d(AppController.TAG, "Error: " + volleyError.getMessage());
-        String message = "";
-        boolean isToLogOut = false;
-        int type = AppConstant.TOAST_TYPE_INFO;
-        try {
-            JSONObject responseObject = new JSONObject(new String(volleyError.networkResponse.data));
-            JSONArray mData = null;
-            if (responseObject.has("data")) {
-                try {
-                    mData = responseObject.getJSONArray("data");
-                } catch (JSONException e1) {
-                    // TODO Auto-generated catch
-                    // block
-                    e1.printStackTrace();
-                }
-                for (int i = 0; i < mData.length(); i++) {
-                    try {
-                        message += mData.getJSONObject(i).optString("message") + " ";
-                    } catch (JSONException e) {
-                        // TODO Auto-generated catch
-                        // block
-                        e.printStackTrace();
-                    }
-                }
-            } else if (responseObject.has("errors")) {
-                try {
-                    mData = responseObject.getJSONArray("errors");
-                } catch (JSONException e1) {
-                    // TODO Auto-generated catch
-                    // block
-                    e1.printStackTrace();
-                }
-                for (int i = 0; i < mData.length(); i++) {
-                    try {
-                        message += mData.getJSONObject(i).optString("message") + " ";
-                    } catch (JSONException e) {
-                        // TODO Auto-generated catch
-                        // block
-                        e.printStackTrace();
-                    }
-                }
-            } else {
-                message = new JSONObject(new String(volleyError.networkResponse.data)).optString("message");
-            }
-            if (new JSONObject(new String(volleyError.networkResponse.data)).optInt("httpCode") == 401) {
-                isToLogOut = true;
-            }
-            AppController.traceLog("vollyErrorTrace", responseObject + "");
-        } catch (JSONException e) {
-            e.printStackTrace();
-            message = "Error : "+e.getMessage();
-            type = AppConstant.TOAST_TYPE_ERROR;
-        } catch (NullPointerException ex) {
-            if (volleyError instanceof NetworkError) {
-                message = volleyError.getLocalizedMessage();//act.getString(R.string.network_error);
-            } else if (volleyError instanceof ServerError) {
-                message = "The server could not be found. Please try again after some time!!";
-                type = AppConstant.TOAST_TYPE_ERROR;
-            } else if (volleyError instanceof AuthFailureError) {
-                message = volleyError.getLocalizedMessage();
-//                message = "Cannot connect to Internet...Please check your connection!";
-                type = AppConstant.TOAST_TYPE_ERROR;
-            } else if (volleyError instanceof ParseError) {
-                message = "Parsing error! Please try again after some time!!";
-                type = AppConstant.TOAST_TYPE_ERROR;
-            } else if (volleyError instanceof NoConnectionError) {
-                message = "Cannot connect to Internet...Please check your connection!";
-                type = AppConstant.TOAST_TYPE_INFO;
-            } else if (volleyError instanceof TimeoutError) {
-                message = "Connection TimeOut";
-                type = AppConstant.TOAST_TYPE_INFO;
-            }
-        }
-
-        if (message != null) {
+        if(act.getClass().getSimpleName().equalsIgnoreCase(OTPVerification.class.getSimpleName())
+                || act.getClass().getSimpleName().equalsIgnoreCase(UserMobileNumber.class.getSimpleName())){
+            //Swachh Manch api error handling
+            AppUtils.handleVolleyError(act,layout,volleyError);
+        }else {
+//            SBM Engineer api error handling
+            VolleyLog.d(AppController.TAG, "Error: " + volleyError.getMessage());
+            String message = "";
+            boolean isToLogOut = false;
+            int type = AppConstant.TOAST_TYPE_INFO;
             try {
-                if(message.trim().length()<=0){
-                    message = volleyError.getMessage();
-                    type=AppConstant.TOAST_TYPE_ERROR;
+                JSONObject responseObject = new JSONObject(new String(volleyError.networkResponse.data));
+                JSONArray mData = null;
+                if (responseObject.has("data")) {
+                    try {
+                        mData = responseObject.getJSONArray("data");
+                    } catch (JSONException e1) {
+                        // TODO Auto-generated catch
+                        // block
+                        e1.printStackTrace();
+                    }
+                    for (int i = 0; i < mData.length(); i++) {
+                        try {
+                            message += mData.getJSONObject(i).optString("message") + " ";
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch
+                            // block
+                            e.printStackTrace();
+                        }
+                    }
+                } else if (responseObject.has("errors")) {
+                    try {
+                        mData = responseObject.getJSONArray("errors");
+                    } catch (JSONException e1) {
+                        // TODO Auto-generated catch
+                        // block
+                        e1.printStackTrace();
+                    }
+                    for (int i = 0; i < mData.length(); i++) {
+                        try {
+                            message += mData.getJSONObject(i).optString("message") + " ";
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch
+                            // block
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    message = new JSONObject(new String(volleyError.networkResponse.data)).optString("message");
                 }
-                AppUtils.showToast(act, type, message);
-//                Snackbar.make(layout, message, Snackbar.LENGTH_LONG).setActionTextColor(Color.WHITE).show();
-            } catch (Exception e) {
-                AppController.traceLog("ERROR_VOLLEYERROR", message);
-//                Toast.makeText(act, message, Toast.LENGTH_SHORT).show();
-                type=AppConstant.TOAST_TYPE_ERROR;
-                AppUtils.showToast(act, type, message);
+                if (new JSONObject(new String(volleyError.networkResponse.data)).optInt("httpCode") == 401) {
+                    isToLogOut = true;
+                }
+                AppController.traceLog("vollyErrorTrace", responseObject + "");
+            } catch (JSONException e) {
+                e.printStackTrace();
+                message = "Error : " + e.getMessage();
+                type = AppConstant.TOAST_TYPE_ERROR;
+            } catch (NullPointerException ex) {
+                if (volleyError instanceof NetworkError) {
+                    message = volleyError.getLocalizedMessage();//act.getString(R.string.network_error);
+                } else if (volleyError instanceof ServerError) {
+                    message = "The server could not be found. Please try again after some time!!";
+                    type = AppConstant.TOAST_TYPE_ERROR;
+                } else if (volleyError instanceof AuthFailureError) {
+                    message = volleyError.getLocalizedMessage();
+//                message = "Cannot connect to Internet...Please check your connection!";
+                    type = AppConstant.TOAST_TYPE_ERROR;
+                } else if (volleyError instanceof ParseError) {
+                    message = "Parsing error! Please try again after some time!!";
+                    type = AppConstant.TOAST_TYPE_ERROR;
+                } else if (volleyError instanceof NoConnectionError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                    type = AppConstant.TOAST_TYPE_INFO;
+                } else if (volleyError instanceof TimeoutError) {
+                    message = "Connection TimeOut";
+                    type = AppConstant.TOAST_TYPE_INFO;
+                }
             }
-            if (isToLogOut && !ICMyCPreferenceData.getPreferenceItem(act, ICMyCPreferenceData.token, "NA").equalsIgnoreCase("NA")) {
-                act.startActivity(new Intent(act, Splashscreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                ICMyCPreferenceData.clearPreferences(act);
-                act.finish();
+
+            if (message != null) {
+                try {
+                    if (message.trim().length() <= 0) {
+                        message = volleyError.getMessage();
+                        type = AppConstant.TOAST_TYPE_ERROR;
+                    }
+                    AppUtils.showToast(act, type, message);
+//                Snackbar.make(layout, message, Snackbar.LENGTH_LONG).setActionTextColor(Color.WHITE).show();
+                } catch (Exception e) {
+                    AppController.traceLog("ERROR_VOLLEYERROR", message);
+//                Toast.makeText(act, message, Toast.LENGTH_SHORT).show();
+                    type = AppConstant.TOAST_TYPE_ERROR;
+                    AppUtils.showToast(act, type, message);
+                }
+                if (isToLogOut && !ICMyCPreferenceData.getPreferenceItem(act, ICMyCPreferenceData.token, "NA").equalsIgnoreCase("NA")) {
+                    act.startActivity(new Intent(act, Splashscreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    ICMyCPreferenceData.clearPreferences(act);
+                    act.finish();
+                }
             }
         }
     }
