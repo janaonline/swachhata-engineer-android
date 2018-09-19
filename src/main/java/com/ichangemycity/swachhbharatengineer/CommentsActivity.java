@@ -181,7 +181,15 @@ public class CommentsActivity extends BaseAppCompatActivity {
             params.put("fileId", ICMyCPreferenceData.getPreferenceItem(CommentsActivity.this,
                             ICMyCPreferenceData.commentUploadedImageFile,""));
 
-        new WebserviceHelper(activity, WebserviceHelper.METHOD_POST, url, params, new OnResponseListener() {
+        String urlParams = "?complaintId="+ AppController.selectedComplaintData.getComplaintId()+
+                "&apiKey="+ URLData.API_KEY+
+                "&commentTypeId="+ Integer.toString(1)+
+                "&commentDescription="+((EditText) findViewById(R.id.textComment)).getText().toString().trim().replace(" ","%20");
+        if (hasImage)
+            urlParams+="&fileId="+ ICMyCPreferenceData.getPreferenceItem(CommentsActivity.this,
+                    ICMyCPreferenceData.commentUploadedImageFile,"");
+
+        new WebserviceHelper(activity, WebserviceHelper.METHOD_POST, url+urlParams, params, new OnResponseListener() {
             @Override
             public void OnResponseFailure(JSONObject response) {
 
@@ -316,7 +324,7 @@ public class CommentsActivity extends BaseAppCompatActivity {
             if (!TextUtils.isEmpty(AppController.mSelectedImageModels.getPathOfSelectedImage())) {
                 showSelectedImage();
             }
-
+            AppController.hideProgressDialog(activity);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -401,11 +401,11 @@ public class MainActivity extends AppCompatActivity
                         break;
 
 //Added by Sindhu BC(ITC Infotech)
-                    case R.id.public_toilet_nearby:
+                  /*  case R.id.public_toilet_nearby:
 
                         startActivity(new Intent(MainActivity.this,
                                 PublicToiletNearbyActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                        /*String appPackageName = activity.getPackageName();
+                        *//*String appPackageName = activity.getPackageName();
                         try {
                             activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri
                                     .parse("http://play.google.com/store/apps/details?id="
@@ -415,8 +415,8 @@ public class MainActivity extends AppCompatActivity
 //                                AppController.RATE_US_ON_PLAYSTORE_LANDED);
                         } catch (android.content.ActivityNotFoundException anfe) {
 
-                        }*/
-                        break;/**/
+                        }*//*
+                        break;*//**/
                     case R.id.rate_us_on_playstore:
                         String appPackageName = activity.getPackageName();
                         try {
@@ -774,6 +774,7 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         try {
+            AppController.hideProgressDialog(activity);
             if (isToRefresh) {
                 isToRefresh = false;
                 runHomeFeedWebService(complaintFilterModel.get(

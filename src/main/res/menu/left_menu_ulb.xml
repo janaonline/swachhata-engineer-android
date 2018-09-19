@@ -40,11 +40,11 @@
         android:checkableBehavior="single">
 
 
-        <item
+       <!-- <item
             android:id="@+id/public_toilet_nearby"
             android:icon="@mipmap/ic_wc_white_48dp"
             android:title="@string/public_toilet_nearby"
-            app:actionViewClass="android.widget.TextView" />
+            app:actionViewClass="android.widget.TextView" />-->
 
         <item
             android:id="@+id/rate_us_on_playstore"

@@ -200,26 +200,26 @@ public class UserMobileNumber extends BaseAppCompatActivity {
                         new AppUtils().parseProfileGetResponse(activity, response, new OnTaskCompleted() {
                             @Override
                             public void onTaskSuccess(JSONObject jsonObject) {
-                                if (!hasAccessToken) {
-                                    if (!jsonObject.optBoolean("has_password")) {
-                                        // Goto Email,password and confirm password screen
-                                        startActivity(new Intent(activity, SetEmailPasswordActivity.class).putExtra("type", AppConstant
-                                                .ONBOARDING_TYPE_SET_EMAIL_PASSWORD));
-                                    } else {
+//                                if (!hasAccessToken) {
+//                                    if (!jsonObject.optBoolean("has_password")) {
+//                                        // Goto Email,password and confirm password screen
+//                                        startActivity(new Intent(activity, SetEmailPasswordActivity.class).putExtra("type", AppConstant
+//                                                .ONBOARDING_TYPE_SET_EMAIL_PASSWORD));
+//                                    } else {
                                         startActivity(new Intent(activity, MainActivity.class));
-                                    }
-                                } else {
-                                    if (!jsonObject.optBoolean("has_password")) {
-                                        // Goto Email,password and confirm password screen
-                                        startActivity(new Intent(activity, SetEmailPasswordActivity.class).putExtra("type", AppConstant
-                                                .ONBOARDING_TYPE_SET_EMAIL_PASSWORD));
-                                        //call 1.4 if type=setEmailPassword and show three fields in SetEmailPasswordActivity.class
-                                    } else {
-                                        startActivity(new Intent(activity, SetEmailPasswordActivity.class).putExtra("type", AppConstant
-                                                .ONBOARDING_TYPE_LOGIN));
-                                        //call 1.2 if type=login and show three fields in SetEmailPasswordActivity.class
-                                    }
-                                }
+////                                    }
+//                                } else {
+//                                    if (!jsonObject.optBoolean("has_password")) {
+//                                        // Goto Email,password and confirm password screen
+//                                        startActivity(new Intent(activity, SetEmailPasswordActivity.class).putExtra("type", AppConstant
+//                                                .ONBOARDING_TYPE_SET_EMAIL_PASSWORD));
+//                                        //call 1.4 if type=setEmailPassword and show three fields in SetEmailPasswordActivity.class
+//                                    } else {
+//                                        startActivity(new Intent(activity, SetEmailPasswordActivity.class).putExtra("type", AppConstant
+//                                                .ONBOARDING_TYPE_LOGIN));
+//                                        //call 1.2 if type=login and show three fields in SetEmailPasswordActivity.class
+//                                    }
+//                                }
                             }
 
                             @Override

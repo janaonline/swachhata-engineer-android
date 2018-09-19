@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -25,7 +24,6 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
@@ -84,7 +82,7 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
                 showAlertToPickImage();
             }
         });
-        setToolbarAndCustomizeTitle(getResources().getString(R.string.id_)+ AppController.selectedComplaintData.getGeneric_id());
+        setToolbarAndCustomizeTitle(getResources().getString(R.string.id_) + AppController.selectedComplaintData.getGeneric_id());
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +90,7 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
                     AppController.showProgressDialog(activity, "");
                     new InitiateChangeStatus().execute();
                 } else {
-                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,activity.getResources().getString(R.string.write_a_comment));
+                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, activity.getResources().getString(R.string.write_a_comment));
 
 //                    Toast.makeText(activity, getResources().getString(R.string.write_a_comment), Toast
 //                            .LENGTH_SHORT).show();
@@ -134,7 +132,8 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             AppController.hideProgressDialog(activity);
-            if (AppController.selectedComplaintChangeStatusOptions.getStatusID() == AppController.COMPLAINT_RESOLVED && TextUtils.isEmpty(AppController.mSelectedImageModels.getPathOfSelectedImage())) {
+            if (AppController.selectedComplaintChangeStatusOptions.getStatusID() == AppController.COMPLAINT_RESOLVED && TextUtils.isEmpty
+                    (AppController.mSelectedImageModels.getPathOfSelectedImage())) {
 
                 AppController.showAlert(activity, "", getResources().getString(R.string
                         .please_upload_an_image_and_then_resolve_the_complaint_to_resolved), false, new OnButtonClick() {
@@ -165,7 +164,7 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
     private void changeStatus(final boolean hasImage) {
         //need clarify
         AppController.showProgressDialog(activity, activity.getResources().getString(R.string.loading));
-        final String url=URLData.BASE_URL + URLData.COMPLAINT_STATUS;
+        final String url = URLData.BASE_URL + URLData.COMPLAINT_STATUS;
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("apiKey", URLData.API_KEY);
         params.put("statusId", "" + AppController.selectedComplaintChangeStatusOptions.getStatusID());
@@ -179,9 +178,18 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
 
         if (hasImage)
             params.put("fileId", ICMyCPreferenceData
-                    .getPreferenceItem(activity,ICMyCPreferenceData.commentUploadedImageFile,""));
+                    .getPreferenceItem(activity, ICMyCPreferenceData.commentUploadedImageFile, ""));
+        String URLParams =
+                "?apiKey=" + URLData.API_KEY +
+                "&statusId=" + AppController.selectedComplaintChangeStatusOptions.getStatusID() +
+                "&userId=" + ICMyCPreferenceData.getPreferenceItem(activity,ICMyCPreferenceData.id, "") +
+                "&complaintId=" + AppController.selectedComplaintData.getComplaintId() +
+                "&commentDescription=" + ((EditText) findViewById(R.id.textComment)).getText().toString().replace(" ","%20");
+        if (hasImage)
+            URLParams = URLParams+"&fileId="+ ICMyCPreferenceData
+                    .getPreferenceItem(activity, ICMyCPreferenceData.commentUploadedImageFile, "");
 
-        new WebserviceHelper(activity, WebserviceHelper.METHOD_PUT, url, params, new OnResponseListener() {
+        new WebserviceHelper(activity, WebserviceHelper.METHOD_PUT, url+URLParams, null, new OnResponseListener() {
             @Override
             public void OnResponseFailure(JSONObject response) {
                 AppController.hideProgressDialog(activity);
@@ -190,16 +198,16 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
             @Override
             public void OnResponseSuccess(JSONObject response) {
 
-              //  JSONObject responseJsonObject = null;
+                //  JSONObject responseJsonObject = null;
                 try {
                     AppController.hideProgressDialog(activity);
-                   // responseJsonObject = new JSONObject(response);
+                    // responseJsonObject = new JSONObject(response);
 
                     try {
                         int httpCode = response.getInt("httpCode");
                         if (httpCode == 200 || httpCode == 201) {
-                            ICMyCPreferenceData.setPreference(activity,ICMyCPreferenceData.commentUploadedImageFile,
-                                            "");
+                            ICMyCPreferenceData.setPreference(activity, ICMyCPreferenceData.commentUploadedImageFile,
+                                    "");
                             isToRefresh = true;
                             activity.finish();
                         }
@@ -212,7 +220,7 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        },true,WebserviceHelper.HEADER_TYPE_NORMAL);
+        }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
 
 
       /*  StringRequest stringRequest = new StringRequest(Request.Method.PUT, URLData.BASE_URL + URLData.COMPLAINT_STATUS,

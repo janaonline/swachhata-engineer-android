@@ -1,7 +1,6 @@
 package com.ichangemycity.webservice;
 
 import android.app.Activity;
-import android.content.Intent;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -13,11 +12,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.AppUtils;
-import com.ichangemycity.appdata.ICMyCPreferenceData;
 import com.ichangemycity.callback.OnResponseListener;
 import com.ichangemycity.swachhbharatengineer.R;
-import com.ichangemycity.swachhbharatengineer.Splashscreen;
-import com.prashantsolanki.secureprefmanager.SecurePrefManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,7 +42,7 @@ public class WebserviceHelper {
     public static final int HEADER_TYPE_PUBLIC_TOILETS = 6;
     public static final int HEADER_TYPE_AUTH = 7;
     public static final int HEADER_TYPE_PROFILE = 8;
-    public static final int HEADER_TYPE_CONVERT_COMPLAINT_TO_EVENT= 9;
+    public static final int HEADER_TYPE_CONVERT_COMPLAINT_TO_EVENT = 9;
 
     public static final String TAG = AppController.class
             .getSimpleName();
@@ -62,7 +58,7 @@ public class WebserviceHelper {
 
     public WebserviceHelper(final Activity activity, final int methodType, final String url, HashMap<String, String> params,
                             OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final int headerType) {
-
+        AppUtils.hideProgressDialog(activity);
         switch (methodType) {
             case METHOD_GET:
                 doGet(activity, url, onResponseListener, isToShowProgressDialog, headerType);
@@ -231,11 +227,11 @@ public class WebserviceHelper {
                                     AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, e.getMessage());
                                 }
                             } else if (response.optInt("httpCode") == 401) {
-                                AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, response.optString("message"));
-                                SecurePrefManager.with(activity).clear().confirm();
-                                activity.startActivity(new Intent(activity, Splashscreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                                activity.finish();
-                                new AppController().cancelPendingRequests(AppController.TAG);
+                                AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, response.optString("message") + ", please try again");
+//                                SecurePrefManager.with(activity).clear().confirm();
+//                                activity.startActivity(new Intent(activity, Splashscreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+//                                activity.finish();
+//                                new AppController().cancelPendingRequests(AppController.TAG);
                             } else if (response.optInt("httpCode") == 404) {
                                 onResponseListener.OnResponseFailure(response);
                             } else {
@@ -316,11 +312,12 @@ public class WebserviceHelper {
                                     AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, e.getMessage());
                                 }
                             } else if (response.optInt("httpCode") == 401) {
-                                AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, response.optString("message"));
-                                SecurePrefManager.with(activity).clear().confirm();
-                                activity.startActivity(new Intent(activity, Splashscreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                                activity.finish();
-                                new AppController().cancelPendingRequests(AppController.TAG);
+                                AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, response.optString("message") + ", please try again");
+//                                AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, response.optString("message"));
+//                                SecurePrefManager.with(activity).clear().confirm();
+//                                activity.startActivity(new Intent(activity, Splashscreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+//                                activity.finish();
+//                                new AppController().cancelPendingRequests(AppController.TAG);
                             } else if (response.optInt("httpCode") == 404) {
                                 onResponseListener.OnResponseFailure(response);
                             } else {
@@ -404,11 +401,12 @@ public class WebserviceHelper {
                             AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, e.getMessage());
                         }
                     } else if (mJsonObject.optInt("httpCode") == 401) {
-                        AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, mJsonObject.optString("message"));
-                        ICMyCPreferenceData.clearPreferences(activity);
-                        activity.startActivity(new Intent(activity, Splashscreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                        activity.finish();
-                        new AppController().cancelPendingRequests(AppController.TAG);
+                        AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, mJsonObject.optString("message") + ", please try again");
+//                        AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, mJsonObject.optString("message"));
+//                        ICMyCPreferenceData.clearPreferences(activity);
+//                        activity.startActivity(new Intent(activity, Splashscreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+//                        activity.finish();
+//                        new AppController().cancelPendingRequests(AppController.TAG);
                     } else if (mJsonObject.optInt("httpCode") == 404) {
                         onResponseListener.OnResponseFailure(mJsonObject);
                     } else if (!mJsonObject.has("httpCode")) { //event create success
@@ -418,7 +416,7 @@ public class WebserviceHelper {
                             e.printStackTrace();
                             AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, e.getMessage());
                         }
-                    }else if (!mJsonObject.has("httpCode")) { //event create success
+                    } else if (!mJsonObject.has("httpCode")) { //event create success
                         try {
                             onResponseListener.OnResponseSuccess(mJsonObject);
                         } catch (Exception e) {

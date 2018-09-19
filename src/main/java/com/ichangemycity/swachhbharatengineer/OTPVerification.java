@@ -185,13 +185,13 @@ public class OTPVerification extends BaseAppCompatActivity {
                         new AppUtils().parseProfileGetResponse(activity, response, new OnTaskCompleted() {
                             @Override
                             public void onTaskSuccess(JSONObject jsonObject) {
-                                if (!jsonObject.optBoolean("has_password")) {
-                                    // Goto Email,password and confirm password screen
-                                    startActivity(new Intent(activity, SetEmailPasswordActivity.class).putExtra("type", AppConstant
-                                            .ONBOARDING_TYPE_LOGIN));
-                                }  else {
+//                                if (!jsonObject.optBoolean("has_password")) {
+//                                    // Goto Email,password and confirm password screen
+//                                    startActivity(new Intent(activity, SetEmailPasswordActivity.class).putExtra("type", AppConstant
+//                                            .ONBOARDING_TYPE_LOGIN));
+//                                }  else {
                                     startActivity(new Intent(activity, MainActivity.class));
-                                }
+//                                }
                             }
 
                             @Override
