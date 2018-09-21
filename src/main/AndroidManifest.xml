@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ichangemycity.swachhbharatengineer"
-    android:versionCode="20"
-    android:versionName="3.6.4">
+    package="com.ichangemycity.swachhbharatengineer">
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
@@ -26,9 +23,6 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="com.ichangemycity.swachhbharatengineer.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission
-        android:name="com.ichangemycity.swachhbharatengineer.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
 
     <!-- This app has permission to register and receive data message. -->
     <uses-permission android:name="android.permission.VIBRATE" />

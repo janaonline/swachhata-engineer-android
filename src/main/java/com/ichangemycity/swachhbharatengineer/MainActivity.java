@@ -834,6 +834,17 @@ public class MainActivity extends AppCompatActivity
                     if (isToScroll) {
                         data.clear();
                         mRecyclerView.getAdapter().notifyDataSetChanged();
+                        AppController.setEmptyViewForRecyclerView(activity, mRecyclerView);
+                        try {
+                            ((TextView) findViewById(R.id.viewEmpty)).setText(activity.getResources().getString(R.string.loading));
+                        } catch (Exception e) {
+                        }
+                    }else{
+                        AppController.setEmptyViewForRecyclerView(activity, mRecyclerView);
+                        try {
+                            ((TextView) findViewById(R.id.viewEmpty)).setVisibility(View.GONE);
+                        } catch (Exception e) {
+                        }
                     }
                     new ParseJSONResponse(response, isToScroll).execute();
                 }
@@ -928,7 +939,8 @@ public class MainActivity extends AppCompatActivity
             if (data.size() <= 0) {
                 AppController.setEmptyViewForRecyclerView(activity, mRecyclerView);
                 try {
-                    ((TextView) findViewById(R.id.viewEmpty)).setText(activity.getResources().getString(R.string.loading));
+                    ((TextView) findViewById(R.id.viewEmpty)).setVisibility(View.VISIBLE);
+                    ((TextView) findViewById(R.id.viewEmpty)).setText(activity.getResources().getString(R.string.no_complaints));
                 } catch (Exception e) {
                 }
             }

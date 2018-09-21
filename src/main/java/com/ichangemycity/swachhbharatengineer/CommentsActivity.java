@@ -20,7 +20,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -109,7 +108,7 @@ public class CommentsActivity extends BaseAppCompatActivity {
                     AppController.showProgressDialog(activity, "");
                     new InitiatePostComment().execute();
                 } else {
-                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,activity.getResources().getString(R.string.write_a_comment));
+                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, activity.getResources().getString(R.string.write_a_comment));
 
 //                    Toast.makeText(activity, getResources().getString(R.string.write_a_comment), Toast
 //                            .LENGTH_SHORT).show();
@@ -162,14 +161,14 @@ public class CommentsActivity extends BaseAppCompatActivity {
                     postComment(false);
                 else
 //                    Toast.makeText(activity, getResources().getString(R.string.write_a_comment), Toast.LENGTH_SHORT).show();
-                AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,activity.getResources().getString(R.string.write_a_comment));
+                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, activity.getResources().getString(R.string.write_a_comment));
 
             }
         }
     }
 
     private void postComment(final boolean hasImage) {
-        final String url =URLData.BASE_URL + URLData.COMMENT;
+        final String url = URLData.BASE_URL + URLData.COMMENT;
 
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("complaintId", AppController.selectedComplaintData.getComplaintId());
@@ -179,17 +178,17 @@ public class CommentsActivity extends BaseAppCompatActivity {
 
         if (hasImage)
             params.put("fileId", ICMyCPreferenceData.getPreferenceItem(CommentsActivity.this,
-                            ICMyCPreferenceData.commentUploadedImageFile,""));
+                    ICMyCPreferenceData.commentUploadedImageFile, ""));
 
-        String urlParams = "?complaintId="+ AppController.selectedComplaintData.getComplaintId()+
-                "&apiKey="+ URLData.API_KEY+
-                "&commentTypeId="+ Integer.toString(1)+
-                "&commentDescription="+((EditText) findViewById(R.id.textComment)).getText().toString().trim().replace(" ","%20");
+        String urlParams = "?complaintId=" + AppController.selectedComplaintData.getComplaintId() +
+                "&apiKey=" + URLData.API_KEY +
+                "&commentTypeId=" + Integer.toString(1) +
+                "&commentDescription=" + ((EditText) findViewById(R.id.textComment)).getText().toString().trim().replace(" ", "%20");
         if (hasImage)
-            urlParams+="&fileId="+ ICMyCPreferenceData.getPreferenceItem(CommentsActivity.this,
-                    ICMyCPreferenceData.commentUploadedImageFile,"");
+            urlParams += "&fileId=" + ICMyCPreferenceData.getPreferenceItem(CommentsActivity.this,
+                    ICMyCPreferenceData.commentUploadedImageFile, "");
 
-        new WebserviceHelper(activity, WebserviceHelper.METHOD_POST, url+urlParams, params, new OnResponseListener() {
+        new WebserviceHelper(activity, WebserviceHelper.METHOD_POST, url + urlParams, params, new OnResponseListener() {
             @Override
             public void OnResponseFailure(JSONObject response) {
 
@@ -227,7 +226,7 @@ public class CommentsActivity extends BaseAppCompatActivity {
                 runCommentFeedWebService(true);
 
             }
-        },true,WebserviceHelper.HEADER_TYPE_NORMAL);
+        }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
     }
 
     private void clearSelectedImage() {
@@ -361,8 +360,7 @@ public class CommentsActivity extends BaseAppCompatActivity {
     private void runCommentFeedWebService(final boolean isToScroll) {
         if (isToScroll) {
             currentPage = 0;
-//            AppController.showProgressDialog(activity, getResources().getString(R.string.loading));
-        }
+         }
         ++currentPage;
         if (currentPage == 1) {
             AppController.commentData.clear();
@@ -385,7 +383,7 @@ public class CommentsActivity extends BaseAppCompatActivity {
             public void OnResponseFailure(JSONObject response) {
                 if (isToScroll)
                     AppController.hideProgressDialog(activity);
-                    AppController.setEmptyViewForRecyclerView(activity, recycler_view);
+                AppController.setEmptyViewForRecyclerView(activity, recycler_view);
 
             }
 
@@ -396,7 +394,7 @@ public class CommentsActivity extends BaseAppCompatActivity {
                     AppController.commentData.clear();
                     AppController.hideProgressDialog(activity);
                 }
-
+                AppController.hideProgressDialog(activity);
                 new ParseResponse(response, isToScroll).execute();
 
             }
