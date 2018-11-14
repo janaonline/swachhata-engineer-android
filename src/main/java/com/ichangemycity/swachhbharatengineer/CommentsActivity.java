@@ -54,6 +54,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import static com.ichangemycity.webservice.URLData.BASE_URL_UPLOAD_IMAGE;
+
 public class CommentsActivity extends BaseAppCompatActivity {
     Toolbar toolbar;
     public static Activity activity;
@@ -235,7 +237,7 @@ public class CommentsActivity extends BaseAppCompatActivity {
     }
 
     private void uploadImage() {
-        final String uploadImageURL = "http://api.swachh.city/sbm/v1/" + URLData.FILE;
+        final String uploadImageURL =BASE_URL_UPLOAD_IMAGE;
         AppController.showProgressDialog(activity, activity.getResources().getString(R.string.loading));
         VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, uploadImageURL, new
                 Response.Listener<NetworkResponse>() {

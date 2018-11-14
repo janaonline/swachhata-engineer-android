@@ -189,7 +189,7 @@ public class AppController extends MultiDexApplication {
 
 
     public static void traceLog(String key, String value) {
-        Log.i(key, value);
+//        Log.i(key, value);
     }
 
 
@@ -287,7 +287,7 @@ public class AppController extends MultiDexApplication {
         if(act.getClass().getSimpleName().equalsIgnoreCase(OTPVerification.class.getSimpleName())
                 || act.getClass().getSimpleName().equalsIgnoreCase(UserMobileNumber.class.getSimpleName())){
             //Swachh Manch api error handling
-            AppUtils.handleVolleyError(act,layout,volleyError);
+            AppUtils.handleVolleyError(act,volleyError);
         }else {
 //            SBM Engineer api error handling
             VolleyLog.d(AppController.TAG, "Error: " + volleyError.getMessage());

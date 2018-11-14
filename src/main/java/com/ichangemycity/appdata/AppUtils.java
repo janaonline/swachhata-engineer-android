@@ -379,7 +379,7 @@ public class AppUtils {
     private static String errors = "";
     private static JSONObject responseObject = new JSONObject();
 
-    public static void handleVolleyError(final Activity act, final RelativeLayout layout, final VolleyError volleyError) {
+    public static void handleVolleyError(final Activity act,final VolleyError volleyError) {
         NetworkResponse response = volleyError.networkResponse;
         responseObject = new JSONObject();
         errors = "";

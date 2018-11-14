@@ -128,7 +128,7 @@ public class UserMobileNumber extends BaseAppCompatActivity {
                         boolean isEngineer = false;
                         if (array != null)
                             for (int i = 0; i < array.length(); i++) {
-                                if (array.get(i).toString().equalsIgnoreCase("Engineer")) {
+                                if (array.get(i).toString().equalsIgnoreCase("Engineer") || array.get(i).toString().equalsIgnoreCase("ulb admin")) {
                                     isEngineer = true;
                                     break;
                                 }

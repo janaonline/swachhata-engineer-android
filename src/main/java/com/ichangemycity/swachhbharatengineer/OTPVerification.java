@@ -10,8 +10,8 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -39,6 +39,7 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import static com.ichangemycity.webservice.URLDataSwachhManch.BASE_URL_PROFILE;
 import static com.ichangemycity.webservice.URLDataSwachhManch.CHANNEL_KEY_VALUE;
 
@@ -100,11 +101,26 @@ public class OTPVerification extends BaseAppCompatActivity {
             public void onClick(View v) {
                 AppUtils.showProgressDialog(activity, getString(R.string.loading));
                 onResendOtp();
+                //wait for 40 sec until receive resent otp
+                new CountDownTimer(40000, 1000) {
+
+                    public void onTick(long millisUntilFinished) {
+                        resendCode.setClickable(false);
+                        resendCode.setText("Please wait for " + (millisUntilFinished / 1000)+" seconds,\n to resend OTP code");
+                    }
+
+
+                    public void onFinish() {
+                        resendCode.setClickable(true);
+                        resendCode.setText("Resend code");
+                    }
+                }.start();
             }
         });
         enterotp.setText(activity.getResources().getString(R.string.enter_verification_code_sent_to_));
 
         setToolbarAndCustomizeTitle();
+
     }
 
     @Nullable

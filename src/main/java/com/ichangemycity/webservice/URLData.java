@@ -12,12 +12,18 @@ public class URLData {
     public static final String GCM_SENDER_ID = "933430828390";
     public static final String API_KEY = "af4e61d75d2782a33eac7641e42bba6f";
 
-    // public static final String
-    // MAP_KEY_BASE_URL="http://icmycsaasqa.ichangemycity.com/android/";
     // public static final String BASE_URL =
 //	 "http://devapi.ichangemycity.in/engineer/v1/";
-//	public static final String BASE_URL = "http://qaapi.ichangemycity.in/engineer/v1/";
+
+//    QA
+//    public static final String BASE_URL = "http://qaapi.ichangemycity.in/engineer/v1/";
+//    public static final String BASE_URL_UPLOAD_IMAGE = "https://qafiles.ichangemycity.com/swachhata/complaints";
+
+//    LIVE
     public static final String BASE_URL = "http://api.swachh.city/engineer/v1/";
+    public static final String BASE_URL_UPLOAD_IMAGE = "https://files.ichangemycity.com/swachhata/complaints";
+//    public static final String BASE_URL_UPLOAD_IMAGE = "http://api.swachh.city/sbm/v1/" + URLData.FILE;
+
     public static final String AUTH = "auth";
     public static final String MAP_KEY = "get-map-key";
     public static final String LANGUAGES = "languages";
@@ -95,13 +101,13 @@ public class URLData {
 
     public static HashMap<String, String> getHeaders(final Activity activity, final int headerType) {
         final HashMap<String, String> headers = new HashMap<String, String>();
-        if(headerType == WebserviceHelper.HEADER_TYPE_NORMAL) {
+        if (headerType == WebserviceHelper.HEADER_TYPE_NORMAL) {
             String token = "Bearer " + ICMyCPreferenceData.getPreferenceItem(activity, ICMyCPreferenceData.token, "");
             headers.put("Accept", URLData.CONTENT_TYPE);
             headers.put("Content-Type", URLData.CONTENT_TYPE);
             headers.put("Authorization", token);
-        }else{
-            headers.putAll(getHeadersSwachhManch(activity,headerType));
+        } else {
+            headers.putAll(getHeadersSwachhManch(activity, headerType));
         }
         return headers;
     }
@@ -148,7 +154,7 @@ public class URLData {
             if (token.trim().length() > 0 || !token.trim().equalsIgnoreCase("bearer")) {
                 headers.put("Authorization", token);
             }
-        }else if (headerType == WebserviceHelper.HEADER_TYPE_CONVERT_COMPLAINT_TO_EVENT){
+        } else if (headerType == WebserviceHelper.HEADER_TYPE_CONVERT_COMPLAINT_TO_EVENT) {
             headers.put("Accept", "application/vnd.event.api+json;version=1.1,application/json");
             headers.put("Authorization", token);
         }
