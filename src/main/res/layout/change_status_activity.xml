@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/parentLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -56,13 +57,22 @@
         <TextView
             android:id="@+id/messageToShow"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/relativeTitle"
             android:gravity="center_horizontal|top"
             android:padding="8dp"
             android:text="@string/you_are_changing_the_status_of_the_complaint_please_leave_a_comment_about_your_experience_or_if_you_have_any_remarks_you_can_add_photos_as_well_to_your_comment_"
             android:textSize="@dimen/text_size_default"
             android:textStyle="bold"/>
+
+        <ListView
+            android:id="@+id/list" android:layout_below="@+id/messageToShow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:divider="#e1e2e3"
+            android:dividerHeight="1dp"
+            android:scrollbars="none"/>
     </RelativeLayout>
 
     <RelativeLayout

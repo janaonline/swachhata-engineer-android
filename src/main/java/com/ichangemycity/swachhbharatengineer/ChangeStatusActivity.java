@@ -13,8 +13,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -43,6 +46,7 @@ import com.ichangemycity.webservice.WebserviceHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -51,13 +55,17 @@ import static com.ichangemycity.swachhbharatengineer.ComplaintDetail.isToRefresh
 
 public class ChangeStatusActivity extends BaseAppCompatActivity {
     Toolbar toolbar;
+    RelativeLayout postComm;
     public static Activity activity;
     private static String url;
     ComplaintData data = new ComplaintData();
     ImageView addImage, send;
     private ImageView imageToUpload;
     TextView statusTitleValue;
+    TextView messageToShow;
     String mStatus = "";
+    ListView list;
+    ArrayList<String> listOfReasonToRejectComplaint = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,11 +74,17 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
         setContentView(R.layout.change_status_activity);
         activity = ChangeStatusActivity.this;
         BaseAppCompatActivity.activity = activity;
+
         clearSelectedImage();
         mStatus = AppController.selectedComplaintChangeStatusOptions.getStatusName();
         statusTitleValue = (TextView) findViewById(R.id.statusTitleValue);
         imageToUpload = (ImageView) findViewById(R.id.imageToUpload);
         send = (ImageView) findViewById(R.id.send);
+        postComm = ((RelativeLayout) findViewById(R.id.postComm));
+        messageToShow = (TextView) findViewById(R.id.messageToShow);
+        list = (ListView) findViewById(R.id.list);
+        listOfReasonToRejectComplaint.clear();
+
         url = URLData.BASE_URL + URLData.GET_POSTED_COMMENT
                 + AppController.selectedComplaintData.getComplaintId()
                 + URLData.GET_POSTED_COMMENT_SORT;
@@ -98,7 +112,9 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
 
             }
         });
-        ((RelativeLayout) findViewById(R.id.postComm)).setVisibility(View.VISIBLE);
+        postComm.setVisibility(View.VISIBLE);
+        messageToShow.setText(R.string
+                .you_are_changing_the_status_of_the_complaint_please_leave_a_comment_about_your_experience_or_if_you_have_any_remarks_you_can_add_photos_as_well_to_your_comment_);
         setStatusForTitle(AppController.selectedComplaintChangeStatusOptions.getStatusID());
     }
 
@@ -106,7 +122,7 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            ((RelativeLayout) findViewById(R.id.postComm)).setVisibility(View.GONE);
+            postComm.setVisibility(View.GONE);
         }
 
         /**
@@ -181,15 +197,15 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
                     .getPreferenceItem(activity, ICMyCPreferenceData.commentUploadedImageFile, ""));
         String URLParams =
                 "?apiKey=" + URLData.API_KEY +
-                "&statusId=" + AppController.selectedComplaintChangeStatusOptions.getStatusID() +
-                "&userId=" + ICMyCPreferenceData.getPreferenceItem(activity,ICMyCPreferenceData.id, "") +
-                "&complaintId=" + AppController.selectedComplaintData.getComplaintId() +
-                "&commentDescription=" + ((EditText) findViewById(R.id.textComment)).getText().toString().replace(" ","%20");
+                        "&statusId=" + AppController.selectedComplaintChangeStatusOptions.getStatusID() +
+                        "&userId=" + ICMyCPreferenceData.getPreferenceItem(activity, ICMyCPreferenceData.id, "") +
+                        "&complaintId=" + AppController.selectedComplaintData.getComplaintId() +
+                        "&commentDescription=" + ((EditText) findViewById(R.id.textComment)).getText().toString().replace(" ", "%20");
         if (hasImage)
-            URLParams = URLParams+"&fileId="+ ICMyCPreferenceData
+            URLParams = URLParams + "&fileId=" + ICMyCPreferenceData
                     .getPreferenceItem(activity, ICMyCPreferenceData.commentUploadedImageFile, "");
 
-        new WebserviceHelper(activity, WebserviceHelper.METHOD_PUT, url+URLParams, null, new OnResponseListener() {
+        new WebserviceHelper(activity, WebserviceHelper.METHOD_PUT, url + URLParams, null, new OnResponseListener() {
             @Override
             public void OnResponseFailure(JSONObject response) {
                 AppController.hideProgressDialog(activity);
@@ -305,7 +321,7 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
     }
 
     private void uploadImage() {
-        final String uploadImageURL =   URLData.BASE_URL_UPLOAD_IMAGE;
+        final String uploadImageURL = URLData.BASE_URL_UPLOAD_IMAGE;
         AppController.showProgressDialog(activity, activity.getResources().getString(R.string.loading));
         VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, uploadImageURL, new
                 Response.Listener<NetworkResponse>() {
@@ -427,13 +443,14 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
 
 
     private void showAlertToPickImage() {
-        ((RelativeLayout) findViewById(R.id.postComm)).setVisibility(View.VISIBLE);
+        postComm.setVisibility(View.VISIBLE);
         AppController.selectedPurposeToUploadImage = AppController.PURPOSE_POST_COMMENT;
         startActivity(new Intent(activity, SelectImageDialogActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
     }
 
     private void setStatusForTitle(int complaintStatus) {
         int complaintStatusTextColor = 0;
+        list.setVisibility(View.GONE);
         if (complaintStatus > 0) {
             switch (complaintStatus) {
                 case AppController.COMPLAINT_REOPEN:
@@ -457,9 +474,25 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
                             R.color.green_resolved);
                     break;
                 case AppController.COMPLAINT_REJECTED:
+                    list.setVisibility(View.VISIBLE);
                     complaintStatus = R.drawable.complaint_status_closed;
                     complaintStatusTextColor = activity.getResources().getColor(
                             R.color.gray_closed);
+                    listOfReasonToRejectComplaint.add("Complaint out of the city");
+                    listOfReasonToRejectComplaint.add("Image not clear");
+                    listOfReasonToRejectComplaint.add("Location not correct");
+                    list.setAdapter(new ArrayAdapter<String>(this,
+                            android.R.layout.simple_list_item_1, android.R.id.text1, listOfReasonToRejectComplaint));
+                    list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            view.setBackgroundColor(Color.LTGRAY);
+                            ((EditText) findViewById(R.id.textComment)).setText(listOfReasonToRejectComplaint.get(i));
+                            changeStatus(false);
+                        }
+                    });
+                    messageToShow.setText(R.string.change_status_rejected);
+                    postComm.setVisibility(View.GONE);
                     break;
                 default:
                     complaintStatus = R.drawable.complaint_status_closed;

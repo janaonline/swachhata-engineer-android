@@ -95,4 +95,7 @@
     <string name="email" translatable="false">Email</string>
     <string name="password" translatable="false">Password</string>
     <string name="confirm_password" translatable="false">Confirm password</string>
+    <string name="change_status_rejected" translatable="false">You\'re changing status of the complaint to rejected. Please select a reason
+        from below for rejecting this complaint.</string>
+
 </resources>

@@ -360,6 +360,7 @@ public class CommentsActivity extends BaseAppCompatActivity {
     }
 
     private void runCommentFeedWebService(final boolean isToScroll) {
+        AppController.hideProgressDialog(activity);
         if (isToScroll) {
             currentPage = 0;
          }
