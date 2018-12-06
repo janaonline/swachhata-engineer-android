@@ -3,6 +3,9 @@ package com.ichangemycity.swachhbharatengineer;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -13,7 +16,6 @@ import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.andexert.library.RippleView;
@@ -22,22 +24,19 @@ import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.AppUtils;
 import com.ichangemycity.base.BaseAppCompatActivity;
 import com.ichangemycity.callback.OnButtonClick;
-import com.ichangemycity.callback.OnResponseListener;
 import com.ichangemycity.model.CustomGallery;
 import com.ichangemycity.model.SelectedImageModel;
 import com.ichangemycity.permission.GetPermissionResult;
-import com.ichangemycity.webservice.WebserviceHelper;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 
 /**
  * Created by pattabi.raman on 18-10-2017.
@@ -49,14 +48,21 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
     ProgressBar progress;
     List<String> permissionsRequired = new ArrayList<>();
 
+    public Activity getActivity() {
+        if (activity == null)
+            activity = SelectImageDialogActivity.this;
+        return activity;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AppController.assignLanguage(SelectImageDialogActivity.this);
         setContentView(R.layout.select_image_dialog_activity);
+        AppController.assignLanguage(SelectImageDialogActivity.this);
+
         permissionsRequired.clear();
+
         activity = SelectImageDialogActivity.this;
-        BaseAppCompatActivity.activity = activity;
         progress = (ProgressBar) activity.findViewById(R.id.progress);
         rippleViewCamera = (RippleView) findViewById(R.id.rippleViewCamera);
         rippleViewGallery = (RippleView) findViewById(R.id.rippleViewGallery);
@@ -79,6 +85,8 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
                 rippleViewCamera.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
                     @Override
                     public void onComplete(RippleView rippleView) {
+
+
                         GenerateFolders();
                         captureImage();
                     }
@@ -86,24 +94,22 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
                 rippleViewGallery.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
                     @Override
                     public void onComplete(RippleView rippleView) {
+
+
                         startActivity(new Intent(activity, AndroidCustomGalleryActivity.class));
                     }
                 });
+
             }
 
             @Override
             public void resultPermissionRevoked() {
                 AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, "We suggest to allow permissions to make app work as expected");
-//                Toast.makeText(activity, "We suggest to allow permissions to make app work as expected", Toast.LENGTH_LONG).show();
+
             }
         });
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-
-    }
 
     @Override
     protected void onResume() {
@@ -132,7 +138,7 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            if (AppController.mSelectedImageModels.getSizeInMB() > 10) {
+            if (AppController.mSelectedImageModels.getSizeInMB() > 8) {
                 AppController.showAlert(activity, "Alert", "Total size exceeded 10MB " +
                         "of size. Please " +
                         "select an image with lesser memory to upload", false, new OnButtonClick() {
@@ -144,6 +150,7 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
 
                     @Override
                     public void onNegativeButtonClicked(DialogInterface dialogInterface) {
+
                     }
                 });
             } else {
@@ -191,7 +198,9 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
             fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
 
         }
+
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
     }
 
@@ -231,20 +240,19 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     previewCapturedImage();
                 } else if (resultCode == RESULT_CANCELED) {
-//                    Toast.makeText(getApplicationContext(), "You have cancelled image selection",
-//                            Toast.LENGTH_SHORT).show();
-                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, "You have cancelled image selection");
-
+                    Toast.makeText(getApplicationContext(), "You have cancelled image selection",
+                            Toast.LENGTH_SHORT).show();
                 } else {
+
                     AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, activity.getResources().getString(R.string.select_an_image));
-//                    Toast.makeText(getApplicationContext(), R.string.select_an_image,
-//                            Toast.LENGTH_SHORT).show();
+
                 }
                 break;
         }
     }
 
     private void previewCapturedImage() {
+
         try {
             String all_path = fileUri.getPath();
             CustomGallery item = new CustomGallery();
@@ -258,38 +266,52 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
             selectedImageModel.setDATE_TAKEN(AppController.getDate(cal.getTimeInMillis(), AppController.DATE_FORMAT));
             selectedImageModel.setPathOfSelectedImage(myFile.getAbsolutePath());
             selectedImageModel.setUriOfImage(fileUri);
+            selectedImageModel.setThumbnails(BitmapFactory.decodeFile((myFile.getAbsolutePath())));
             AppController.mSelectedImageModels = selectedImageModel;
-            activity.finish();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+
     public void getAddressFromLatLong() {
-//        AppController.showProgressDialog(activity, getResources().getString(R.string.fetching_location));
         progress.setVisibility(View.VISIBLE);
-        String url = "http://maps.google.com/maps/api/geocode/json?latlng=" + AppController.latitude + ","
-                + AppController.longitude + "&sensor=false";
-        new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
-            @Override
-            public void OnResponseFailure(JSONObject response) {
-                AppController.hideProgressDialog(activity);
-            }
+        Geocoder geocoder;
+        List<Address> addresses = null;
+        geocoder = new Geocoder(activity, Locale.getDefault());
 
-            @Override
-            public void OnResponseSuccess(JSONObject response) {
-                try {
-//                            AppController.hideProgressDialog(activity);
-                    progress.setVisibility(View.GONE);
-                    AppController.location = (((JSONArray) response.opt("results")).optJSONObject(0)
-                            .getString("formatted_address"));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                new CheckImageSize().execute();
-            }
-        }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
+        try {
+            addresses = geocoder.getFromLocation(AppController.latitude, AppController.longitude, 1); // Here 1 represent max location result to
+            // returned, by
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // documents
+        // it
+        // recommended 1
+        // to 5
+        if (addresses != null) {
+            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address
+            // lines by getMaxAddressLineIndex()
+            String city = addresses.get(0).getLocality();
+            String state = addresses.get(0).getAdminArea();
+            String country = addresses.get(0).getCountryName();
+            String postalCode = addresses.get(0).getPostalCode();
+            String knownName = addresses.get(0).getFeatureName();
 
+            AppController.location = address;
+            progress.setVisibility(View.GONE);
 
+        } else {
+            AppUtils.hideProgressDialog(activity);
+        }
+
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        AppController.selectedPurposeToUploadImage = -1;
     }
 }

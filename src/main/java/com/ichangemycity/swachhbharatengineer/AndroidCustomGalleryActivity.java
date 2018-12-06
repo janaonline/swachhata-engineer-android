@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -20,30 +23,59 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.base.BaseAppCompatActivity;
 import com.ichangemycity.model.SelectedImageModel;
+import com.ichangemycity.webservice.AppHelper;
+import com.pnikosis.materialishprogress.ProgressWheel;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
+import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
+
 public class AndroidCustomGalleryActivity extends BaseAppCompatActivity {
- ArrayList<SelectedImageModel> mModel = new ArrayList<SelectedImageModel>();
  SelectedImageModel mSelectedImagesModel = new SelectedImageModel();
- ArrayList<String> ids = new ArrayList<String>();
- private ImageAdapter imageAdapter;
+ @Nullable
+ @BindView(R.id.toolbar)
  Toolbar toolbar;
+ @Nullable
+ @BindView(R.id.PhoneImageGrid)
  GridView imagegrid;
+ @Nullable
+ @BindView(R.id.frameLoader)
  FrameLayout frameLoader;
  int myLastVisiblePos;
- public static Activity activity;
+ private Activity activity;
+ @Nullable
+ @BindView(R.id.image)
+ ImageView image;
+ @Nullable
+ @BindView(R.id.changePic)
+ TextView changePic;
+ @Nullable
+ @BindView(R.id.next)
+ Button next;
+ @Nullable
+ @BindView(R.id.pb_loader)
+ ProgressWheel pb_loader;
 
  @Override
  public void onCreate(Bundle savedInstanceState) {
@@ -51,116 +83,40 @@ public class AndroidCustomGalleryActivity extends BaseAppCompatActivity {
   AppController.assignLanguage(AndroidCustomGalleryActivity.this);
   setContentView(R.layout.custom_gallery);
   activity = AndroidCustomGalleryActivity.this;
-  BaseAppCompatActivity.activity = activity;
-  frameLoader = (FrameLayout) findViewById(R.id.frameLoader);
+  ButterKnife.bind(this);
+  pb_loader.setVisibility(View.GONE);
   frameLoader.setVisibility(View.VISIBLE);
-  toolbar = (Toolbar) findViewById(R.id.toolbar);
-  setToolbarAndCustomizeTitle(toolbar, getResources().getString(R.string.loading));
-  imagegrid = (GridView) findViewById(R.id.PhoneImageGrid);
-  imageAdapter = new ImageAdapter();
-  myLastVisiblePos = imagegrid.getFirstVisiblePosition();
-  imagegrid.setAdapter(imageAdapter);
-  mModel.clear();
-  imagegrid.setOnScrollListener(new OnScrollListener() {
-   @Override
-   public void onScrollStateChanged(AbsListView view, int scrollState) {
-    int currentFirstVisPos = view.getFirstVisiblePosition();
-    if (currentFirstVisPos > myLastVisiblePos) {
-     if (isLoadMore) {
-      try {
-       if (mStoreSelectImages != null) {
-        mStoreSelectImages.cancel(true);
-       }
-       if (mModel.size() <= 1000) {
-        mStoreSelectImages = new StoreSelectImages();
-        mStoreSelectImages.execute();
-       }
-      } catch (Exception e) {
-       e.printStackTrace();
-      }
-     } else {
-     }
-    }
-    myLastVisiblePos = currentFirstVisPos;
-   }
+  setToolbarAndCustomizeTitle(toolbar, getResources().getString(R.string.select_an_image));
 
+//        fetchImage();
+
+  changePic.setOnClickListener(new OnClickListener() {
    @Override
-   public void onScroll(AbsListView view, int firstVisibleItem,
-                        int visibleItemCount, int totalItemCount) {
+   public void onClick(View view) {
+    pickImage();
+   }
+  });
+  image.setOnClickListener(new OnClickListener() {
+   @Override
+   public void onClick(View view) {
+    pickImage();
+   }
+  });
+
+  pickImage();
+
+  next.setOnClickListener(new OnClickListener() {
+   @Override
+   public void onClick(View view) {
+    if (mSelectedImagesModel.getSizeInMB() > 8) {
+     showAlertToSelectImageNumbers("Please select an image less than 8MB");
+    } else {
+     new ProceedToDescriptionScreen().execute();
+    }
    }
   });
  }
 
- public class ImageAdapter extends BaseAdapter {
-  private LayoutInflater mInflater;
-
-  public ImageAdapter() {
-   mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-  }
-
-  public int getCount() {
-   return mModel.size();
-  }
-
-  public Object getItem(int position) {
-   return position;
-  }
-
-  public long getItemId(int position) {
-   return position;
-  }
-
-  public View getView(int position, View convertView, ViewGroup parent) {
-   final ViewHolder holder;
-   if (convertView == null) {
-    holder = new ViewHolder();
-    convertView = mInflater.inflate(R.layout.galleryitem, null);
-    holder.imageview = (ImageView) convertView.findViewById(R.id.thumbImage);
-    holder.checkbox = (CheckBox) convertView.findViewById(R.id.itemCheckBox);
-    convertView.setTag(holder);
-   } else {
-    holder = (ViewHolder) convertView.getTag();
-   }
-   holder.checkbox.setId(position);
-   holder.imageview.setId(position);
-   holder.imageview.setTag(mModel.get(position));
-   holder.checkbox.setVisibility(View.GONE);
-            /*holder.checkbox.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    CheckBox cb = (CheckBox) v;
-                    SelectedImageModel m = (SelectedImageModel) holder.imageview.getTag();
-                    int index = mModel.indexOf(m);
-                    if (m.isThumbnailsselection()) {
-                        int selectedIndex = mSelectedImagesModel.indexOf(m);
-                        cb.setChecked(false);
-                        mSelectedImagesModel.remove(selectedIndex);
-                        m.setThumbnailsselection(false);
-                    } else {
-                        cb.setChecked(true);
-                        m.setThumbnailsselection(true);
-                        mSelectedImagesModel.add(m);
-                    }
-                    mModel.set(index, m);
-                    notifyDataSetChanged();
-                }
-            });*/
-   holder.imageview.setOnClickListener(new OnClickListener() {
-    public void onClick(View v) {
-     SelectedImageModel m = (SelectedImageModel) holder.imageview.getTag();
-     mSelectedImagesModel = m;
-     if(mSelectedImagesModel.getSizeInMB()<=8) {
-      new ProceedToDescriptionScreen().execute();
-     }else{
-      showAlertToSelectImageNumbers(activity.getResources().getString(R.string.image_size_exceeded));
-     }
-    }
-   });
-   holder.imageview.setImageBitmap(mModel.get(position).getThumbnails());
-   holder.checkbox.setChecked(mModel.get(position).isThumbnailsselection());
-   holder.id = position;
-   return convertView;
-  }
- }
 
  private void setToolbarAndCustomizeTitle(Toolbar toolbar, String title) {
   setSupportActionBar(toolbar);
@@ -180,119 +136,8 @@ public class AndroidCustomGalleryActivity extends BaseAppCompatActivity {
   getSupportActionBar().setHomeAsUpIndicator(upArrow);
  }
 
- class ViewHolder {
-  ImageView imageview;
-  CheckBox checkbox;
-  int id;
- }
-
  Cursor imagecursor;
- private boolean isLoadMore;
- int page = 1;
 
- private class StoreSelectImages extends AsyncTask<Void, Void, Void> {
-  private int count;
-
-  @Override
-  protected void onPreExecute() {
-   // TODO Auto-generated method stub
-   super.onPreExecute();
-   frameLoader.setVisibility(View.VISIBLE);
-  }
-
-  @SuppressWarnings("deprecation")
-  @Override
-  protected Void doInBackground(Void... params) {
-   try {
-    final String[] columns = {MediaStore.Images.Media.DATA,
-            MediaStore.Images.Media._ID, MediaStore.Images.Media.DATE_TAKEN, MediaStore.Images.Media.LATITUDE, MediaStore.Images.Media
-            .LONGITUDE, MediaStore.Images.Media.SIZE};
-    final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
-    imagecursor = null;
-    if (mModel.size() > 0) {
-     String joinedIds = TextUtils.join(",", ids);
-     imagecursor = managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-             columns, MediaStore.Images.Media._ID + " not in (" + joinedIds + ")",
-             null, orderBy + " DESC LIMIT 50");
-    } else
-     imagecursor = managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-             columns, null, null, orderBy + " DESC LIMIT 20");
-    int image_column_index = imagecursor
-            .getColumnIndex(MediaStore.Images.Media._ID);
-    this.count = imagecursor.getCount();
-    if (this.count > 0) {
-     isLoadMore = true;
-    } else {
-     isLoadMore = false;
-    }
-    if (mModel.size() > 500) {
-     freeMemory();
-    }
-    SelectedImageModel m;
-    for (int i = 0; i < this.count; i++) {
-     m = new SelectedImageModel();
-//                    SelectedImageModel selectedImageModel = new SelectedImageModel();
-     imagecursor.moveToPosition(i);
-     m.setId(imagecursor.getInt(image_column_index));
-     int dataColumnIndex = imagecursor
-             .getColumnIndex(MediaStore.Images.Media.DATA);
-     m.setThumbnails(MediaStore.Images.Thumbnails.getThumbnail(
-             getApplicationContext().getContentResolver(), m.getId(),
-             MediaStore.Images.Thumbnails.MINI_KIND, null));
-     m.setArrPath(imagecursor.getString(dataColumnIndex));
-     m.setLatitude(imagecursor.getDouble(imagecursor.getColumnIndex(MediaStore.Images.Media.LATITUDE)));
-     m.setLongitude(imagecursor.getDouble(imagecursor.getColumnIndex(MediaStore.Images.Media.LONGITUDE)));
-     m.setSizeInMB((imagecursor.getInt(imagecursor.getColumnIndex(MediaStore.Images.Media.SIZE)) / 1024) / 1024);
-//                    selectedImageModel.setPathOfSelectedImage(m.getArrPath());
-     m.setPathOfSelectedImage(m.getArrPath());
-//                    selectedImageModel.setUriOfImage(Uri.parse(Uri.fromFile(new File(m.getArrPath())).toString()));
-     m.setUriOfImage(Uri.parse(Uri.fromFile(new File(m.getArrPath())).toString()));
-
-     m.setSizeInMB(((int) new File(m.getArrPath()).length() / 1024) / 1024);
-     // DateTaken
-     Calendar c = Calendar.getInstance();
-     c.setTimeInMillis(imagecursor.getLong(imagecursor
-             .getColumnIndex(MediaStore.Images.Media.DATE_TAKEN)));
-     m.setDATE_TAKEN(AppController.getDate(c.getTimeInMillis(),
-             AppController.DATE_FORMAT));
-//                    selectedImageModel.setDATE_TAKEN(m.getDATE_TAKEN());
-//                    selectedImageModel.setSizeInMB(m.getSizeInMB());
-     m.setDATE_TAKEN(m.getDATE_TAKEN());
-     m.setSizeInMB(m.getSizeInMB());
-
-     if (m.getSizeInMB() >= 0) {
-      mModel.add(m);
-      ids.add(m.getId() + "");
-
-     } else {
-     }
-    }
-   } catch (OutOfMemoryError e) {
-    this.cancel(true);
-    e.printStackTrace();
-   }
-   return null;
-  }
-
-  public void freeMemory() {
-   System.runFinalization();
-   Runtime.getRuntime().gc();
-   System.gc();
-  }
-
-  @Override
-  protected void onPostExecute(Void result) {
-   super.onPostExecute(result);
-   frameLoader.setVisibility(View.GONE);
-   imageAdapter.notifyDataSetChanged();
-   getSupportActionBar().setTitle(activity.getResources().getString(R.string.recentimages)
-           + "(" + mModel.size() + "/1000)");
-   TextView tvNoDataFound = (TextView) findViewById(R.id.empty_list_view);
-   tvNoDataFound.setVisibility(View.VISIBLE);
-   imagegrid.setEmptyView(findViewById(R.id.empty_list_view));
-
-  }
- }
 
  @SuppressWarnings("deprecation")
  private void showAlertToSelectImageNumbers(String messageInfo) {
@@ -311,24 +156,22 @@ public class AndroidCustomGalleryActivity extends BaseAppCompatActivity {
   ab.show();
  }
 
- StoreSelectImages mStoreSelectImages;
-
  @Override
  protected void onResume() {
   // TODO Auto-generated method stub
   super.onResume();
-  try {
-   if (mStoreSelectImages != null) {
-    if (!mStoreSelectImages.isCancelled()) {
-     mStoreSelectImages.cancel(true);
-    }
-   } else {
-    mStoreSelectImages = new StoreSelectImages();
-   }
-   mStoreSelectImages.execute();
-  } catch (Exception e) {
-   e.printStackTrace();
-  }
+       /* try {
+            if (mStoreSelectImages != null) {
+                if (!mStoreSelectImages.isCancelled()) {
+                    mStoreSelectImages.cancel(true);
+                }
+            } else {
+                mStoreSelectImages = new StoreSelectImages();
+            }
+//            mStoreSelectImages.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
  }
 
  @Override
@@ -370,11 +213,104 @@ public class AndroidCustomGalleryActivity extends BaseAppCompatActivity {
  public void onBackPressed() {
   // TODO Auto-generated method stub
   super.onBackPressed();
-  try {
-   mStoreSelectImages.cancel(true);
-  } catch (Exception e) {
-   e.printStackTrace();
+//        try {
+//            mStoreSelectImages.cancel(true);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+ }
+
+ private final int RESULT_LOAD_IMAGE = 1;
+
+ private void pickImage() {
+  String action;
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+   action = Intent.ACTION_OPEN_DOCUMENT;
+  } else {
+   action = Intent.ACTION_PICK;
   }
+  Intent i = new Intent(
+          action,
+          MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+  i.addFlags(FLAG_GRANT_READ_URI_PERMISSION);
+  i.setType("image/*");
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+   i.addFlags(FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+  }
+  startActivityForResult(i, RESULT_LOAD_IMAGE);
+ }
+
+ @Override
+ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+  super.onActivityResult(requestCode, resultCode, data);
+  final String[] filePathColumn = {MediaStore.Images.Media.DATA,
+          MediaStore.Images.Media._ID, MediaStore.Images.Media.DATE_TAKEN, MediaStore.Images.Media.LATITUDE, MediaStore.Images.Media
+          .LONGITUDE, MediaStore.Images.Media.SIZE};
+  if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+   Uri selectedImage = data.getData();
+   Cursor imagecursor = getContentResolver().query(selectedImage,
+           filePathColumn, null, null, null);
+   imagecursor.moveToFirst();
+
+   final SelectedImageModel m = new SelectedImageModel();
+   int image_column_index = imagecursor
+           .getColumnIndex(MediaStore.Images.Media._ID);
+   m.setId(imagecursor.getInt(image_column_index));
+   int dataColumnIndex = imagecursor
+           .getColumnIndex(MediaStore.Images.Media.DATA);
+   m.setThumbnails(MediaStore.Images.Thumbnails.getThumbnail(
+           getApplicationContext().getContentResolver(), m.getId(),
+           MediaStore.Images.Thumbnails.MINI_KIND, null));
+   m.setArrPath(imagecursor.getString(dataColumnIndex));
+   m.setLatitude(imagecursor.getDouble(imagecursor.getColumnIndex(MediaStore.Images.Media.LATITUDE)));
+   m.setLongitude(imagecursor.getDouble(imagecursor.getColumnIndex(MediaStore.Images.Media.LONGITUDE)));
+   m.setSizeInMB((imagecursor.getInt(imagecursor.getColumnIndex(MediaStore.Images.Media.SIZE)) / 1024) / 1024);
+//                    selectedImageModel.setPathOfSelectedImage(m.getArrPath());
+   m.setPathOfSelectedImage(m.getArrPath());
+//                    selectedImageModel.setUriOfImage(Uri.parse(Uri.fromFile(new File(m.getArrPath())).toString()));
+
+
+   m.setUriOfImage(selectedImage);
+
+   // DateTaken
+   Calendar c = Calendar.getInstance();
+   c.setTimeInMillis(imagecursor.getLong(imagecursor
+           .getColumnIndex(MediaStore.Images.Media.DATE_TAKEN)));
+   m.setDATE_TAKEN(AppController.getDate(c.getTimeInMillis(),
+           AppController.DATE_FORMAT));
+   m.setDATE_TAKEN(m.getDATE_TAKEN());
+   if (m.getArrPath() == null) {
+    m.setArrPath(new File(String.valueOf(m.getUriOfImage())).getPath());
+    m.setPathOfSelectedImage(m.getArrPath());
+    AppHelper.getFileDataFromDrawable(activity, m);
+   }
+   mSelectedImagesModel = m;
+
+   imagecursor.close();
+
+//                ImageView imageView = (ImageView) findViewById(R.id.imgView);
+//                imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+   Glide.with(activity).load(m.getUriOfImage()).listener(new RequestListener<Drawable>() {
+    @Override
+    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+     image.setImageResource(R.mipmap.add);
+     pb_loader.setVisibility(View.GONE);
+     return false;
+    }
+
+    @Override
+    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean
+            isFirstResource) {
+     pb_loader.setVisibility(View.GONE);
+     return false;
+    }
+   }).into(image);
+   pb_loader.setVisibility(View.VISIBLE);
+  }else if(resultCode == RESULT_CANCELED){
+   activity.finish();
+  }
+
+
  }
 
 }

@@ -103,7 +103,7 @@
             android:name=".SelectImageDialogActivity"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".ChangeStatusActivity"

@@ -15,13 +15,17 @@ public class URLData {
     // public static final String BASE_URL =
 //	 "http://devapi.ichangemycity.in/engineer/v1/";
 
-//    QA
+    //    QA
 //    public static final String BASE_URL = "http://qaapi.ichangemycity.in/engineer/v1/";
-//    public static final String BASE_URL_UPLOAD_IMAGE = "https://qafiles.ichangemycity.com/swachhata/complaints";
+//    //    public static final String BASE_URL_UPLOAD_IMAGE = "https://qafiles.ichangemycity.com/swachhata/complaints";
+////    Old API call to upload image
+//        public static final String BASE_URL_UPLOAD_IMAGE= "http://qaapi.ichangemycity.in/sbm/v1/"+"file";
+
 
 //    LIVE
     public static final String BASE_URL = "http://api.swachh.city/engineer/v1/";
     public static final String BASE_URL_UPLOAD_IMAGE = "https://files.ichangemycity.com/swachhata/complaints";
+//    Old API call to upload image
 //    public static final String BASE_URL_UPLOAD_IMAGE = "http://api.swachh.city/sbm/v1/" + URLData.FILE;
 
     public static final String AUTH = "auth";
