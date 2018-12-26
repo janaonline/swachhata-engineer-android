@@ -1,0 +1,58 @@
+{
+  "project_info": {
+    "project_number": "933430828390",
+    "firebase_url": "https://swachhbharatengineer.firebaseio.com",
+    "project_id": "swachhbharatengineer",
+    "storage_bucket": "swachhbharatengineer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:933430828390:android:b83613291b0df0ef",
+        "android_client_info": {
+          "package_name": "com.ichangemycity.swachhbharatengineer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "933430828390-6miiiljjqrr6vmem0bknn5ehe5akuhd8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ichangemycity.swachhbharatengineer",
+            "certificate_hash": "0fbe872590f290fe8a51b1d10c7d8f5fe599b259"
+          }
+        },
+        {
+          "client_id": "933430828390-7e806f5j1kgo24b8798tfb65vhpta9du.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnZMM9gNma3ke3Ie_vnu_nyFOS56bHF9Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-51350206-11"
+          }
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "933430828390-7e806f5j1kgo24b8798tfb65vhpta9du.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

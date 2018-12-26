@@ -87,7 +87,10 @@ public class ICMyCPreferenceData {
     public static final String city_id = "city_id";
     public static final String TOKEN_TYPE = "token_type";
     public static final String refresh_token = "refresh_token";
-
+    public static final String REDIRECT_TYPE="REDIRECT_TYPE";
+    public static final String SUBJECT_ID = "SUBJECT_ID";
+    public static final String COMPLAINTVIEWID = "complaintviewid";
+    public static final String isResolved = "isResolved";
 
     public static void setPreference(Context activity, String key, String value) {
         SecurePrefManager.with(activity).set(key).value(value).go();

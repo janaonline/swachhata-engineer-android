@@ -102,7 +102,7 @@ public class OTPVerification extends BaseAppCompatActivity {
                 AppUtils.showProgressDialog(activity, getString(R.string.loading));
                 onResendOtp();
                 //wait for 40 sec until receive resent otp
-                new CountDownTimer(40000, 1000) {
+                new CountDownTimer(60000, 1000) {
 
                     public void onTick(long millisUntilFinished) {
                         resendCode.setClickable(false);

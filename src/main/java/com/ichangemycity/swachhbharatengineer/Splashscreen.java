@@ -30,7 +30,7 @@ import static com.ichangemycity.appdata.AppController.WITHOUT_OTP;
 
 public class Splashscreen extends BaseAppCompatActivity {
     //    List<String> permissionsRequired = new ArrayList<>();
-    Activity activity;
+    public static Activity activity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
