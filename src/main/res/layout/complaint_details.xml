@@ -2,8 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                  xmlns:app="http://schemas.android.com/apk/res-auto"
                                                  xmlns:tools="http://schemas.android.com/tools"
-                                                 android:id="@+id/rootLayout"
-                                                 android:layout_width="match_parent"
+  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
                                                  tools:context=".ComplaintDetail">
 
@@ -122,8 +121,7 @@
 
 
                         <RelativeLayout
-                            android:id="@+id/rl_top"
-                            android:layout_width="fill_parent"
+                          android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:background="@color/white"
@@ -165,14 +163,12 @@
                                     android:background="#f5f6f8">
 
                                     <RelativeLayout
-                                        android:id="@+id/rl_cc_top2"
-                                        android:layout_width="fill_parent"
+                                      android:layout_width="fill_parent"
                                         android:layout_height="72dp" >
 
 
                                         <RelativeLayout
-                                            android:id="@+id/rl_cc_top1"
-                                            android:layout_width="fill_parent"
+                                          android:layout_width="fill_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_marginLeft="16dp"
                                             android:layout_marginRight="16dp"
@@ -236,8 +232,7 @@
                                                 android:textSize="12sp"/>
 
                                             <RelativeLayout
-                                                android:id="@+id/user_down"
-                                                android:layout_width="wrap_content"
+                                              android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_alignLeft="@+id/tv_username"
                                                 android:layout_alignRight="@+id/tv_username"
@@ -267,8 +262,7 @@
                                     android:layout_below="@+id/rl_cc_top">
 
                                     <RelativeLayout
-                                        android:id="@+id/rl_cc_bottom1"
-                                        android:layout_width="fill_parent"
+                                      android:layout_width="fill_parent"
                                         android:layout_height="wrap_content">
 
                                         <RelativeLayout
@@ -318,8 +312,7 @@
                                                     android:layout_height="1dp"
                                                     android:background="#e6e6e6" />
                                                 <RelativeLayout
-                                                    android:id="@+id/not_resolved"
-                                                    android:layout_width="match_parent"
+                                                  android:layout_width="match_parent"
                                                     android:layout_height="wrap_content"
                                                     android:layout_below="@+id/view1"
                                                     android:layout_marginLeft="8dp"
@@ -331,8 +324,7 @@
                                                         android:layout_height="52dp" >
 
                                                         <TextView
-                                                            android:id="@+id/dropdown"
-                                                            android:layout_width="16dp"
+                                                          android:layout_width="16dp"
                                                             android:layout_height="16dp"
                                                             android:layout_gravity="center|right"
                                                             android:background="@mipmap/ic_arrow_drop_down_black_24dp" />
@@ -437,15 +429,13 @@
 
 
                                             <LinearLayout
-                                                android:id="@+id/resolve_notresolve"
-                                                android:layout_width="match_parent"
+                                              android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
                                                 android:layout_below="@+id/category_layout"
                                                 android:orientation="vertical">
 
                                                 <LinearLayout
-                                                    android:id="@+id/not_resolved0"
-                                                    android:layout_width="match_parent"
+                                                  android:layout_width="match_parent"
                                                     android:layout_height="wrap_content"
                                                     android:layout_below="@+id/view1"
                                                     android:layout_marginBottom="16dp"
@@ -535,8 +525,7 @@
                                     </RelativeLayout>
 
                                     <TextView
-                                        android:id="@+id/hours"
-                                        android:layout_width="wrap_content"
+                                      android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="7dp"
                                         android:text=""
@@ -562,8 +551,7 @@
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/loadingString"
-            android:layout_width="match_parent"
+          android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"

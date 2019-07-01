@@ -10,8 +10,7 @@
 	android:orientation="vertical" >
 
 	<android.support.v7.widget.CardView
-		android:id="@+id/cv"
-		android:layout_width="match_parent"
+    android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		app:cardCornerRadius="0dp"
 		card_view:cardElevation="0dp"
@@ -19,8 +18,7 @@
 		card_view:cardUseCompatPadding="true" >
 
 		<RelativeLayout
-			android:id="@+id/rl_top"
-			android:layout_width="fill_parent"
+      android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:background="@color/white"
 			android:descendantFocusability="blocksDescendants"

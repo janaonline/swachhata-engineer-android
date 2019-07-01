@@ -5,8 +5,7 @@
                 android:orientation="vertical" >
 
     <ImageView
-        android:id="@+id/icmyc"
-        android:layout_width="match_parent"
+      android:layout_width="match_parent"
         android:layout_height="72dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"

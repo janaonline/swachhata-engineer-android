@@ -25,16 +25,14 @@
             android:orientation="vertical">-->
 
             <RelativeLayout
-                android:id="@+id/relativelayoutadd"
-                android:layout_width="fill_parent"
+              android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/toolbar"
                 android:layout_above="@+id/rippleViewAddToilet"
                 android:layout_gravity="center">
 
                 <ScrollView
-                    android:id="@+id/scroll"
-                    android:layout_width="match_parent"
+                  android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:elevation="8dp"
                     android:layout_margin="10dp"
@@ -60,8 +58,7 @@
                                 android:textSize="@dimen/text_size_default"/>
 -->
                         <android.support.design.widget.TextInputLayout
-                            android:id="@+id/titleTextInputLayout"
-                            android:layout_width="match_parent"
+                          android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColorHint="@color/black"
                             app:theme="@style/EditTextTheme">
@@ -105,8 +102,7 @@
                                 android:textSize="@dimen/text_size_default"/>-->
 
                             <android.support.design.widget.TextInputLayout
-                                android:id="@+id/titleTextInputLayout2"
-                                android:layout_width="match_parent"
+                              android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textColorHint="@color/black"
                                 app:theme="@style/EditTextTheme">
@@ -146,8 +142,7 @@
                                 android:textSize="@dimen/text_size_default"/>-->
 
                             <android.support.design.widget.TextInputLayout
-                                android:id="@+id/titleTextInputLayout3"
-                                android:layout_width="match_parent"
+                              android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textColorHint="@color/black"
                                 app:theme="@style/EditTextTheme">
@@ -185,8 +180,7 @@
                                     android:textColor="@android:color/darker_gray"
                                     android:textSize="@dimen/text_size_default"/>-->
                                 <android.support.design.widget.TextInputLayout
-                                    android:id="@+id/titleTextInputLayout4"
-                                    android:layout_width="match_parent"
+                                  android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:textColorHint="@color/black"
                                     app:theme="@style/EditTextTheme">

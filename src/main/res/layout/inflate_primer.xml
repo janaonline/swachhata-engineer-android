@@ -7,8 +7,7 @@
               android:weightSum="4">
 
     <RelativeLayout
-        android:id="@+id/pac"
-        android:layout_width="match_parent"
+      android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="2dp"
         android:layout_weight="1"
@@ -64,8 +63,7 @@
         android:background="@color/transparent"/>
 
     <RelativeLayout
-        android:id="@+id/ug"
-        android:layout_width="match_parent"
+      android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="0dp"
         android:layout_weight="1"
@@ -181,8 +179,7 @@
         android:background="@color/transparent"/>
 
     <RelativeLayout
-        android:id="@+id/survey"
-        android:layout_width="match_parent"
+      android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="0dp"
         android:layout_weight="1"
@@ -196,8 +193,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/test"
-        android:layout_width="match_parent"
+      android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="2dp"
         android:layout_weight="1"
@@ -208,8 +204,7 @@
         android:paddingTop="16dp">
 
         <TextView
-            android:id="@+id/textFeedType"
-            android:layout_width="match_parent"
+          android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_gravity="center"

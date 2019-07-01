@@ -13,16 +13,14 @@
         android:minHeight="?attr/actionBarSize" />
 
     <RelativeLayout
-        android:id="@+id/bodyRelativeLayout"
-        android:layout_width="match_parent"
+      android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottomLayout"
         android:layout_below="@+id/toolbar"
         android:background="@android:color/white">
 
         <include
-            android:id="@+id/included"
-            layout="@layout/recyclerview_for_comments"
+          layout="@layout/recyclerview_for_comments"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </RelativeLayout>

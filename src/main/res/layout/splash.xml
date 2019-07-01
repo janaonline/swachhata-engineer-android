@@ -9,8 +9,7 @@
                 android:padding="10dp" >
 
     <ImageView
-        android:id="@+id/icmycText1"
-        android:layout_width="match_parent"
+      android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/lin"
         android:layout_centerHorizontal="true"
@@ -27,16 +26,14 @@
         android:orientation="horizontal" >
 
         <ImageView
-            android:id="@+id/public_eye"
-            android:layout_width="match_parent"
+          android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="fitCenter"
             android:src="@mipmap/public_eye" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/swacchdelhi1"
-        android:layout_width="match_parent"
+      android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/icmycText"
         android:layout_marginTop="16dp"

@@ -29,16 +29,14 @@
             android:orientation="vertical">-->
 
     <RelativeLayout
-        android:id="@+id/relativelayoutadd"
-        android:layout_width="fill_parent"
+      android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
         android:layout_above="@+id/rippleViewFacilities"
         android:layout_gravity="center">
 
         <ScrollView
-            android:id="@+id/scroll"
-            android:layout_width="match_parent"
+          android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:elevation="8dp"
             android:layout_margin="10dp"
@@ -71,8 +69,7 @@
                         app:theme="@style/EditTextTheme">
 
                     <EditText
-                        android:id="@+id/et_number_seats"
-                        android:layout_width="130dp"
+                      android:layout_width="130dp"
                         android:layout_height="wrap_content"
                         android:hint="Number of seats"
                         android:ems="10"
@@ -512,8 +509,7 @@
 
 
                     <EditText
-                        android:id="@+id/et_other_facility"
-                        android:layout_width="fill_parent"
+                      android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:hint="Other Facility"
                         android:ems="10"
@@ -541,8 +537,7 @@
                      >
 
                     <LinearLayout
-                        android:id="@+id/layout1"
-                        android:layout_width="wrap_content"
+                      android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:orientation="vertical"
@@ -558,22 +553,19 @@
 
 
                         <RadioGroup
-                            android:id="@+id/radio_grp_fee"
-                            android:layout_width="wrap_content"
+                          android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:orientation="horizontal">
 
                             <RadioButton
-                                android:id="@+id/radio_fee_yes"
-                                android:layout_width="wrap_content"
+                              android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:checked="true"
                                 android:text="@string/yes" />
 
                             <RadioButton
-                                android:id="@+id/radio_fee_no"
-                                android:layout_width="wrap_content"
+                              android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:text="@string/no" />
@@ -598,15 +590,13 @@
                         android:textColor="@android:color/darker_gray"
                         android:textSize="@dimen/text_size_default" />-->
                     <android.support.design.widget.TextInputLayout
-                        android:id="@+id/titleTextInputLayout"
-                        android:layout_width="match_parent"
+                      android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColorHint="@color/black"
                         app:theme="@style/EditTextTheme">
 
                     <EditText
-                        android:id="@+id/et_amount"
-                        android:layout_width="wrap_content"
+                      android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="Amount"
                         android:ems="10"

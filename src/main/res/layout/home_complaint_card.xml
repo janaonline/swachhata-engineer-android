@@ -10,8 +10,7 @@
               android:orientation="vertical" >
 
     <android.support.v7.widget.CardView
-        android:id="@+id/cv"
-        android:layout_width="match_parent"
+      android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stateListAnimator="@anim/lift_on_touch"
         app:cardCornerRadius="0dp"
@@ -20,8 +19,7 @@
         card_view:cardUseCompatPadding="true" >
 
         <RelativeLayout
-            android:id="@+id/rl_top"
-            android:layout_width="fill_parent"
+          android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:descendantFocusability="blocksDescendants"
@@ -83,8 +81,7 @@
             </RelativeLayout>
 
             <View
-                android:id="@+id/view0"
-                android:layout_width="match_parent"
+              android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:layout_below="@+id/rl_top_feed"
                 android:background="#e6e6e6" />
@@ -142,8 +139,7 @@
                         android:textSize="12sp" />
 
                     <RelativeLayout
-                        android:id="@+id/user_down"
-                        android:layout_width="wrap_content"
+                      android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignLeft="@+id/tv_username"
                         android:layout_below="@+id/tv_username"
@@ -165,8 +161,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/rl_cc_middle"
-                    android:layout_width="match_parent"
+                  android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/rl_cc_top" >
 
@@ -244,8 +239,7 @@
                                 android:textSize="14sp" />
 
                             <TextView
-                                android:id="@+id/DOT"
-                                android:layout_width="8dp"
+                              android:layout_width="8dp"
                                 android:layout_height="8dp"
                                 android:layout_alignLeft="@+id/complaint_category"
                                 android:layout_alignRight="@+id/complaint_category"
@@ -279,8 +273,7 @@
                         android:background="#e6e6e6" />
 
                     <RelativeLayout
-                        android:id="@+id/not_resolved"
-                        android:layout_width="match_parent"
+                      android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/view"
                         android:layout_marginLeft="8dp"
@@ -292,8 +285,7 @@
                             android:layout_height="wrap_content" >
 
                             <TextView
-                                android:id="@+id/dropdown"
-                                android:layout_width="16dp"
+                              android:layout_width="16dp"
                                 android:layout_height="16dp" android:visibility="gone"
                                 android:layout_gravity="center|right"
                                 android:background="@mipmap/ic_arrow_drop_down_black_24dp" />

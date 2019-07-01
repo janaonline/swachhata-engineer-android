@@ -206,6 +206,7 @@ public class WebserviceHelper {
 
     private static void doGet(final Activity activity, final String url, final OnResponseListener onResponseListener,
                               final boolean isToShowProgressDialog, final int headerType) {
+        AppUtils.hideProgressDialog(activity);
         if (isToShowProgressDialog)
             AppController.showProgressDialog(activity, activity.getResources().getString(R.string.loading));
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
@@ -213,7 +214,6 @@ public class WebserviceHelper {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(final JSONObject response) {
-                        if (isToShowProgressDialog)
                             AppController.hideProgressDialog(activity);
                         AppController.traceLog("URL : ", url);
                         AppController.traceLog("Response : ", response + "");
