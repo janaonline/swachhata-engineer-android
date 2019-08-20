@@ -234,14 +234,13 @@ public class UserMobileNumber extends BaseAppCompatActivity {
 
     int retryCount;
 
-    private void setToolbarAndCustomizeTitle(Toolbar toolbar, String title) {
+    private void setToolbarAndCustomizeTitle(final Toolbar toolbar, String title) {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(title);
-        toolbar.setBackgroundColor(Color.WHITE);
-//        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new OnClickListener() {
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 activity.finish();
