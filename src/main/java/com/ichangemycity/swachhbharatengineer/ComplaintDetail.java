@@ -20,6 +20,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -105,50 +106,48 @@ public class ComplaintDetail extends BaseAppCompatActivity {
         activity = ComplaintDetail.this;
         BaseAppCompatActivity.activity = activity;
         d = new Dialog(activity);
-        satisfaction = (TextView) findViewById(R.id.satisfaction);
-        un_satisfied = (TextView) findViewById(R.id.un_satisfied);
-        neutral = (TextView) findViewById(R.id.neutral);
-        frameSpinner = (FrameLayout) findViewById(R.id.frameSpinner);
-        locateComplaint = (ImageView) findViewById(R.id.locateComplaint);
-        navigateComplaint = (ImageView) findViewById(R.id.navigateComplaint);
-        change_status = (ImageView) findViewById(R.id.change_status);
-        framePictures = (FrameLayout) findViewById(R.id.framePictures);
-        complaint_image = (NetworkImageView) findViewById(R.id.complaint_image);
-        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
-        toolbar = (Toolbar) findViewById(R.id.maintoolbar);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        complaint_landmark = (TextView) findViewById(R.id.complaint_landmark);
-        frameLoading = (FrameLayout) findViewById(R.id.frameLoading);
+        satisfaction = findViewById(R.id.satisfaction);
+        un_satisfied = findViewById(R.id.un_satisfied);
+        neutral = findViewById(R.id.neutral);
+        frameSpinner = findViewById(R.id.frameSpinner);
+        locateComplaint = findViewById(R.id.locateComplaint);
+        navigateComplaint = findViewById(R.id.navigateComplaint);
+        change_status = findViewById(R.id.change_status);
+        framePictures = findViewById(R.id.framePictures);
+        complaint_image = findViewById(R.id.complaint_image);
+        collapsingToolbar = findViewById(R.id.collapsingToolbar);
+        toolbar = findViewById(R.id.maintoolbar);
+        tabLayout = findViewById(R.id.tabs);
+        complaint_landmark = findViewById(R.id.complaint_landmark);
+        frameLoading = findViewById(R.id.frameLoading);
         frameLoading.setVisibility(View.VISIBLE);
-        viewPager = (WrapContentViewPager) findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
         adapters = new ViewPagerAdapter(getSupportFragmentManager());
         tabLayout.setupWithViewPager(viewPager);
-        resolved = (LinearLayout) findViewById(R.id.resolved);
-        hours_ago = (TextView) findViewById(R.id.hours_ago);
-        user_image = (CircleImageView) findViewById(R.id.user_image);
-        complaintLocation = (TextView) findViewById(R.id.complaintLocation);
-        complaint_category = (TextView) findViewById(R.id.complaint_category);
-        voteup = (TextView) findViewById(R.id.voteup);
-        comments = (TextView) findViewById(R.id.comments);
-        appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
-        complaint_status = (TextView) findViewById(R.id.complaint_status);
+        resolved = findViewById(R.id.resolved);
+        hours_ago = findViewById(R.id.hours_ago);
+        user_image = findViewById(R.id.user_image);
+        complaintLocation = findViewById(R.id.complaintLocation);
+        complaint_category = findViewById(R.id.complaint_category);
+        voteup = findViewById(R.id.voteup);
+        comments = findViewById(R.id.comments);
+        appBarLayout = findViewById(R.id.appbarlayout);
+        complaint_status = findViewById(R.id.complaint_status);
         //voteup/feedback
 //        cta_btn = (LinearLayout) ComplaintDetail.this
 //                .findViewById(R.id.not_resolved);
 //        cta_feedback = (LinearLayout) ComplaintDetail.this
 //                .findViewById(R.id.resolved);
-        locationText = (TextView) findViewById(R.id.locationText);
-        locationlandmark = (TextView) findViewById(R.id.locationlandmark);
-        viewLine = (View) ComplaintDetail.this.findViewById(R.id.view);
-        changeStatus = (Spinner) findViewById(R.id.changeStatus);
+        locationText = findViewById(R.id.locationText);
+        locationlandmark = findViewById(R.id.locationlandmark);
+        viewLine = ComplaintDetail.this.findViewById(R.id.view);
+        changeStatus = findViewById(R.id.changeStatus);
         change_status.setVisibility(View.GONE);
-        locateComplaint.setColorFilter(Color.parseColor("#757575"));
-        navigateComplaint.setColorFilter(Color.parseColor("#757575"));
         setToolbarAndCustomizeTitle(toolbar, " ");
         runGetComplaintWebService();
 
-        comment = (TextView) findViewById(R.id.comment);
-        share = (TextView) findViewById(R.id.share);
+        comment = findViewById(R.id.comment);
+        share = findViewById(R.id.share);
 
     }
 
@@ -170,7 +169,7 @@ public class ComplaintDetail extends BaseAppCompatActivity {
 
     private void runGetComplaintWebService() {
         frameLoading.setVisibility(View.GONE);
-        ((RelativeLayout) findViewById(R.id.parentLayout)).setVisibility(View.GONE);
+        findViewById(R.id.parentLayout).setVisibility(View.GONE);
         AppController.showProgressDialog(activity, getString(R.string.loading));
         final String url = URLData.BASE_URL
                 + URLData.COMPLAINT_ID
@@ -231,7 +230,7 @@ public class ComplaintDetail extends BaseAppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            ((RelativeLayout) findViewById(R.id.parentLayout)).setVisibility(View.VISIBLE);
+            findViewById(R.id.parentLayout).setVisibility(View.VISIBLE);
             AppController.hideProgressDialog(activity);
             loadDataIntoComponents();
             initiateChangeStatusEventListener();
@@ -309,8 +308,12 @@ public class ComplaintDetail extends BaseAppCompatActivity {
 //        setOffsetChangeListenerWhileScroll();
         locationText.setText(complaintDetailData.getLocation());
         locationlandmark.setText(complaintDetailData.getLandmark());
-        tv_username = (TextView) findViewById(R.id.tv_username);
+        tv_username = findViewById(R.id.tv_username);
         complaint_landmark.setText(complaintDetailData.getLandmark());
+        complaint_landmark
+            .setText(
+                Html.fromHtml("<font><b>"+getString(R.string.more_information) + "</font></b> - " + complaintDetailData.getLandmark()));
+
         tv_username.setText(complaintDetailData.getFull_name());
         hours_ago.setText(complaintDetailData.getPosted_on());
         ParseComplaintData.setImage(activity, user_image, null, complaintDetailData.getUser_image(), true);
@@ -396,7 +399,7 @@ public class ComplaintDetail extends BaseAppCompatActivity {
 
         d.setContentView(R.layout.inflate_listview_change_status);
         cStatusListData = new ArrayList<>();
-        list = (ListView) d.findViewById(R.id.listView);
+        list = d.findViewById(R.id.listView);
         new SetListData(d).execute();
     }
 

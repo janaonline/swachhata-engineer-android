@@ -148,7 +148,10 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             AppController.hideProgressDialog(activity);
-            if (AppController.selectedComplaintChangeStatusOptions.getStatusID() == AppController.COMPLAINT_RESOLVED && TextUtils.isEmpty
+            /**
+             * Image mandatory to resolve complaint
+             * */
+           /* if (AppController.selectedComplaintChangeStatusOptions.getStatusID() == AppController.COMPLAINT_RESOLVED && TextUtils.isEmpty
                     (AppController.mSelectedImageModels.getPathOfSelectedImage())) {
 
                 AppController.showAlert(activity, "", getResources().getString(R.string
@@ -163,7 +166,7 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
 
                     }
                 });
-            } else {
+            } else {*/
                 if (!TextUtils.isEmpty(AppController.mSelectedImageModels.getPathOfSelectedImage())) {
                     uploadImage();
                 } else {
@@ -173,7 +176,7 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
                         AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, getResources().getString(R.string.write_a_comment));
 //                    Toast.makeText(activity, getResources().getString(R.string.write_a_comment), Toast.LENGTH_SHORT).show();
                 }
-            }
+            /*}*/
         }
     }
 

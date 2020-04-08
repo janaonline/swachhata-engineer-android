@@ -1,46 +1,48 @@
 {
   "project_info": {
-    "project_id": "swachhbharatengineer",
     "project_number": "933430828390",
-    "name": "SwachhBharatEngineer"
+    "firebase_url": "https://swachhbharatengineer.firebaseio.com",
+    "project_id": "swachhbharatengineer",
+    "storage_bucket": "swachhbharatengineer.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:933430828390:android:b83613291b0df0ef",
-        "client_id": "android:com.ichangemycity.swachhbharatengineer",
-        "client_type": 1,
         "android_client_info": {
-          "package_name": "com.ichangemycity.swachhbharatengineer",
-          "certificate_hash": []
+          "package_name": "com.ichangemycity.swachhbharatengineer"
         }
       },
-      "oauth_client": [],
-      "api_key": [],
-      "services": {
-        "analytics_service": {
-          "status": 2,
-          "analytics_property": {
-            "tracking_id": "UA-51350206-11"
+      "oauth_client": [
+        {
+          "client_id": "933430828390-6miiiljjqrr6vmem0bknn5ehe5akuhd8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ichangemycity.swachhbharatengineer",
+            "certificate_hash": "0fbe872590f290fe8a51b1d10c7d8f5fe599b259"
           }
         },
-        "cloud_messaging_service": {
-          "status": 2,
-          "apns_config": []
-        },
+        {
+          "client_id": "933430828390-7e806f5j1kgo24b8798tfb65vhpta9du.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoZ2xO-3ZopJXeNCBmGDW4329FaXT8DcQ"
+        }
+      ],
+      "services": {
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "google_signin_service": {
-          "status": 1
-        },
-        "ads_service": {
-          "status": 1
+          "other_platform_oauth_client": [
+            {
+              "client_id": "933430828390-7e806f5j1kgo24b8798tfb65vhpta9du.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
   ],
-  "client_info": [],
-  "ARTIFACT_VERSION": "1"
+  "configuration_version": "1"
 }

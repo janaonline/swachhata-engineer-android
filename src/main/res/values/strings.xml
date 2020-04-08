@@ -68,5 +68,7 @@
     <string name="confirm_password" translatable="false">Confirm password</string>
     <string name="change_status_rejected" translatable="false">You\'re changing status of the complaint to rejected. Please select a reason
         from below for rejecting this complaint.</string>
+  <!--COVID-19-->
+  <string name="more_information">More Info</string>
 
 </resources>

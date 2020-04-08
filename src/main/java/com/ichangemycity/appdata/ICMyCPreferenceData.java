@@ -25,6 +25,7 @@ public class ICMyCPreferenceData {
     public static final String Longitude = "Longitude";
     public static final String userProfileImage = "userProfileImage";
     public static final String roleId = "role_id";
+    public static final String designation = "designation";
     public static final String posted_complaint_count = "posted_complaint_count";
     public static final String voted_up_count = "voted_up_count";
     public static final String un_assigned_count = "un_assigned_count";

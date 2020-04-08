@@ -35,4 +35,5 @@
 	<color name="white_edittext">#fafafa</color>
 	<color name="body">#e5e5e5</color>
   <color name="complaint_id_bgcolor">#e6e6e6</color>
+	<color name="blue_fab_bg">#0981fc</color>
 </resources>

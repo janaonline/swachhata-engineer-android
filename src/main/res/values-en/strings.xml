@@ -50,5 +50,6 @@
   <string name="get_started">NEXT</string>
   <string name="yes">Yes</string>
 	<string name="no">No</string>
+	<string name="more_information">More Info</string>
 
 </resources>

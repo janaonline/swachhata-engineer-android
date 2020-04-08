@@ -13,6 +13,7 @@ public class AppConstant {
     public static int selectedPublicToiletSection= -1;
     public static final String ONBOARDING_TYPE_SET_EMAIL_PASSWORD = "setEmailPassword";
     public static final String ONBOARDING_TYPE_LOGIN = "login";
+    public static String deviceToken="";
 
 
 }

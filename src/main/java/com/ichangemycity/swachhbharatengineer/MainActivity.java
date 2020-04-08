@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -310,31 +311,34 @@ public class MainActivity extends AppCompatActivity
   }
 
   private static View headerView;
-  private static ImageView menuIcon1;
-  private TextView userNameLeftMenu, textViewLocation;
+  //  private static ImageView menuIcon1;
+  private TextView userNameLeftMenu, textViewLocation, userDesignationLeftMenu;
 
   @Deprecated
   private void setLeftMenuProfileDetails() {
     headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
-    menuIcon1 = (ImageView) drawer.findViewById(R.id.menuIcon1);
-    menuIcon1.setVisibility(View.VISIBLE);
+//    menuIcon1 = (ImageView) drawer.findViewById(R.id.menuIcon1);
+//    menuIcon1.setVisibility(View.VISIBLE);
     CircleImageView imageView = (CircleImageView) drawer.findViewById(R.id.imageView1);
     imageView.setImageResource(R.mipmap.ic_not_found);
     imageView.setTag(SecurePrefManager.with(activity).get(ICMyCPreferenceData.userProfileImage)
         .defaultValue("http://icmycsaasqa.ichangemycity" +
             ".com/android/image/image_not_found.png").go());
+
     AppUtils.setImage(activity, imageView, null,
         SecurePrefManager.with(activity).get(ICMyCPreferenceData.userProfileImage).defaultValue("")
             .go(), true);
-    userNameLeftMenu = (TextView) drawer.findViewById(R.id.userNameLeftMenu);
-    textViewLocation = (TextView) drawer.findViewById(R.id.textViewLocation);
+    userNameLeftMenu = drawer.findViewById(R.id.userNameLeftMenu);
+    textViewLocation = drawer.findViewById(R.id.textViewLocation);
+    userDesignationLeftMenu = drawer.findViewById(R.id.userDesignationLeftMenu);
 
-    menuIcon1.setOnClickListener(new View.OnClickListener() {
+
+   /* menuIcon1.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         drawer.closeDrawer(Gravity.LEFT);
       }
-    });
+    });*/
     userNameLeftMenu.setText(
         SecurePrefManager.with(activity).get(ICMyCPreferenceData.user_full_name)
             .defaultValue(activity.getResources()
@@ -343,6 +347,14 @@ public class MainActivity extends AppCompatActivity
     textViewLocation.setText(SecurePrefManager.with(activity).get(ICMyCPreferenceData
         .location).defaultValue
         ("").go());
+    if (!TextUtils.isEmpty(
+        ICMyCPreferenceData.getPreferenceItem(activity, ICMyCPreferenceData.designation, ""))) {
+      userDesignationLeftMenu.setVisibility(View.VISIBLE);
+      userDesignationLeftMenu.setText(
+          ICMyCPreferenceData.getPreferenceItem(activity, ICMyCPreferenceData.designation, ""));
+    } else {
+      userDesignationLeftMenu.setVisibility(View.GONE);
+    }
 
 
   }
@@ -491,9 +503,7 @@ public class MainActivity extends AppCompatActivity
         }
       }
     }
-    if (isFirstTime)
-
-    {
+    if (isFirstTime) {
       isFirstTime = false;
     }
 
@@ -507,6 +517,7 @@ public class MainActivity extends AppCompatActivity
 
 
   private void getProfileDetailsAndRunHomeFeed() {
+
     final String url = URLData.BASE_URL + URLData.USERS + "?apiKey=" + URLData.API_KEY;
     new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null,
         new OnResponseListener() {
@@ -632,6 +643,7 @@ public class MainActivity extends AppCompatActivity
         String latitude = userData.get("latitude")
             .toString() + "";
         String roleId = userData.optString("role_id");
+        String designation = userData.optString("designation");
 
         String longitude = userData.get("longitude")
             .toString() + "";
@@ -697,6 +709,11 @@ public class MainActivity extends AppCompatActivity
                         "assignedCount")
                         .toString());
           }
+        }
+        if (!TextUtils.isEmpty(designation)) {
+          ICMyCPreferenceData.setPreference(activity, ICMyCPreferenceData.designation, designation);
+        } else {
+          ICMyCPreferenceData.setPreference(activity, ICMyCPreferenceData.designation, "");
         }
         ICMyCPreferenceData.setPreference(
             MainActivity.this,
@@ -841,14 +858,6 @@ public class MainActivity extends AppCompatActivity
               hideSwipeProgress();
               AppController.setEmptyViewForRecyclerView(activity, mRecyclerView);
 
-              //need clarify
-        /*AppController.handleVolleyError(activity, (RelativeLayout) activity.findViewById(R.id.parentLayout), volleyError);
-        NetworkResponse networkResponse = volleyError.networkResponse;
-        if (retryCount < AppConstant.MAX_RETRY_API_REQUEST && currentPage == 1 && networkResponse != null) {
-            retryCount++;
-            showSwipeProgress();
-            runHomeFeedWebService(ComplaintType, true);
-        }*/
             }
 
             @Override

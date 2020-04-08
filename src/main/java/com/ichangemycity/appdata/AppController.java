@@ -15,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -190,7 +191,7 @@ public class AppController extends MultiDexApplication {
 
 
     public static void traceLog(String key, String value) {
-//        Log.i(key, value);
+        Log.i(key, value);
     }
 
 
@@ -222,7 +223,6 @@ public class AppController extends MultiDexApplication {
     //    public static ArrayList<String> images = new ArrayList<>();
     public static SelectedImageModel mSelectedImageModels = new SelectedImageModel();
     private Tracker mTracker;
-    public static final String GCM_SENDER_ID = "403948698822";
 
     @Override
     public void onCreate() {
