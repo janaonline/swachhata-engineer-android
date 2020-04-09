@@ -51,7 +51,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         try {
           handleNotification("" + new JSONObject()
               .put("message", remoteMessage.getNotification().getBody())
-              .put("title", getString(R.string.app_name)));
+              .put("title", remoteMessage.getNotification().getTitle()));
         } catch (JSONException e) {
           e.printStackTrace();
         }
