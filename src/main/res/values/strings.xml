@@ -33,8 +33,7 @@
     <string name="no_read_notification">No read notification</string>
   <string name="no_data">No Data</string>
   <string name="rejected">Rejected</string>
-    <string name="please_upload_an_image_and_then_resolve_the_complaint_to_resolved">Please upload an image and then resolve the complaint to resolved</string>
-    <string name="address">Address</string>
+  <string name="address">Address</string>
     <string name="landmark">Landmark</string>
     <string name="notification">"Notification "</string>
   <string name="all_complaints">All Complaints</string>

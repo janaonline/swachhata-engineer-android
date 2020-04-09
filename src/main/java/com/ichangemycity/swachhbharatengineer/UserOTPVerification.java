@@ -214,7 +214,7 @@ public class UserOTPVerification extends BaseAppCompatActivity {
 
     }
 
-    @SuppressWarnings("deprecation")
+
     private void  validateOTP(final String otpText) {
         AppController.showProgressDialog(activity, activity.getResources().getString(R.string.loading));
         final String url=URLData.BASE_URL + URLData.AUTH;

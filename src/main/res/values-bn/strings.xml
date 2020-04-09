@@ -32,8 +32,7 @@
 	<string name="no_read_notification">কোন বিজ্ঞপ্তি পড়া হয়নি</string>
   <string name="no_data">কোন তথ্য নেই</string>
   <string name="rejected">বাতিল করা</string>
-	<string name="please_upload_an_image_and_then_resolve_the_complaint_to_resolved">অনুগ্রহ করে ইমেজ আপলোড করুন এবং তারপর সমাধান করতে অভিযোগ সমাধান করুন</string>
-	<string name="address">ঠিকানা</string>
+  <string name="address">ঠিকানা</string>
 	<string name="landmark">ল্যান্ডমার্ক</string>
 	<string name="notification">"নোটিফিকেশান "</string>
   <string name="all_complaints">সমস্ত অভিযোগগুলি</string>

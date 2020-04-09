@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity
 
   public static Activity activity;
   com.jude.easyrecyclerview.EasyRecyclerView mRecyclerView;
-  @SuppressWarnings("rawtypes")
   private RecyclerView.Adapter mAdapter;
   private SwipeRefreshLayout refreshLayout;
   private RecyclerView.LayoutManager mLayoutManager;
@@ -314,7 +313,7 @@ public class MainActivity extends AppCompatActivity
   //  private static ImageView menuIcon1;
   private TextView userNameLeftMenu, textViewLocation, userDesignationLeftMenu;
 
-  @Deprecated
+
   private void setLeftMenuProfileDetails() {
     headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
 //    menuIcon1 = (ImageView) drawer.findViewById(R.id.menuIcon1);

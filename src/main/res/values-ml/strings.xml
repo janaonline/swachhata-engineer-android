@@ -31,8 +31,7 @@
 	<string name="no_read_notification">വായിച്ച നോട്ടിഫിക്കേഷനൊന്നുമില്ല</string>
   <string name="no_data">ഡാറ്റ ഇല്ല</string>
   <string name="rejected">നിരാകരിച്ചു</string>
-	<string name="please_upload_an_image_and_then_resolve_the_complaint_to_resolved">ദയവായി ഒരു ചിത്രം അപ്ലോഡ് ചെയ്യുകയും അതിനു ശേഷം പരിഹരിക്കാനുള്ള പരാതി പരിഹരിക്കുകയും ചെയ്യുക.</string>
-	<string name="address">മേൽവിലാസം</string>
+  <string name="address">മേൽവിലാസം</string>
 	<string name="landmark">നാഴികക്കല്ല്</string>
 	<string name="notification">"നോട്ടിഫിക്കേഷൻ "</string>
   <string name="all_complaints">എല്ലാ പരാതികളും</string>

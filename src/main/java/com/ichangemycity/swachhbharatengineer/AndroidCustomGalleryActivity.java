@@ -112,7 +112,7 @@ public class AndroidCustomGalleryActivity extends BaseAppCompatActivity {
     Cursor imagecursor;
 
 
-    @SuppressWarnings("deprecation")
+
     private void showAlertToSelectImageNumbers(String messageInfo) {
         // TODO Auto-generated method stub
         AlertDialog.Builder ab = new AlertDialog.Builder(

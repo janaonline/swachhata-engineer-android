@@ -31,8 +31,7 @@
 	<string name="no_read_notification">कोई रीड(पठन) सूचना नहीं</string>
   <string name="no_data">कोई डाटा नहीं</string>
   <string name="rejected">अस्वीकृत</string>
-	<string name="please_upload_an_image_and_then_resolve_the_complaint_to_resolved">कृपया एक इमेज अपलोड करें और फिर शिकायत का समाधान करें</string>
-	<string name="address">पता</string>
+  <string name="address">पता</string>
 	<string name="landmark">लैंडमार्क</string>
 	<string name="notification">"नोटिफिकेशन "</string>
   <string name="all_complaints">सभी शिकायतें</string>

@@ -31,8 +31,7 @@
 	<string name="no_read_notification">படிக்கப்பட்ட அறிவிப்பு இல்லை</string>
   <string name="no_data">தரவு இல்லை</string>
   <string name="rejected">நிராகரிக்கப்பட்டது</string>
-	<string name="please_upload_an_image_and_then_resolve_the_complaint_to_resolved">தயவுசெய்து ஒரு படத்தைப் பதிவேற்றம் செய்க, அதன் பின்னர் புகார் தீர்க்கப்படுவதற்குச் சரிசெய்யவும்</string>
-	<string name="address">முகவரி</string>
+  <string name="address">முகவரி</string>
 	<string name="landmark">அடையாள இடம்</string>
 	<string name="notification">"அறிவிப்பு "</string>
   <string name="all_complaints">அனைத்துப் புகார்கள்</string>

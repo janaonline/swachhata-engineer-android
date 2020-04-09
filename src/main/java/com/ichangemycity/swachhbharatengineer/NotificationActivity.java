@@ -44,7 +44,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@SuppressWarnings("deprecation")
+
 public class NotificationActivity extends BaseAppCompatActivity implements
         SwipeRefreshLayout.OnRefreshListener {
     public static int btn_acknowledged_position;
@@ -62,7 +62,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
 
     private com.jude.easyrecyclerview.EasyRecyclerView mRecyclerView,
             mRecyclerView2;
-    @SuppressWarnings("rawtypes")
+
     public static RecyclerView.Adapter mAdapter, mAdapter2;
     private RecyclerView.LayoutManager mLayoutManager, mLayoutManager2;
     private static boolean isDrawerOpened = false;

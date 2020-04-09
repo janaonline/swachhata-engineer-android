@@ -9,7 +9,6 @@
   android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
   <ImageView
-    android:id="@+id/menuIcon1"
     android:layout_width="48dp"
     android:layout_height="48dp"
     android:background="@color/transparent"
