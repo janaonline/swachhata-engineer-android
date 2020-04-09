@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
 import com.ichangemycity.base.BaseAppCompatActivity;
@@ -210,4 +211,21 @@ public class Splashscreen extends BaseAppCompatActivity {
     }
   }
 
+  @Override
+  protected void onNewIntent(Intent intent) {
+    String action = intent.getAction();
+    String data = intent.getDataString();
+    if (data != null) {
+      ICMyCPreferenceData.setPreference(activity, ICMyCPreferenceData.isDeeplinked, "1");
+      if (Intent.ACTION_VIEW.equals(action) && data.contains("/complaints/")) {
+//              Complaint deeplink
+        ICMyCPreferenceData.setPreference(activity, ICMyCPreferenceData.isDeeplinked, "1");
+        AppController.selectedComplaintData.setComplaintId(data
+            .substring(data.lastIndexOf("/") + 1));
+      }
+    } else {
+      // do nothing
+    }
+
+  }
 }
