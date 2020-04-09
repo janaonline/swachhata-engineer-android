@@ -172,11 +172,8 @@ public class GPSTracker extends Service implements LocationListener {
                         public void onConnected(Bundle arg0) {
                             // TODO Auto-generated method stub
                         }
-                    }).addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-                        @Override
-                        public void onConnectionFailed(ConnectionResult arg0) {
-                            // TODO Auto-generated method stub
-                        }
+                    }).addOnConnectionFailedListener(arg0 -> {
+                        // TODO Auto-generated method stub
                     }).build();
             googleApiClient.connect();
             LocationRequest locationRequest = LocationRequest.create();
@@ -190,36 +187,33 @@ public class GPSTracker extends Service implements LocationListener {
             // **************************
             PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi
                     .checkLocationSettings(googleApiClient, builder.build());
-            result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
-                @Override
-                public void onResult(LocationSettingsResult result) {
-                    final Status status = result.getStatus();
-                    // final LocationSettingsStates state = result.getLocationSettingsStates();
-                    switch (status.getStatusCode()) {
-                        case LocationSettingsStatusCodes.SUCCESS:
-                            // All location settings are satisfied. The client can
-                            // initialize location
-                            // requests here.
-                            break;
-                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                            // Location settings are not satisfied. But could be
-                            // fixed by showing the user
-                            // a dialog.
-                            try {
-                                // Show the dialog by calling
-                                // startResolutionForResult(),
-                                // and check the result in onActivityResult().
-                                status.startResolutionForResult(mContext, 1000);
-                            } catch (IntentSender.SendIntentException e) {
-                                // Ignore the error.
-                            }
-                            break;
-                        case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                            // Location settings are not satisfied. However, we have
-                            // no way to fix the
-                            // settings so we won't show the dialog.
-                            break;
-                    }
+            result.setResultCallback(result1 -> {
+                final Status status = result1.getStatus();
+                // final LocationSettingsStates state = result.getLocationSettingsStates();
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        // All location settings are satisfied. The client can
+                        // initialize location
+                        // requests here.
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        // Location settings are not satisfied. But could be
+                        // fixed by showing the user
+                        // a dialog.
+                        try {
+                            // Show the dialog by calling
+                            // startResolutionForResult(),
+                            // and check the result in onActivityResult().
+                            status.startResolutionForResult(mContext, 1000);
+                        } catch (IntentSender.SendIntentException e) {
+                            // Ignore the error.
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        // Location settings are not satisfied. However, we have
+                        // no way to fix the
+                        // settings so we won't show the dialog.
+                        break;
                 }
             });
         }

@@ -35,28 +35,19 @@ public class PublicToiletNearbyActivity extends BaseAppCompatActivity {
         setContentView(R.layout.public_toilet_nearby);
 
         activity = PublicToiletNearbyActivity.this;
-        rippleView2 = (RippleView) findViewById(R.id.rippleView2);
+        rippleView2 = findViewById(R.id.rippleView2);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setToolbarAndCustomizeTitle(getResources().getString(R.string.public_toilet_nearby));
 
-        addToiletBtn = (Button) findViewById(R.id.add_toilet_btn);
-        addToiletBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //  Intent intent = new Intent(packagec, .class);
-                rippleView2.performClick();
-                // startActivity(intent);
-            }
+        addToiletBtn = findViewById(R.id.add_toilet_btn);
+        addToiletBtn.setOnClickListener(view -> {
+            //  Intent intent = new Intent(packagec, .class);
+            rippleView2.performClick();
+            // startActivity(intent);
         });
-        rippleView2.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-            @Override
-            public void onComplete(RippleView rippleView) {
-
-                startActivity(new Intent(PublicToiletNearbyActivity.this,
-                        PublicToiletAddToiletActivity.class));
-            }
-        });
+        rippleView2.setOnRippleCompleteListener(rippleView -> startActivity(new Intent(PublicToiletNearbyActivity.this,
+                PublicToiletAddToiletActivity.class)));
 
     }
 
@@ -64,12 +55,7 @@ public class PublicToiletNearbyActivity extends BaseAppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> activity.finish());
         final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);

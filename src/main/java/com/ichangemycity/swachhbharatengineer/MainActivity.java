@@ -73,27 +73,27 @@ public class MainActivity extends AppCompatActivity
     super.onCreate(savedInstanceState);
     AppController.assignLanguage(MainActivity.this);
     setContentView(R.layout.activity_main);
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     activity = MainActivity.this;
     clearBackStack();
 
-    toolbar = (Toolbar) findViewById(R.id.toolbar);
+    toolbar = findViewById(R.id.toolbar);
 
     // recycler view
-    mRecyclerView = (com.jude.easyrecyclerview.EasyRecyclerView) findViewById(R.id.list);
-    refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+    mRecyclerView = findViewById(R.id.list);
+    refreshLayout = findViewById(R.id.swipe_container);
     mLayoutManager = new LinearLayoutManager(activity);
     mRecyclerView.setLayoutManager(mLayoutManager);
     initSwipeOptions();
     setToolbarAndCustomizeTitle(toolbar, getResources().getString(R.string.app_name));
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    DrawerLayout drawer = findViewById(R.id.drawer_layout);
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
         this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     drawer.addDrawerListener(toggle);
     toggle.syncState();
 
-    navigationView = (NavigationView) findViewById(R.id.nav_view);
+    navigationView = findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
 
     getProfileDetailsAndRunHomeFeed();
@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity
         .getColor(R.color.gray_closed)));
     complaintFilterModel.add(mComplaintFilterModel);
 
-    complaintFilter = (Spinner) findViewById(R.id.complaintFilter);
+    complaintFilter = findViewById(R.id.complaintFilter);
     ComplaintFilterSpinnerAdapter complaintFilterSpinnerAdapter = new ComplaintFilterSpinnerAdapter(
         activity, complaintFilterModel);
     complaintFilter.setAdapter(complaintFilterSpinnerAdapter);
@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   private void setToolbarAndCustomizeTitle(Toolbar toolbar, String string) {
-    toolbar = (Toolbar) findViewById(R.id.toolbar);
+    toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     actionBar = getSupportActionBar();
     actionBar.setDisplayShowTitleEnabled(true);
@@ -257,7 +257,7 @@ public class MainActivity extends AppCompatActivity
 
   @Override
   public void onBackPressed() {
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    DrawerLayout drawer = findViewById(R.id.drawer_layout);
     if (drawer.isDrawerOpen(GravityCompat.START)) {
       drawer.closeDrawer(GravityCompat.START);
     } else {
@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity
     headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
 //    menuIcon1 = (ImageView) drawer.findViewById(R.id.menuIcon1);
 //    menuIcon1.setVisibility(View.VISIBLE);
-    CircleImageView imageView = (CircleImageView) drawer.findViewById(R.id.imageView1);
+    CircleImageView imageView = drawer.findViewById(R.id.imageView1);
     imageView.setImageResource(R.mipmap.ic_not_found);
     imageView.setTag(SecurePrefManager.with(activity).get(ICMyCPreferenceData.userProfileImage)
         .defaultValue("http://icmycsaasqa.ichangemycity" +
@@ -507,9 +507,7 @@ public class MainActivity extends AppCompatActivity
       isFirstTime = false;
     }
 
-    drawer = (DrawerLayout)
-
-        findViewById(R.id.drawer_layout);
+    drawer = findViewById(R.id.drawer_layout);
     drawer.closeDrawer(GravityCompat.START);
 
     return true;
@@ -876,7 +874,7 @@ public class MainActivity extends AppCompatActivity
               } else {
                 AppController.setEmptyViewForRecyclerView(activity, mRecyclerView);
                 try {
-                  ((TextView) findViewById(R.id.viewEmpty)).setVisibility(View.GONE);
+                  findViewById(R.id.viewEmpty).setVisibility(View.GONE);
                 } catch (Exception e) {
                 }
               }
@@ -974,7 +972,7 @@ public class MainActivity extends AppCompatActivity
       if (data.size() <= 0) {
         AppController.setEmptyViewForRecyclerView(activity, mRecyclerView);
         try {
-          ((TextView) findViewById(R.id.viewEmpty)).setVisibility(View.VISIBLE);
+          findViewById(R.id.viewEmpty).setVisibility(View.VISIBLE);
           ((TextView) findViewById(R.id.viewEmpty))
               .setText(activity.getResources().getString(R.string.no_complaints));
         } catch (Exception e) {

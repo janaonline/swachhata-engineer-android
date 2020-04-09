@@ -67,44 +67,38 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.AddRem
         if( commentData.getComment_image_url().trim().length()<=0){
             holder.imageLinear.setVisibility(View.GONE);
         }else {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        holder.imageLayout.setVisibility(View.VISIBLE);
-                        holder.imageLinear.setVisibility(View.VISIBLE);
-                        holder.imageLinear.removeAllViews();
-                        String imgUrl = commentData.getComment_image_url();
+            handler.post(() -> {
+                try {
+                    holder.imageLayout.setVisibility(View.VISIBLE);
+                    holder.imageLinear.setVisibility(View.VISIBLE);
+                    holder.imageLinear.removeAllViews();
+                    String imgUrl = commentData.getComment_image_url();
 
 
-                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                                (int) wt_px, (int) ht_px);
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                            (int) wt_px, (int) ht_px);
 
-                        layoutParams.setMargins(0, 0, (int) margin, 0);
+                    layoutParams.setMargins(0, 0, (int) margin, 0);
 
-                        final NetworkImageView image = new NetworkImageView(activity);
-                        image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                        image.setLayoutParams(layoutParams);
+                    final NetworkImageView image = new NetworkImageView(activity);
+                    image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    image.setLayoutParams(layoutParams);
 //                            imageLoader.DisplayImage(imgUrl, R.drawable.pl, image);
-                        ParseComplaintData.setImage(activity, null, image, imgUrl, false);
-                        holder.imageLinear.setTag(imgUrl);
-                        holder.mDescription.setTag(commentData);
-                        image.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View arg1) {
-                                CommentsData cData = (CommentsData) holder.mDescription.getTag();
-                                String url = cData.getComment_image_url();
-                                Intent i = new Intent(Intent.ACTION_VIEW);
-                                i.setData(Uri.parse(url));
-                                activity.startActivity(i);
-                            }
-                        });
-                        holder.imageLinear.addView(image);
+                    ParseComplaintData.setImage(activity, null, image, imgUrl, false);
+                    holder.imageLinear.setTag(imgUrl);
+                    holder.mDescription.setTag(commentData);
+                    image.setOnClickListener(arg1 -> {
+                        CommentsData cData = (CommentsData) holder.mDescription.getTag();
+                        String url = cData.getComment_image_url();
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        activity.startActivity(i);
+                    });
+                    holder.imageLinear.addView(image);
 
-                    } catch (Exception e) {
-                        // TODO: handle exception
-                        e.printStackTrace();
-                    }
+                } catch (Exception e) {
+                    // TODO: handle exception
+                    e.printStackTrace();
                 }
             });
         }
@@ -127,13 +121,13 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.AddRem
 
         public AddRemarkViewHolder(View itemView, int viewType) {
             super(itemView);
-            imageLinear = (LinearLayout) itemView
+            imageLinear = itemView
                     .findViewById(R.id.imageLinear);
-            mDescription = (TextView) itemView.findViewById(R.id.description_count);
-            mName = (TextView) itemView.findViewById(R.id.userName);
-            mUserImage = (de.hdodenhof.circleimageview.CircleImageView) itemView.findViewById(R.id.userImage);
-            mpostedOn = (TextView) itemView.findViewById(R.id.postedOn);
-            imageLayout = (HorizontalScrollView) itemView.findViewById(R.id.imageLayout);
+            mDescription = itemView.findViewById(R.id.description_count);
+            mName = itemView.findViewById(R.id.userName);
+            mUserImage = itemView.findViewById(R.id.userImage);
+            mpostedOn = itemView.findViewById(R.id.postedOn);
+            imageLayout = itemView.findViewById(R.id.imageLayout);
         }
     }
 }

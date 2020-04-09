@@ -461,7 +461,7 @@ public class AppController extends MultiDexApplication {
         } catch (Exception e) {
         }
         try {
-            ViewGroup rootView = (ViewGroup) activity.findViewById(android.R.id.content);
+            ViewGroup rootView = activity.findViewById(android.R.id.content);
             for (int i = 0; i < rootView.getChildCount(); i++) {
                 if (rootView.getChildAt(i) == view) {
                     rootView.removeView(view);
@@ -617,19 +617,11 @@ public class AppController extends MultiDexApplication {
         AlertDialog.Builder ab = new AlertDialog.Builder(activity);
         ab.setTitle(title);
         ab.setMessage(message);
-        ab.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                onButtonClick.onPositiveButtonClicked(dialogInterface);
-            }
-        });
+        ab.setPositiveButton("Ok",
+            (dialogInterface, i) -> onButtonClick.onPositiveButtonClicked(dialogInterface));
         if (isToShowNegativeButton)
-            ab.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    onButtonClick.onNegativeButtonClicked(dialogInterface);
-                }
-            });
+            ab.setNegativeButton("Cancel",
+                (dialogInterface, i) -> onButtonClick.onNegativeButtonClicked(dialogInterface));
         ab.show();
     }
 

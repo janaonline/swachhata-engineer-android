@@ -52,7 +52,7 @@ public class PublicToiletAddImageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_imagefile);
         activity = PublicToiletAddImageActivity.this;
         clearSelectedImage();
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setToolbarAndCustomizeTitle("Add Images");
 
         initialization();
@@ -63,37 +63,15 @@ public class PublicToiletAddImageActivity extends AppCompatActivity {
         margin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, activity
                 .getResources().getDisplayMetrics());
 
-        outsideAddImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAlertToPickImage(AppConstant.PUBLIC_TOILET_OUTSIDE_PIC);
-            }
-        });
-        insideAddImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAlertToPickImage(AppConstant.PUBLIC_TOILET_INSIDE_PIC);
-            }
-        });
-        additionalAddImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAlertToPickImage(AppConstant.PUBLIC_TOILET_ADDITIONAL_PIC);
-            }
-        });
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                rippleViewImages.performClick();
-            }
-        });
-        rippleViewImages.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-            @Override
-            public void onComplete(RippleView rippleView) {
-                startActivity(new Intent(PublicToiletAddImageActivity.this,
-                        PublicToiletThankYouActivity.class));
-            }
-        });
+        outsideAddImage.setOnClickListener(
+            v -> showAlertToPickImage(AppConstant.PUBLIC_TOILET_OUTSIDE_PIC));
+        insideAddImage.setOnClickListener(
+            v -> showAlertToPickImage(AppConstant.PUBLIC_TOILET_INSIDE_PIC));
+        additionalAddImage.setOnClickListener(
+            v -> showAlertToPickImage(AppConstant.PUBLIC_TOILET_ADDITIONAL_PIC));
+        submitButton.setOnClickListener(view -> rippleViewImages.performClick());
+        rippleViewImages.setOnRippleCompleteListener(rippleView -> startActivity(new Intent(PublicToiletAddImageActivity.this,
+                PublicToiletThankYouActivity.class)));
 
         // clear memory for arraylist
         publicToiletOutside.clear();
@@ -104,20 +82,20 @@ public class PublicToiletAddImageActivity extends AppCompatActivity {
     }
 // Id's initialization
     private void initialization() {
-        outsideAddImage = (ImageView) findViewById(R.id.complte_toliet_imageview);
-        insideAddImage = (ImageView) findViewById(R.id.cleanliness_toliet_img);
-        additionalAddImage = (ImageView) findViewById(R.id.additional_photos_img);
-        publicToiletOutsideLatitude = (TextView) findViewById(R.id.complte_toliet_latitxt);
-        publicToiletOutsideLongitude = (TextView) findViewById(R.id.complte_toliet_longtxt);
-        publicToiletOutsideAccuracy = (TextView) findViewById(R.id.complte_toliet_accuracytxt);
-        publicToiletInsideLatitude = (TextView) findViewById(R.id.cleanliness_toliet_latitxt);
-        publicToiletInsideAccuracy = (TextView) findViewById(R.id.cleanliness_toliet_longtxt);
-        publicToiletInsideLongitude = (TextView) findViewById(R.id.cleanliness_toliet_accuracytxt);
-        publicToiletOutsidelinearLayout = (LinearLayout) findViewById(R.id.imageLinear);
-        publicToiletInsideLinearLayout = (LinearLayout) findViewById(R.id.cleanliness_toliet_imageLinear);
-        publicToiletAdditionalLinearLayout = (LinearLayout) findViewById(R.id.additional_pic_linerLayout);
-        submitButton= (Button) findViewById(R.id.submit);
-        rippleViewImages=(RippleView) findViewById(R.id.rippleViewImages);
+        outsideAddImage = findViewById(R.id.complte_toliet_imageview);
+        insideAddImage = findViewById(R.id.cleanliness_toliet_img);
+        additionalAddImage = findViewById(R.id.additional_photos_img);
+        publicToiletOutsideLatitude = findViewById(R.id.complte_toliet_latitxt);
+        publicToiletOutsideLongitude = findViewById(R.id.complte_toliet_longtxt);
+        publicToiletOutsideAccuracy = findViewById(R.id.complte_toliet_accuracytxt);
+        publicToiletInsideLatitude = findViewById(R.id.cleanliness_toliet_latitxt);
+        publicToiletInsideAccuracy = findViewById(R.id.cleanliness_toliet_longtxt);
+        publicToiletInsideLongitude = findViewById(R.id.cleanliness_toliet_accuracytxt);
+        publicToiletOutsidelinearLayout = findViewById(R.id.imageLinear);
+        publicToiletInsideLinearLayout = findViewById(R.id.cleanliness_toliet_imageLinear);
+        publicToiletAdditionalLinearLayout = findViewById(R.id.additional_pic_linerLayout);
+        submitButton= findViewById(R.id.submit);
+        rippleViewImages= findViewById(R.id.rippleViewImages);
 
     }
 
@@ -171,12 +149,7 @@ public class PublicToiletAddImageActivity extends AppCompatActivity {
     private void setToolbarAndCustomizeTitle(String title) {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> activity.finish());
         final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
@@ -186,74 +159,71 @@ public class PublicToiletAddImageActivity extends AppCompatActivity {
     }
 
     private void showSelectedImage(final ArrayList<SelectedImageModel> galleryImageUrls, final int selectedPublicToiletSection) {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                try {
+        handler.post(() -> {
+            try {
 
+                switch (selectedPublicToiletSection) {
+                    case AppConstant.PUBLIC_TOILET_OUTSIDE_PIC:
+                        publicToiletOutsidelinearLayout.removeAllViews();
+                        if (publicToiletOutside.size() == 3) {
+                            outsideAddImage.setVisibility(View.GONE);
+                        } else {
+                            outsideAddImage.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                    case AppConstant.PUBLIC_TOILET_INSIDE_PIC:
+                        publicToiletInsideLinearLayout.removeAllViews();
+                        if (publicToiletInside.size() == 3) {
+                            insideAddImage.setVisibility(View.GONE);
+                        } else {
+                            insideAddImage.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                    case AppConstant.PUBLIC_TOILET_ADDITIONAL_PIC:
+                        publicToiletAdditionalLinearLayout.removeAllViews();
+                        if (publicToiletAdditional.size() == 3) {
+                            additionalAddImage.setVisibility(View.GONE);
+                        } else {
+                            additionalAddImage.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                }
+                for (int i = 0; i < galleryImageUrls.size(); i++) {
+                   // String imgUrl = galleryImageUrls.get(i).getArrPath();
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                            (int) wt_px, (int) ht_px);
+                    if (i == 0) {
+                        layoutParams.setMargins(0, 0, (int) margin, 0);
+                    } else if (i == galleryImageUrls.size() - 1) {
+                        layoutParams.setMargins((int) margin, 0, 0, 0);
+                    } else {
+                        layoutParams.setMargins((int) margin, 0, (int) margin, 0);
+                    }
+                    final ImageView image = new ImageView(activity);
+                    image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    image.setLayoutParams(layoutParams);
+                  Glide.with(activity).load(galleryImageUrls.get(i).getUriOfImage()).into(image);
+                    image.setId(i);
                     switch (selectedPublicToiletSection) {
                         case AppConstant.PUBLIC_TOILET_OUTSIDE_PIC:
-                            publicToiletOutsidelinearLayout.removeAllViews();
-                            if (publicToiletOutside.size() == 3) {
-                                outsideAddImage.setVisibility(View.GONE);
-                            } else {
-                                outsideAddImage.setVisibility(View.VISIBLE);
-                            }
+                            publicToiletOutsidelinearLayout.addView(image);
+                            publicToiletOutsideLatitude.setText(AppController.mSelectedImageModels.getLatitude() == 0.0 ? "0.0" : AppController.mSelectedImageModels.getLatitude() + "");
+                            publicToiletOutsideLongitude.setText(AppController.mSelectedImageModels.getLongitude() == 0.0 ? "0.0" : AppController.mSelectedImageModels.getLongitude() + "");
+                            publicToiletOutsideAccuracy.setText(AppController.mSelectedImageModels.getAccuracy() == 0 ? "0" : AppController.mSelectedImageModels.getAccuracy() + "");
                             break;
                         case AppConstant.PUBLIC_TOILET_INSIDE_PIC:
-                            publicToiletInsideLinearLayout.removeAllViews();
-                            if (publicToiletInside.size() == 3) {
-                                insideAddImage.setVisibility(View.GONE);
-                            } else {
-                                insideAddImage.setVisibility(View.VISIBLE);
-                            }
+                            publicToiletInsideLinearLayout.addView(image);
+                            publicToiletInsideLatitude.setText(AppController.mSelectedImageModels.getLatitude() == 0.0 ? "0.0" : AppController.mSelectedImageModels.getLatitude() + "");
+                            publicToiletInsideLongitude.setText(AppController.mSelectedImageModels.getLongitude() == 0.0 ? "0.0" : AppController.mSelectedImageModels.getLongitude() + "");
+                            publicToiletInsideAccuracy .setText(AppController.mSelectedImageModels.getAccuracy() == 0 ? "0" : AppController.mSelectedImageModels.getAccuracy() + "");
                             break;
                         case AppConstant.PUBLIC_TOILET_ADDITIONAL_PIC:
-                            publicToiletAdditionalLinearLayout.removeAllViews();
-                            if (publicToiletAdditional.size() == 3) {
-                                additionalAddImage.setVisibility(View.GONE);
-                            } else {
-                                additionalAddImage.setVisibility(View.VISIBLE);
-                            }
+                            publicToiletAdditionalLinearLayout.addView(image);
                             break;
                     }
-                    for (int i = 0; i < galleryImageUrls.size(); i++) {
-                       // String imgUrl = galleryImageUrls.get(i).getArrPath();
-                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                                (int) wt_px, (int) ht_px);
-                        if (i == 0) {
-                            layoutParams.setMargins(0, 0, (int) margin, 0);
-                        } else if (i == galleryImageUrls.size() - 1) {
-                            layoutParams.setMargins((int) margin, 0, 0, 0);
-                        } else {
-                            layoutParams.setMargins((int) margin, 0, (int) margin, 0);
-                        }
-                        final ImageView image = new ImageView(activity);
-                        image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                        image.setLayoutParams(layoutParams);
-                      Glide.with(activity).load(galleryImageUrls.get(i).getUriOfImage()).into(image);
-                        image.setId(i);
-                        switch (selectedPublicToiletSection) {
-                            case AppConstant.PUBLIC_TOILET_OUTSIDE_PIC:
-                                publicToiletOutsidelinearLayout.addView(image);
-                                publicToiletOutsideLatitude.setText(AppController.mSelectedImageModels.getLatitude() == 0.0 ? "0.0" : AppController.mSelectedImageModels.getLatitude() + "");
-                                publicToiletOutsideLongitude.setText(AppController.mSelectedImageModels.getLongitude() == 0.0 ? "0.0" : AppController.mSelectedImageModels.getLongitude() + "");
-                                publicToiletOutsideAccuracy.setText(AppController.mSelectedImageModels.getAccuracy() == 0 ? "0" : AppController.mSelectedImageModels.getAccuracy() + "");
-                                break;
-                            case AppConstant.PUBLIC_TOILET_INSIDE_PIC:
-                                publicToiletInsideLinearLayout.addView(image);
-                                publicToiletInsideLatitude.setText(AppController.mSelectedImageModels.getLatitude() == 0.0 ? "0.0" : AppController.mSelectedImageModels.getLatitude() + "");
-                                publicToiletInsideLongitude.setText(AppController.mSelectedImageModels.getLongitude() == 0.0 ? "0.0" : AppController.mSelectedImageModels.getLongitude() + "");
-                                publicToiletInsideAccuracy .setText(AppController.mSelectedImageModels.getAccuracy() == 0 ? "0" : AppController.mSelectedImageModels.getAccuracy() + "");
-                                break;
-                            case AppConstant.PUBLIC_TOILET_ADDITIONAL_PIC:
-                                publicToiletAdditionalLinearLayout.addView(image);
-                                break;
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }

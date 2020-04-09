@@ -249,13 +249,7 @@ public class ComplaintDetail extends BaseAppCompatActivity {
                     change_status
                             .setVisibility(View.VISIBLE);
                     change_status
-                            .setOnClickListener(new View.OnClickListener() {
-
-                                @Override
-                                public void onClick(View v) {
-                                    inflateDialogtoShowChangeStatusMenu();
-                                }
-                            });
+                            .setOnClickListener(v -> inflateDialogtoShowChangeStatusMenu());
                 } else if ((AppController.selectedComplaintData
                         .getComplaint_status_id().equalsIgnoreCase(
                                 AppController.COMPLAINT_REJECTED + "")
@@ -274,15 +268,9 @@ public class ComplaintDetail extends BaseAppCompatActivity {
                                         "")))) {
                     change_status
                             .setVisibility(View.VISIBLE);
-                    change_status.setOnClickListener(new View.OnClickListener() {
-                        // if owner of complaint - show
-                        // edit/delete
-
-                        @Override
-                        public void onClick(View v) {
-                            inflateDialogtoShowChangeStatusMenu();
-                        }
-                    });
+                    // if owner of complaint - show
+// edit/delete
+                    change_status.setOnClickListener(v -> inflateDialogtoShowChangeStatusMenu());
                 } else {
                     change_status
                             .setVisibility(View.INVISIBLE);
@@ -323,76 +311,54 @@ public class ComplaintDetail extends BaseAppCompatActivity {
         comments.setText(complaintDetailData.getComment_count() + " " + getString(R.string.comments));
         ParseComplaintData.setImage(activity, null, complaint_image, complaintDetailData.getComplaint_image(), false);
         ParseComplaintData.setBgDrawableForComplaintStatus(activity, complaintDetailData, complaint_status);
-        comment.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View m) {
-                // TODO Auto-generated method stub
-                ComplaintData mCData = complaintDetailData;
-                AppController.selectedComplaintData = mCData;
-                AppController.selectedComplaintData.setToChangeStatus(false);
-                Intent toCommentsActivity = new Intent(activity,
-                        CommentsActivity.class);
-                activity.startActivity(toCommentsActivity);
-            }
+        comment.setOnClickListener(m -> {
+            // TODO Auto-generated method stub
+            ComplaintData mCData = complaintDetailData;
+            AppController.selectedComplaintData = mCData;
+            AppController.selectedComplaintData.setToChangeStatus(false);
+            Intent toCommentsActivity = new Intent(activity,
+                    CommentsActivity.class);
+            activity.startActivity(toCommentsActivity);
         });
-        share.setOnClickListener(new View.OnClickListener() {
+        share.setOnClickListener(
+            m -> ParseComplaintData.shareComplaint(activity, complaintDetailData));
 
-            @Override
-            public void onClick(View m) {
-                ParseComplaintData.shareComplaint(activity, complaintDetailData);
-            }
+        locateComplaint.setOnClickListener(v -> {
+            String uri = String.format(
+                    Locale.ENGLISH,
+                    "geo:0,0?q=" + complaintDetailData.getLatitude() + ","
+                            + complaintDetailData.getLongitude() + "&z=12 ("
+                            + complaintDetailData.getLocation() + ")");
+            // Uri uri = Uri.parse("geo:" + cData.getLatitude() + ","
+            // + cData.getLongitude());
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri
+                    .parse(uri));
+            mapIntent.setPackage("com.google.android.apps.maps");
+            // if (mapIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(mapIntent);
+            // }
         });
+        navigateComplaint.setOnClickListener(v -> {
+            // TODO Auto-generated method stub
 
-        locateComplaint.setOnClickListener(new View.OnClickListener() {
+            String uri = String.format(Locale.ENGLISH,
+                    "google.navigation:q=" + complaintDetailData.getLatitude() + ","
+                            + complaintDetailData.getLongitude());
+            // Uri uri = Uri.parse("geo:" + cData.getLatitude() + ","
+            // + cData.getLongitude());
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri
+                    .parse(uri));
+            mapIntent.setComponent(new ComponentName(
+                    "com.google.android.apps.maps",
+                    "com.google.android.maps.MapsActivity"));
+            mapIntent.setPackage("com.google.android.apps.maps");
+            // if (mapIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(mapIntent);
+            // }
 
-            @Override
-            public void onClick(View v) {
-                String uri = String.format(
-                        Locale.ENGLISH,
-                        "geo:0,0?q=" + complaintDetailData.getLatitude() + ","
-                                + complaintDetailData.getLongitude() + "&z=12 ("
-                                + complaintDetailData.getLocation() + ")");
-                // Uri uri = Uri.parse("geo:" + cData.getLatitude() + ","
-                // + cData.getLongitude());
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri
-                        .parse(uri));
-                mapIntent.setPackage("com.google.android.apps.maps");
-                // if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                startActivity(mapIntent);
-                // }
-            }
-        });
-        navigateComplaint.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-
-                String uri = String.format(Locale.ENGLISH,
-                        "google.navigation:q=" + complaintDetailData.getLatitude() + ","
-                                + complaintDetailData.getLongitude());
-                // Uri uri = Uri.parse("geo:" + cData.getLatitude() + ","
-                // + cData.getLongitude());
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri
-                        .parse(uri));
-                mapIntent.setComponent(new ComponentName(
-                        "com.google.android.apps.maps",
-                        "com.google.android.maps.MapsActivity"));
-                mapIntent.setPackage("com.google.android.apps.maps");
-                // if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                startActivity(mapIntent);
-                // }
-
-            }
         });
         AppController.initiateCTAForShareComment(activity, AppController.selectedComplaintData);
-        change_status.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                inflateDialogtoShowChangeStatusMenu();
-            }
-        });
+        change_status.setOnClickListener(v -> inflateDialogtoShowChangeStatusMenu());
     }
 
     private void inflateDialogtoShowChangeStatusMenu() {
@@ -628,12 +594,7 @@ public class ComplaintDetail extends BaseAppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(title);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> activity.finish());
         final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);

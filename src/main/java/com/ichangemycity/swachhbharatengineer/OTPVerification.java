@@ -130,12 +130,7 @@ public class OTPVerification extends BaseAppCompatActivity {
     private void setToolbarAndCustomizeTitle() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> activity.finish());
         final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
         upArrow.setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);

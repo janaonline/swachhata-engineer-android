@@ -77,40 +77,32 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
 
         clearSelectedImage();
         mStatus = AppController.selectedComplaintChangeStatusOptions.getStatusName();
-        statusTitleValue = (TextView) findViewById(R.id.statusTitleValue);
-        imageToUpload = (ImageView) findViewById(R.id.imageToUpload);
-        send = (ImageView) findViewById(R.id.send);
-        postComm = ((RelativeLayout) findViewById(R.id.postComm));
-        messageToShow = (TextView) findViewById(R.id.messageToShow);
-        list = (ListView) findViewById(R.id.list);
+        statusTitleValue = findViewById(R.id.statusTitleValue);
+        imageToUpload = findViewById(R.id.imageToUpload);
+        send = findViewById(R.id.send);
+        postComm = findViewById(R.id.postComm);
+        messageToShow = findViewById(R.id.messageToShow);
+        list = findViewById(R.id.list);
         listOfReasonToRejectComplaint.clear();
 
         url = URLData.BASE_URL + URLData.GET_POSTED_COMMENT
                 + AppController.selectedComplaintData.getComplaintId()
                 + URLData.GET_POSTED_COMMENT_SORT;
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        addImage = (ImageView) findViewById(R.id.addImage);
-        addImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAlertToPickImage();
-            }
-        });
+        toolbar = findViewById(R.id.toolbar);
+        addImage = findViewById(R.id.addImage);
+        addImage.setOnClickListener(v -> showAlertToPickImage());
         setToolbarAndCustomizeTitle(getResources().getString(R.string.id_) + AppController.selectedComplaintData.getGeneric_id());
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (((EditText) findViewById(R.id.textComment)).getText().toString().trim().length() > 0) {
-                    AppController.showProgressDialog(activity, "");
-                    new InitiateChangeStatus().execute();
-                } else {
-                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, activity.getResources().getString(R.string.write_a_comment));
+        send.setOnClickListener(v -> {
+            if (((EditText) findViewById(R.id.textComment)).getText().toString().trim().length() > 0) {
+                AppController.showProgressDialog(activity, "");
+                new InitiateChangeStatus().execute();
+            } else {
+                AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, activity.getResources().getString(R.string.write_a_comment));
 
 //                    Toast.makeText(activity, getResources().getString(R.string.write_a_comment), Toast
 //                            .LENGTH_SHORT).show();
-                }
-
             }
+
         });
         postComm.setVisibility(View.VISIBLE);
         messageToShow.setText(R.string
@@ -326,47 +318,41 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
     private void uploadImage() {
         final String uploadImageURL = URLData.BASE_URL_UPLOAD_IMAGE;
         AppController.showProgressDialog(activity, activity.getResources().getString(R.string.loading));
-        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, uploadImageURL, new
-                Response.Listener<NetworkResponse>() {
-                    @Override
-                    public void onResponse(NetworkResponse response) {
-                        String resultResponse = new String(response.data);
-                        JSONObject mJsonObject;
-                        try {
-                            mJsonObject = new JSONObject(resultResponse);
+        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, uploadImageURL,
+            response -> {
+                String resultResponse = new String(response.data);
+                JSONObject mJsonObject;
+                try {
+                    mJsonObject = new JSONObject(resultResponse);
 
-                            switch (mJsonObject.optInt("httpCode")) {
-                                case 200:
-                                case 201:
-                                    JSONObject fileJsonObject = (JSONObject) mJsonObject
-                                            .get("file");
-                                    int fileId = fileJsonObject.optInt("id");
-                                    ICMyCPreferenceData
-                                            .setPreference(
-                                                    activity,
-                                                    ICMyCPreferenceData.commentUploadedImageFile,
-                                                    "" + fileId);
-                                    // runCommentsWebService();
-                                    break;
+                    switch (mJsonObject.optInt("httpCode")) {
+                        case 200:
+                        case 201:
+                            JSONObject fileJsonObject = (JSONObject) mJsonObject
+                                    .get("file");
+                            int fileId = fileJsonObject.optInt("id");
+                            ICMyCPreferenceData
+                                    .setPreference(
+                                            activity,
+                                            ICMyCPreferenceData.commentUploadedImageFile,
+                                            "" + fileId);
+                            // runCommentsWebService();
+                            break;
 
-                                default:
-                                    break;
-                            }
-
-                            AppController.hideProgressDialog(activity);
-                            changeStatus(true);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            AppController.hideProgressDialog(activity);
-                        }
+                        default:
+                            break;
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+
+                    AppController.hideProgressDialog(activity);
+                    changeStatus(true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    AppController.hideProgressDialog(activity);
+                }
+            }, error -> {
                 AppController.hideProgressDialog(activity);
                 AppController.handleVolleyError(activity, (RelativeLayout) findViewById(R.id.parentLayout), error);
-            }
-        }) {
+            }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
@@ -430,12 +416,9 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.finish();
-                isToRefresh = false;
-            }
+        toolbar.setNavigationOnClickListener(v -> {
+            activity.finish();
+            isToRefresh = false;
         });
         final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
@@ -486,13 +469,10 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
                     listOfReasonToRejectComplaint.add("Location not correct");
                     list.setAdapter(new ArrayAdapter<String>(this,
                             android.R.layout.simple_list_item_1, android.R.id.text1, listOfReasonToRejectComplaint));
-                    list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            view.setBackgroundColor(Color.LTGRAY);
-                            ((EditText) findViewById(R.id.textComment)).setText(listOfReasonToRejectComplaint.get(i));
-                            changeStatus(false);
-                        }
+                    list.setOnItemClickListener((adapterView, view, i, l) -> {
+                        view.setBackgroundColor(Color.LTGRAY);
+                        ((EditText) findViewById(R.id.textComment)).setText(listOfReasonToRejectComplaint.get(i));
+                        changeStatus(false);
                     });
                     messageToShow.setText(R.string.change_status_rejected);
                     postComm.setVisibility(View.GONE);

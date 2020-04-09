@@ -37,7 +37,7 @@ public class CommentsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.comments_fragment, null);
-        layout = (LinearLayout)v.findViewById(R.id.layoutData);
+        layout = v.findViewById(R.id.layoutData);
         addRemark();
         return v;
     }
@@ -47,27 +47,24 @@ public class CommentsFragment extends Fragment {
 
     private void addRemark() {
         final CommentsAdapter commentsAdapter = new CommentsAdapter(ComplaintDetail.activity , true);
-        mRecyclerview = (EasyRecyclerView) v.findViewById(R.id.mRecyclerview);
+        mRecyclerview = v.findViewById(R.id.mRecyclerview);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(ComplaintDetail.activity);
         mRecyclerview.setLayoutManager(manager);
         mRecyclerview.addItemDecoration(new DividerItemDecoration(ComplaintDetail.activity, LinearLayoutManager.VERTICAL));
         mRecyclerview.setItemAnimator(new DefaultItemAnimator());
         mRecyclerview.setAdapter(commentsAdapter);
-        AppController.setEmptyViewForRecyclerViewFragments(ComplaintDetail.activity,mRecyclerview, (TextView)v.findViewById(R.id.viewEmpty));
+        AppController.setEmptyViewForRecyclerViewFragments(ComplaintDetail.activity,mRecyclerview,
+            v.findViewById(R.id.viewEmpty));
 
         if (Integer.parseInt(AppController.selectedComplaintData.getComment_count()) > 5) {
             try {
-                ((TextView) v.findViewById(R.id.viewEmpty)).setVisibility(View.GONE);
+                v.findViewById(R.id.viewEmpty).setVisibility(View.GONE);
             } catch (Exception e) {
             }
             LayoutInflater inflater = (LayoutInflater) ComplaintDetail.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View loadMore = inflater.inflate(R.layout.inflate_loadmore, null);
-            ((Button)loadMore.findViewById(R.id.loadmore)).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(ComplaintDetail.activity, CommentsActivity.class));
-                }
-            });
+            loadMore.findViewById(R.id.loadmore).setOnClickListener(
+                v -> startActivity(new Intent(ComplaintDetail.activity, CommentsActivity.class)));
             layout.addView(loadMore);
 
         }

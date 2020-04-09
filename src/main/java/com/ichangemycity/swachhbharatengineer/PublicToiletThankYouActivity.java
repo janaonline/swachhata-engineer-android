@@ -26,83 +26,54 @@ public class PublicToiletThankYouActivity extends AppCompatActivity {
         AppController.assignLanguage(PublicToiletThankYouActivity.this);
         setContentView(R.layout.activity_thank_you);
         activity = PublicToiletThankYouActivity.this;
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setToolbarAndCustomizeTitle(getResources().getString(R.string.thankyou));
 
-        rippleViewAddToilet = (RippleView) findViewById(R.id.rippleViewAddToilet);
-        rippleViewDetails = (RippleView) findViewById(R.id.rippleViewDetails);
-        rippleViewHome = (RippleView) findViewById(R.id.rippleViewHome);
+        rippleViewAddToilet = findViewById(R.id.rippleViewAddToilet);
+        rippleViewDetails = findViewById(R.id.rippleViewDetails);
+        rippleViewHome = findViewById(R.id.rippleViewHome);
 
 
-        addAnotherToiletBtn = (Button) findViewById(R.id.add_antr_btn);
-        addAnotherToiletBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //  Intent intent = new Intent(packagec, .class);
-                /*startActivity(new Intent(PublicToiletThankYouActivity.this,
-                        PublicToiletAddToiletActivity.class));*/
-                // startActivity(intent);
+        addAnotherToiletBtn = findViewById(R.id.add_antr_btn);
+        addAnotherToiletBtn.setOnClickListener(view -> {
+            //  Intent intent = new Intent(packagec, .class);
+            /*startActivity(new Intent(PublicToiletThankYouActivity.this,
+                    PublicToiletAddToiletActivity.class));*/
+            // startActivity(intent);
 
-                rippleViewAddToilet.performClick();
-            }
+            rippleViewAddToilet.performClick();
         });
-        viewDetailsBtn = (Button) findViewById(R.id.add_antr_btn);
-        viewDetailsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //  Intent intent = new Intent(packagec, .class);
-                /*startActivity(new Intent(PublicToiletThankYouActivity.this,
-                        PublicToiletDetailsActivity.class));*/
+        viewDetailsBtn = findViewById(R.id.add_antr_btn);
+        viewDetailsBtn.setOnClickListener(view -> {
+            //  Intent intent = new Intent(packagec, .class);
+            /*startActivity(new Intent(PublicToiletThankYouActivity.this,
+                    PublicToiletDetailsActivity.class));*/
 
-                rippleViewDetails.performClick();
+            rippleViewDetails.performClick();
 
-            }
         });
-        bckToHomeBtn = (Button) findViewById(R.id.add_antr_btn);
-        bckToHomeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //  Intent intent = new Intent(packagec, .class);
-              /*  startActivity(new Intent(PublicToiletThankYouActivity.this,
-                        MainActivity.class));*/
-                rippleViewHome.performClick();
+        bckToHomeBtn = findViewById(R.id.add_antr_btn);
+        bckToHomeBtn.setOnClickListener(view -> {
+            //  Intent intent = new Intent(packagec, .class);
+          /*  startActivity(new Intent(PublicToiletThankYouActivity.this,
+                    MainActivity.class));*/
+            rippleViewHome.performClick();
 
-            }
         });
 
-        rippleViewAddToilet.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-            @Override
-            public void onComplete(RippleView rippleView) {
-                startActivity(new Intent(PublicToiletThankYouActivity.this,
-                        PublicToiletAddToiletActivity.class));
-            }
-        });
-        rippleViewDetails.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-            @Override
-            public void onComplete(RippleView rippleView) {
-                startActivity(new Intent(PublicToiletThankYouActivity.this,
-                        PublicToiletDetailsActivity.class));
-            }
-        });
-        rippleViewHome.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-            @Override
-            public void onComplete(RippleView rippleView) {
-                startActivity(new Intent(PublicToiletThankYouActivity.this,
-                        MainActivity.class));
-            }
-        });
+        rippleViewAddToilet.setOnRippleCompleteListener(rippleView -> startActivity(new Intent(PublicToiletThankYouActivity.this,
+                PublicToiletAddToiletActivity.class)));
+        rippleViewDetails.setOnRippleCompleteListener(rippleView -> startActivity(new Intent(PublicToiletThankYouActivity.this,
+                PublicToiletDetailsActivity.class)));
+        rippleViewHome.setOnRippleCompleteListener(rippleView -> startActivity(new Intent(PublicToiletThankYouActivity.this,
+                MainActivity.class)));
     }
 
     private void setToolbarAndCustomizeTitle(String title) {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> activity.finish());
         final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);

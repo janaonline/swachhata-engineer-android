@@ -90,18 +90,18 @@ public class NotificationAdapter extends
         public ViewHolder(View convertView, int type) {
             super(convertView);
             if (type == TYPE_ITEM) {
-                title = (TextView) convertView.findViewById(R.id.tv_username);
-                user_image = (ImageView) convertView
+                title = convertView.findViewById(R.id.tv_username);
+                user_image = convertView
                         .findViewById(R.id.user_image);
-                rl_top_cc = (RelativeLayout) convertView
+                rl_top_cc = convertView
                         .findViewById(R.id.rl_top_cc);
-                viewLine = (View) convertView.findViewById(R.id.view);
+                viewLine = convertView.findViewById(R.id.view);
 
             } else if (type == TYPE_HEADER) {
-                tv_feed = (TextView) convertView.findViewById(R.id.tv_feed);
-                tv_feed_user_name = (TextView) convertView
+                tv_feed = convertView.findViewById(R.id.tv_feed);
+                tv_feed_user_name = convertView
                         .findViewById(R.id.tv_feed_user_name);
-                rl_top_feed = (RelativeLayout) convertView
+                rl_top_feed = convertView
                         .findViewById(R.id.rl_top_feed);
             }
         }
@@ -148,19 +148,14 @@ public class NotificationAdapter extends
                         .setImageResource(R.mipmap.ic_notifications_active_white_48dp);
             }
 
-            v.rl_top_cc.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View m) {
-                    NotificationHeaderData notifData = (NotificationHeaderData) v.rl_top_cc
-                            .getTag();
+            v.rl_top_cc.setOnClickListener(m -> {
+                NotificationHeaderData notifData = (NotificationHeaderData) v.rl_top_cc
+                        .getTag();
 //                    if (!notifData.isRead()) {
-                    markAsRead(notifData);
+                markAsRead(notifData);
 //                    } else {
 //                        // redirectToAppropriateScreens(nData);
 //                    }
-
-                }
 
             });
 

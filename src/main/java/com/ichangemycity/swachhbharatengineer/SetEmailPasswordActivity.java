@@ -69,17 +69,14 @@ public class SetEmailPasswordActivity extends BaseAppCompatActivity {
             setToolbarAndCustomizeTitle(getString(R.string.login_with_password));
             confirmPasswordTIL.setVisibility(View.GONE);
         }
-        rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-            @Override
-            public void onComplete(RippleView rippleView) {
-                if (type.equalsIgnoreCase(AppConstant.ONBOARDING_TYPE_SET_EMAIL_PASSWORD)) {
-                    //call 1.4 if type=setEmailPassword and show three fields in SetEmailPasswordActivity.class
-                    setEmailPasswordAPICall();
-                } else if (type.equalsIgnoreCase(AppConstant.ONBOARDING_TYPE_LOGIN)) {
-                    //call 1.2 if type=login and show three fields in SetEmailPasswordActivity.class
-                    loginAPICall();
+        rippleView.setOnRippleCompleteListener(rippleView -> {
+            if (type.equalsIgnoreCase(AppConstant.ONBOARDING_TYPE_SET_EMAIL_PASSWORD)) {
+                //call 1.4 if type=setEmailPassword and show three fields in SetEmailPasswordActivity.class
+                setEmailPasswordAPICall();
+            } else if (type.equalsIgnoreCase(AppConstant.ONBOARDING_TYPE_LOGIN)) {
+                //call 1.2 if type=login and show three fields in SetEmailPasswordActivity.class
+                loginAPICall();
 
-                }
             }
         });
 
@@ -182,12 +179,7 @@ public class SetEmailPasswordActivity extends BaseAppCompatActivity {
     private void setToolbarAndCustomizeTitle(String title) {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> activity.finish());
         final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);

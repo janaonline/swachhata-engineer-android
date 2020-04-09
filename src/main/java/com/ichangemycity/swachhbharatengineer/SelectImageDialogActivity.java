@@ -63,9 +63,9 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
         permissionsRequired.clear();
 
         activity = SelectImageDialogActivity.this;
-        progress = (ProgressBar) activity.findViewById(R.id.progress);
-        rippleViewCamera = (RippleView) findViewById(R.id.rippleViewCamera);
-        rippleViewGallery = (RippleView) findViewById(R.id.rippleViewGallery);
+        progress = activity.findViewById(R.id.progress);
+        rippleViewCamera = findViewById(R.id.rippleViewCamera);
+        rippleViewGallery = findViewById(R.id.rippleViewGallery);
         AppController.mSelectedImageModels = new SelectedImageModel();
         AppController.location = "";
         AppController.latitude = 0.0;
@@ -82,23 +82,14 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
             @Override
             public void resultPermissionSuccess() {
 //                Toast.makeText(activity, "Thanks for allowing permissions", Toast.LENGTH_SHORT).show();
-                rippleViewCamera.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-                    @Override
-                    public void onComplete(RippleView rippleView) {
+                rippleViewCamera.setOnRippleCompleteListener(rippleView -> {
 
 
-                        GenerateFolders();
-                        captureImage();
-                    }
+                    GenerateFolders();
+                    captureImage();
                 });
-                rippleViewGallery.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-                    @Override
-                    public void onComplete(RippleView rippleView) {
-
-
-                        startActivity(new Intent(activity, AndroidCustomGalleryActivity.class));
-                    }
-                });
+                rippleViewGallery.setOnRippleCompleteListener(
+                    rippleView -> startActivity(new Intent(activity, AndroidCustomGalleryActivity.class)));
 
             }
 

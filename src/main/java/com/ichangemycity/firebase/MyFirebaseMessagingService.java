@@ -1,22 +1,19 @@
 package com.ichangemycity.firebase;
 
+import static android.content.Intent.ACTION_VIEW;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
-import com.ichangemycity.swachhbharatengineer.R;
 import com.ichangemycity.swachhbharatengineer.Splashscreen;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static android.content.Intent.ACTION_VIEW;
 
 /**
  * Created by pattabi.raman on 04-08-2017.

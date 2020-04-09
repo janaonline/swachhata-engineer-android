@@ -78,13 +78,13 @@ public class LanguageAdapter extends BaseAdapter {
                     false);
             view.setTag("NON_DROPDOWN");
         }
-        final TextView textView = (TextView) view
+        final TextView textView = view
                 .findViewById(android.R.id.text1);
         textView.setGravity(Gravity.CENTER);
         textView.setText(getTitle(position));
         view.setTag(mLanguage.get(position));
         textView.setTag(position);
-        final RippleView rippleView = (RippleView) view.findViewById(R.id.rippleView);
+        final RippleView rippleView = view.findViewById(R.id.rippleView);
         final View finalView = view;
         rippleView.setOnClickListener(new OnClickListener() {
             /**
@@ -99,22 +99,17 @@ public class LanguageAdapter extends BaseAdapter {
                 textView.setTextColor(Color.WHITE);
             }
         });
-        rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
+        rippleView.setOnRippleCompleteListener(rippleView1 -> {
+            int sid = (int) textView.getTag();
+            LanguageData languageData = mLanguage.get(sid);
+            ICMyCPreferenceData.setPreference(activity,
+                    ICMyCPreferenceData.selectedLanguage,
+                    languageData.getLanguage_code());
 
-            @Override
-            public void onComplete(RippleView rippleView) {
-                int sid = (int) textView.getTag();
-                LanguageData languageData = mLanguage.get(sid);
-                ICMyCPreferenceData.setPreference(activity,
-                        ICMyCPreferenceData.selectedLanguage,
-                        languageData.getLanguage_code());
-
-                ICMyCPreferenceData.setPreference(activity,
-                        ICMyCPreferenceData.selectedLanguagePosition, sid + "");
-                activity.startActivity(new Intent(activity,
-                        UserMobileNumber.class));
-
-            }
+            ICMyCPreferenceData.setPreference(activity,
+                    ICMyCPreferenceData.selectedLanguagePosition, sid + "");
+            activity.startActivity(new Intent(activity,
+                    UserMobileNumber.class));
 
         });
         return view;

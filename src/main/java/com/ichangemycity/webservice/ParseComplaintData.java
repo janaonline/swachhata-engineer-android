@@ -166,12 +166,9 @@ public class ParseComplaintData {
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                     imageView.setImageUrl(imageUrl, imageLoader);
-                    imageView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent toPreview = new Intent(ACTION_VIEW, Uri.parse(imageUrl));
-                            activity.startActivity(toPreview);
-                        }
+                    imageView.setOnClickListener(v -> {
+                        Intent toPreview = new Intent(ACTION_VIEW, Uri.parse(imageUrl));
+                        activity.startActivity(toPreview);
                     });
                 }
 

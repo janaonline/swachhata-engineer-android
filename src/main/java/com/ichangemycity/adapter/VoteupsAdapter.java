@@ -62,11 +62,11 @@ public class VoteupsAdapter extends RecyclerView.Adapter<VoteupsAdapter.AddRemar
 
         public AddRemarkViewHolder(View itemView) {
             super(itemView);
-            mDescription = (TextView) itemView.findViewById(R.id.description_count);
-            mName = (TextView) itemView.findViewById(R.id.userName);
-            postedOn = (TextView) itemView.findViewById(R.id.postedOn);
-            mUserImage = (de.hdodenhof.circleimageview.CircleImageView) itemView.findViewById(R.id.userImage);
-            imageLayout = (HorizontalScrollView) itemView.findViewById(R.id.imageLayout);
+            mDescription = itemView.findViewById(R.id.description_count);
+            mName = itemView.findViewById(R.id.userName);
+            postedOn = itemView.findViewById(R.id.postedOn);
+            mUserImage = itemView.findViewById(R.id.userImage);
+            imageLayout = itemView.findViewById(R.id.imageLayout);
 
         }
     }

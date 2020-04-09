@@ -52,8 +52,8 @@ public class UserMobileNumber extends BaseAppCompatActivity {
     setContentView(R.layout.mobile_number);
     activity = UserMobileNumber.this;
 
-    mobileNumber = (EditText) findViewById(R.id.et_mobno);
-    submit = (Button) findViewById(R.id.done);
+    mobileNumber = findViewById(R.id.et_mobno);
+    submit = findViewById(R.id.done);
     mobileNumber.addTextChangedListener(new TextWatcher() {
 
       @Override
@@ -84,17 +84,12 @@ public class UserMobileNumber extends BaseAppCompatActivity {
     mobileNumber.setText(ICMyCPreferenceData.getPreferenceItem(
         UserMobileNumber.this, ICMyCPreferenceData.Mobile_No, ""));
 
-    submit.setOnClickListener(new OnClickListener() {
-
-      @Override
-      public void onClick(View v) {
-        if (AppUtils.validateMobileNumber(activity, mobileNumber)) {
-          submitMobileNumberAPI(false);
-        }
+    submit.setOnClickListener(v -> {
+      if (AppUtils.validateMobileNumber(activity, mobileNumber)) {
+        submitMobileNumberAPI(false);
       }
-
     });
-    setToolbarAndCustomizeTitle((Toolbar) findViewById(R.id.toolbar), " ");
+    setToolbarAndCustomizeTitle(findViewById(R.id.toolbar), " ");
   }
 
   private void submitMobileNumberAPI(final boolean isToAddOTPSource) {
@@ -273,12 +268,7 @@ public class UserMobileNumber extends BaseAppCompatActivity {
     getSupportActionBar().setDisplayShowHomeEnabled(true);
     getSupportActionBar().setTitle(title);
 
-    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        activity.finish();
-      }
-    });
+    toolbar.setNavigationOnClickListener(v -> activity.finish());
     final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
     upArrow.setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
     getSupportActionBar().setHomeAsUpIndicator(upArrow);

@@ -81,29 +81,16 @@ public class AndroidCustomGalleryActivity extends BaseAppCompatActivity {
 
 //        fetchImage();
 
-        changePic.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pickImage();
-            }
-        });
-        image.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pickImage();
-            }
-        });
+        changePic.setOnClickListener(view -> pickImage());
+        image.setOnClickListener(view -> pickImage());
 
         pickImage();
 
-        next.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mSelectedImagesModel.getSizeInMB() > 8) {
-                    showAlertToSelectImageNumbers("Please select an image less than 8MB");
-                } else {
-                    new ProceedToDescriptionScreen().execute();
-                }
+        next.setOnClickListener(view -> {
+            if (mSelectedImagesModel.getSizeInMB() > 8) {
+                showAlertToSelectImageNumbers("Please select an image less than 8MB");
+            } else {
+                new ProceedToDescriptionScreen().execute();
             }
         });
     }
@@ -116,12 +103,7 @@ public class AndroidCustomGalleryActivity extends BaseAppCompatActivity {
         getSupportActionBar().setTitle(title);
 
 //        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> activity.finish());
         final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
@@ -138,12 +120,7 @@ public class AndroidCustomGalleryActivity extends BaseAppCompatActivity {
         ab.setTitle("Message");
         ab.setIcon(getResources().getDrawable(android.R.drawable.ic_dialog_info));
         ab.setMessage(messageInfo);
-        ab.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        ab.setPositiveButton("Ok", (dialog, which) -> dialog.dismiss());
         ab.show();
     }
 

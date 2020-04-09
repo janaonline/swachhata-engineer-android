@@ -58,18 +58,18 @@ public class VoteupsActivity extends BaseAppCompatActivity {
 //        AppController.trackEvent(GAData.VOTEUP, GAData.SCREEN_REACHED, GAData.SCREEN_REACHED);
         activity = VoteupsActivity.this;
         BaseAppCompatActivity.activity = activity;
-        send = (ImageView) findViewById(R.id.send);
+        send = findViewById(R.id.send);
         url = 	"http://api.swachh.city/sbm/v1/"
                 + URLData.GET_VOTED_UP
                 + AppController.selectedComplaintData
                 .getComplaintId()
                 + URLData.GET_VOTED_UP_SORT;
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
 
         adapter = new VoteupsAdapter(activity, AppController.votedUpData, false);
-        ((RelativeLayout) findViewById(R.id.postComm)).setVisibility(View.GONE);
-        addImage = (ImageView) findViewById(R.id.addImage);
-        recycler_view = (EasyRecyclerView) findViewById(R.id.mRecyclerview);
+        findViewById(R.id.postComm).setVisibility(View.GONE);
+        addImage = findViewById(R.id.addImage);
+        recycler_view = findViewById(R.id.mRecyclerview);
         setToolbarAndCustomizeTitle(getResources().getString(R.string.vote_up) + "(" + AppController.selectedComplaintData.getVote_up_count() + ")");
         layoutManager = new LinearLayoutManager(activity);
         recycler_view.setLayoutManager(layoutManager);
@@ -81,12 +81,7 @@ public class VoteupsActivity extends BaseAppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> activity.finish());
         final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);

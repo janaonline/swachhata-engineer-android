@@ -76,25 +76,25 @@ public class NotificationActivity extends BaseAppCompatActivity implements
         // setHasOptionsMenu(true);
         AppController.assignLanguage(NotificationActivity.this);
         setContentView(R.layout.notification_activity);
-        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        refreshLayout = findViewById(R.id.swipe_container);
         activity = NotificationActivity.this;
         initSwipeOptions();
         // recycler view
-        mRecyclerView = (com.jude.easyrecyclerview.EasyRecyclerView) findViewById(R.id.list);
-        mRecyclerView2 = (com.jude.easyrecyclerview.EasyRecyclerView) findViewById(R.id.listRead);
+        mRecyclerView = findViewById(R.id.list);
+        mRecyclerView2 = findViewById(R.id.listRead);
         mLayoutManager = new LinearLayoutManager(activity);
         mLayoutManager2 = new LinearLayoutManager(activity);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView2.setLayoutManager(mLayoutManager2);
         mRecyclerView2.setItemAnimator(new DefaultItemAnimator());
-        slideHandleButton = (Button) findViewById(R.id.slideHandleButton);
-        slidingDrawer = (SlidingDrawer) findViewById(R.id.SlidingDrawer);
-        pb_loader = (ProgressWheel) findViewById(R.id.pb_loader);
+        slideHandleButton = findViewById(R.id.slideHandleButton);
+        slidingDrawer = findViewById(R.id.SlidingDrawer);
+        pb_loader = findViewById(R.id.pb_loader);
         pb_loader.setBarColor(Color.rgb(85, 146, 251));
         pb_loader.setVisibility(View.VISIBLE);
         runHomeFeedWebService();
-        setToolbarAndCustomizeTitle((Toolbar) findViewById(R.id.toolbar), getResources().getString(R.string.notification));
+        setToolbarAndCustomizeTitle(findViewById(R.id.toolbar), getResources().getString(R.string.notification));
     }
 
 
@@ -125,12 +125,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(title);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> activity.finish());
         final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
@@ -264,21 +259,11 @@ public class NotificationActivity extends BaseAppCompatActivity implements
 
             }
             hideSwipeProgress();
-            slidingDrawer.setOnDrawerOpenListener(new OnDrawerOpenListener() {
-
-                @Override
-                public void onDrawerOpened() {
-                    runReadNotifWebService();
-                    isDrawerOpened = true;
-                }
+            slidingDrawer.setOnDrawerOpenListener(() -> {
+                runReadNotifWebService();
+                isDrawerOpened = true;
             });
-            slidingDrawer.setOnDrawerCloseListener(new OnDrawerCloseListener() {
-
-                @Override
-                public void onDrawerClosed() {
-                    isDrawerOpened = false;
-                }
-            });
+            slidingDrawer.setOnDrawerCloseListener(() -> isDrawerOpened = false);
             if (data.size() <= 0) {
                 // HandleWebService.showAlert(Notifs.this, "", getResources()
                 // .getString(R.string.no_read_notification),

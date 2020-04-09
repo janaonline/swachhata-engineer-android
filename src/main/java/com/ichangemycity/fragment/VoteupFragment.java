@@ -45,7 +45,7 @@ public class VoteupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.comments_fragment, null);
         activity = getActivity();
-        layout = (LinearLayout) v.findViewById(R.id.layoutData);
+        layout = v.findViewById(R.id.layoutData);
         addRemark();
         return v;
     }
@@ -55,27 +55,24 @@ public class VoteupFragment extends Fragment {
     private void addRemark() {
         AppController.votedUpData = AppController.selectedComplaintData.getVotedUpData();
         final VoteupsAdapter commentsAdapter = new VoteupsAdapter(activity, AppController.votedUpData, true);
-        mAdd_remarkrecyclerview = (EasyRecyclerView) v.findViewById(R.id.mRecyclerview);
+        mAdd_remarkrecyclerview = v.findViewById(R.id.mRecyclerview);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(activity);
         mAdd_remarkrecyclerview.setLayoutManager(manager);
         mAdd_remarkrecyclerview.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
         mAdd_remarkrecyclerview.setItemAnimator(new DefaultItemAnimator());
         mAdd_remarkrecyclerview.setAdapter(commentsAdapter);
-        AppController.setEmptyViewForRecyclerViewFragments(ComplaintDetail.activity,mAdd_remarkrecyclerview, (TextView)v.findViewById(R.id.viewEmpty));
+        AppController.setEmptyViewForRecyclerViewFragments(ComplaintDetail.activity,mAdd_remarkrecyclerview,
+            v.findViewById(R.id.viewEmpty));
 
         if (AppController.selectedComplaintData.getVotedUpData().size() > 5) {
             try {
-                ((TextView) v.findViewById(R.id.viewEmpty)).setVisibility(View.GONE);
+                v.findViewById(R.id.viewEmpty).setVisibility(View.GONE);
             } catch (Exception e) {
             }
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View loadMore = inflater.inflate(R.layout.inflate_loadmore, null);
-            ((Button) loadMore.findViewById(R.id.loadmore)).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(activity, VoteupsActivity.class));
-                }
-            });
+            loadMore.findViewById(R.id.loadmore).setOnClickListener(
+                v -> startActivity(new Intent(activity, VoteupsActivity.class)));
             layout.addView(loadMore);
 
 

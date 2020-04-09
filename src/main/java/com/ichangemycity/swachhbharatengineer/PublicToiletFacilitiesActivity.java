@@ -35,9 +35,9 @@ public class PublicToiletFacilitiesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.toilet_facilities_actvity);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setToolbarAndCustomizeTitle(getResources().getString(R.string.toilet_facilities));
-        rippleViewFacilities = (RippleView) findViewById(R.id.rippleViewFacilities);
+        rippleViewFacilities = findViewById(R.id.rippleViewFacilities);
 
         //setSupportActionBar(toolbar);
 
@@ -51,14 +51,14 @@ public class PublicToiletFacilitiesActivity extends AppCompatActivity {
         });*/
         AppController.assignLanguage(PublicToiletFacilitiesActivity.this);
         activity = PublicToiletFacilitiesActivity.this;
-        nxtBtn = (Button) findViewById(R.id.toilet_facilities_btn);
-        radio_childfriendly = (RadioButton) findViewById(R.id.radio_childfriendly);
-        radio_differentlyabled = (RadioButton) findViewById(R.id.radio_differentlyabled);
-        radio_waterATM = (RadioButton) findViewById(R.id.radio_waterATM);
-        radio_sanitary = (RadioButton) findViewById(R.id.radio_sanitary);
-        radio_Incinerator = (RadioButton) findViewById(R.id.radio_Incinerator);
+        nxtBtn = findViewById(R.id.toilet_facilities_btn);
+        radio_childfriendly = findViewById(R.id.radio_childfriendly);
+        radio_differentlyabled = findViewById(R.id.radio_differentlyabled);
+        radio_waterATM = findViewById(R.id.radio_waterATM);
+        radio_sanitary = findViewById(R.id.radio_sanitary);
+        radio_Incinerator = findViewById(R.id.radio_Incinerator);
 
-        gender_spinner = (Spinner) findViewById(R.id.gender_spinner);
+        gender_spinner = findViewById(R.id.gender_spinner);
         genderSpinnerArrayAdapter = new ArrayAdapter<String> (this, android.R.layout.simple_spinner_item, GenderSpinnerArray); //selected item will look like a spinner set from XML
         genderSpinnerArrayAdapter.setDropDownViewResource(android.R.layout .simple_spinner_dropdown_item);
         gender_spinner.setAdapter(genderSpinnerArrayAdapter);
@@ -133,24 +133,16 @@ public class PublicToiletFacilitiesActivity extends AppCompatActivity {
 
 
         });
-        nxtBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //  Intent intent = new Intent(packagec, .class);
-                /*startActivity(new Intent(PublicToiletFacilitiesActivity.this,
-                        PublicToiletThankYouActivity.class));*/
-                // startActivity(intent);
+        nxtBtn.setOnClickListener(view -> {
+            //  Intent intent = new Intent(packagec, .class);
+            /*startActivity(new Intent(PublicToiletFacilitiesActivity.this,
+                    PublicToiletThankYouActivity.class));*/
+            // startActivity(intent);
 
-                rippleViewFacilities.performClick();
-            }
+            rippleViewFacilities.performClick();
         });
-        rippleViewFacilities.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-            @Override
-            public void onComplete(RippleView rippleView) {
-                startActivity(new Intent(PublicToiletFacilitiesActivity.this,
-                        PublicToiletAddImageActivity.class));
-            }
-        });
+        rippleViewFacilities.setOnRippleCompleteListener(rippleView -> startActivity(new Intent(PublicToiletFacilitiesActivity.this,
+                PublicToiletAddImageActivity.class)));
 
     }
 
@@ -160,12 +152,7 @@ public class PublicToiletFacilitiesActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> activity.finish());
         final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);

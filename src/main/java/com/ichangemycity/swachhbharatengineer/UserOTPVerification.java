@@ -48,7 +48,7 @@ public class UserOTPVerification extends BaseAppCompatActivity {
         AppController.assignLanguage(UserOTPVerification.this);
         setContentView(R.layout.otp_verification);
         activity = UserOTPVerification.this;
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setToolbarAndCustomizeTitle(getResources().getString(R.string.enter_otp));
         ((TextView) findViewById(R.id.enterotp)).setText(getResources()
                 .getString(R.string.enter_verification_code_sent_to_)
@@ -56,105 +56,117 @@ public class UserOTPVerification extends BaseAppCompatActivity {
                 + ICMyCPreferenceData.getPreferenceItem(
                 UserOTPVerification.this,
                 ICMyCPreferenceData.Mobile_No, "") + ")");
-        otp = (OtpView) findViewById(R.id.otp);
+        otp = findViewById(R.id.otp);
 
-        ((Button) findViewById(R.id.done))
-                .setOnClickListener(new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        if (otp.hasValidOTP()) {
-                            validateOTP(otp.getOTP());
-                        }
+        findViewById(R.id.done)
+                .setOnClickListener(v -> {
+                    if (otp.hasValidOTP()) {
+                        validateOTP(otp.getOTP());
                     }
                 });
-        ((TextView) findViewById(R.id.resendCode))
-                .setOnClickListener(new OnClickListener() {
+        findViewById(R.id.resendCode)
+                .setOnClickListener(v -> {
+                    doOTPTimer();
+                    AppController.showProgressDialog(activity,getResources().getString(R.string.loading));
+                    String url = (URLData.BASE_URL
+                            + URLData.CHECK_ACTIVE_ENGINEER
+                            + ICMyCPreferenceData.getPreferenceItem(
+                            UserOTPVerification.this,
+                            ICMyCPreferenceData.Mobile_No, "")
+                            + "&deviceToken="
+                            + ICMyCPreferenceData.getPreferenceItem(
+                            UserOTPVerification.this,
+                            ICMyCPreferenceData.deviceToken, "")
+                            + "&lang="
+                            + ICMyCPreferenceData.getPreferenceItem(
+                            UserOTPVerification.this,
+                            ICMyCPreferenceData.selectedLanguage,
+                            "en") + "&macAddress=" + ICMyCPreferenceData
+                            .getPreferenceItem(UserOTPVerification.this,
+                                    ICMyCPreferenceData.deviceUniqueID, ""));
 
-                    @Override
-                    public void onClick(View v) {
-                        doOTPTimer();
-                        AppController.showProgressDialog(activity,getResources().getString(R.string.loading));
-                        String url = (URLData.BASE_URL
-                                + URLData.CHECK_ACTIVE_ENGINEER
-                                + ICMyCPreferenceData.getPreferenceItem(
-                                UserOTPVerification.this,
-                                ICMyCPreferenceData.Mobile_No, "")
-                                + "&deviceToken="
-                                + ICMyCPreferenceData.getPreferenceItem(
-                                UserOTPVerification.this,
-                                ICMyCPreferenceData.deviceToken, "")
-                                + "&lang="
-                                + ICMyCPreferenceData.getPreferenceItem(
-                                UserOTPVerification.this,
-                                ICMyCPreferenceData.selectedLanguage,
-                                "en") + "&macAddress=" + ICMyCPreferenceData
-                                .getPreferenceItem(UserOTPVerification.this,
-                                        ICMyCPreferenceData.deviceUniqueID, ""));
+                    new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
+                        @Override
+                        public void OnResponseFailure(JSONObject response) {
+                            AppController.hideProgressDialog(activity);
 
-                        new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
-                            @Override
-                            public void OnResponseFailure(JSONObject response) {
+                        }
+
+                        @Override
+                        public void OnResponseSuccess(final JSONObject mJsonObject) {
+
+                            try {
                                 AppController.hideProgressDialog(activity);
+                                if (mJsonObject.optInt("httpCode") == 200
+                                        || mJsonObject
+                                        .optInt("httpCode") == 201) {
 
-                            }
+                                    String userData = mJsonObject
+                                            .optString("engineer");
 
-                            @Override
-                            public void OnResponseSuccess(final JSONObject mJsonObject) {
+                                    JSONObject userDataJsonObject = new JSONObject(
+                                            userData);
+                                    if (Integer
+                                            .parseInt(userDataJsonObject
+                                                    .get(ICMyCPreferenceData.activated)
+                                                    .toString()) == 1) {
+                                        ICMyCPreferenceData
+                                                .setPreference(
+                                                        UserOTPVerification.this,
+                                                        ICMyCPreferenceData.token,
+                                                        userDataJsonObject
+                                                                .getString(ICMyCPreferenceData.token)
+                                                                + "");
 
-                                try {
-                                    AppController.hideProgressDialog(activity);
-                                    if (mJsonObject.optInt("httpCode") == 200
-                                            || mJsonObject
-                                            .optInt("httpCode") == 201) {
+                                        handleResendOTPResponse(mJsonObject);
+                                    }
 
-                                        String userData = mJsonObject
-                                                .optString("engineer");
-
-                                        JSONObject userDataJsonObject = new JSONObject(
-                                                userData);
-                                        if (Integer
-                                                .parseInt(userDataJsonObject
-                                                        .get(ICMyCPreferenceData.activated)
-                                                        .toString()) == 1) {
-                                            ICMyCPreferenceData
-                                                    .setPreference(
-                                                            UserOTPVerification.this,
-                                                            ICMyCPreferenceData.token,
-                                                            userDataJsonObject
-                                                                    .getString(ICMyCPreferenceData.token)
-                                                                    + "");
-
-                                            handleResendOTPResponse(mJsonObject);
-                                        }
-
-                                    } else {
-                                        AppUtils.showToast( UserOTPVerification.this, AppConstant.TOAST_TYPE_INFO,  mJsonObject
-                                                .optString("message"));
+                                } else {
+                                    AppUtils.showToast( UserOTPVerification.this, AppConstant.TOAST_TYPE_INFO,  mJsonObject
+                                            .optString("message"));
 //                                                Toast.makeText(
 //                                                        UserOTPVerification.this,
 //                                                        mJsonObject
 //                                                                .optString("message"),
 //                                                        Toast.LENGTH_LONG)
 //                                                        .show();
-                                        String errors = "";
-                                        try { // more than one error
-                                            errors = (mJsonObject)
-                                                    .optString("errors");
-                                            JSONArray mJsonArray = new JSONArray(
-                                                    errors);
-                                            String error = "";
-                                            for (int i = 0; i < mJsonArray
-                                                    .length(); i++) {
-                                                error += mJsonArray
-                                                        .getJSONObject(i)
-                                                        .optString("message")
-                                                        + "\n";
-                                            }
+                                    String errors = "";
+                                    try { // more than one error
+                                        errors = (mJsonObject)
+                                                .optString("errors");
+                                        JSONArray mJsonArray = new JSONArray(
+                                                errors);
+                                        String error = "";
+                                        for (int i = 0; i < mJsonArray
+                                                .length(); i++) {
+                                            error += mJsonArray
+                                                    .getJSONObject(i)
+                                                    .optString("message")
+                                                    + "\n";
+                                        }
+                                        AppController
+                                                .showAlert(
+                                                        UserOTPVerification.this, mJsonObject
+                                                                .optString("message"), error, false, new OnButtonClick() {
+                                                            @Override
+                                                            public void onPositiveButtonClicked(DialogInterface dialogInterface) {
+
+                                                            }
+
+                                                            @Override
+                                                            public void onNegativeButtonClicked(DialogInterface dialogInterface) {
+
+                                                            }
+                                                        });
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        try { // one error
                                             AppController
                                                     .showAlert(
-                                                            UserOTPVerification.this, mJsonObject
-                                                                    .optString("message"), error, false, new OnButtonClick() {
+                                                            UserOTPVerification.this,
+                                                            "",
+                                                            mJsonObject
+                                                                    .optString("message"), false, new OnButtonClick() {
                                                                 @Override
                                                                 public void onPositiveButtonClicked(DialogInterface dialogInterface) {
 
@@ -165,41 +177,21 @@ public class UserOTPVerification extends BaseAppCompatActivity {
 
                                                                 }
                                                             });
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                            try { // one error
-                                                AppController
-                                                        .showAlert(
-                                                                UserOTPVerification.this,
-                                                                "",
-                                                                mJsonObject
-                                                                        .optString("message"), false, new OnButtonClick() {
-                                                                    @Override
-                                                                    public void onPositiveButtonClicked(DialogInterface dialogInterface) {
-
-                                                                    }
-
-                                                                    @Override
-                                                                    public void onNegativeButtonClicked(DialogInterface dialogInterface) {
-
-                                                                    }
-                                                                });
-                                            } catch (Exception e1) {
-                                                // TODO Auto-generated catch
-                                                // block
-                                                e1.printStackTrace();
-                                            }
+                                        } catch (Exception e1) {
+                                            // TODO Auto-generated catch
+                                            // block
+                                            e1.printStackTrace();
                                         }
                                     }
-                                } catch (JSONException e) {
-                                    // TODO: handle exception
-                                    e.printStackTrace();
                                 }
+                            } catch (JSONException e) {
+                                // TODO: handle exception
+                                e.printStackTrace();
                             }
-                        },true,WebserviceHelper.HEADER_TYPE_NORMAL);
+                        }
+                    },true,WebserviceHelper.HEADER_TYPE_NORMAL);
 
 
-                    }
                 });
 
 
@@ -212,12 +204,7 @@ public class UserOTPVerification extends BaseAppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> activity.finish());
         final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
         upArrow.setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
@@ -447,11 +434,11 @@ public class UserOTPVerification extends BaseAppCompatActivity {
         new CountDownTimer(40000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                ((TextView) findViewById(R.id.resendCode)).setClickable(false);
-                ((TextView) findViewById(R.id.resendCode))
+                findViewById(R.id.resendCode).setClickable(false);
+                findViewById(R.id.resendCode)
                         .setLongClickable(false);
-                ((TextView) findViewById(R.id.resendCode)).setFocusable(false);
-                ((TextView) findViewById(R.id.resendCode))
+                findViewById(R.id.resendCode).setFocusable(false);
+                findViewById(R.id.resendCode)
                         .setFocusableInTouchMode(false);
                 ((TextView) findViewById(R.id.resendCode))
                         .setText(""
@@ -466,11 +453,11 @@ public class UserOTPVerification extends BaseAppCompatActivity {
 
             public void onFinish() {
 
-                ((TextView) findViewById(R.id.resendCode)).setClickable(true);
-                ((TextView) findViewById(R.id.resendCode))
+                findViewById(R.id.resendCode).setClickable(true);
+                findViewById(R.id.resendCode)
                         .setLongClickable(true);
-                ((TextView) findViewById(R.id.resendCode)).setFocusable(true);
-                ((TextView) findViewById(R.id.resendCode))
+                findViewById(R.id.resendCode).setFocusable(true);
+                findViewById(R.id.resendCode)
                         .setFocusableInTouchMode(true);
 
                 ((TextView) findViewById(R.id.resendCode))

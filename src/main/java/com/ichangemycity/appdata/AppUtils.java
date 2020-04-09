@@ -294,7 +294,7 @@ public class AppUtils {
         } catch (Exception e) {
         }
         try {
-            ViewGroup rootView = (ViewGroup) activity.findViewById(android.R.id.content);
+            ViewGroup rootView = activity.findViewById(android.R.id.content);
             for (int i = 0; i < rootView.getChildCount(); i++) {
                 if (rootView.getChildAt(i) == view) {
                     rootView.removeView(view);

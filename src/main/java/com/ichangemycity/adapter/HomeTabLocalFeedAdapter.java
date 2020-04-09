@@ -91,52 +91,52 @@ public class HomeTabLocalFeedAdapter extends
         public ViewHolder(View convertView, int type) {
             super(convertView);
             if (type == TYPE_ITEM) {
-                title = (TextView) convertView.findViewById(R.id.tv_username);
-                created_on = (TextView) convertView
+                title = convertView.findViewById(R.id.tv_username);
+                created_on = convertView
                         .findViewById(R.id.created_on);
-                complaint_status = (TextView) convertView
+                complaint_status = convertView
                         .findViewById(R.id.complaint_status);
-                user_image = (CircleImageView) convertView
+                user_image = convertView
                         .findViewById(R.id.user_image);
-                complaint_image = (NetworkImageView) convertView
+                complaint_image = convertView
                         .findViewById(R.id.complaint_image);
-                complaint_category = (TextView) convertView
+                complaint_category = convertView
                         .findViewById(R.id.complaint_category);
-                complaint_description = (TextView) convertView
+                complaint_description = convertView
                         .findViewById(R.id.complaint_description);
-                comment = (TextView) convertView.findViewById(R.id.comment);
-                tv_feed = (TextView) convertView.findViewById(R.id.tv_feed);
-                tv_feed_user_name = (TextView) convertView
+                comment = convertView.findViewById(R.id.comment);
+                tv_feed = convertView.findViewById(R.id.tv_feed);
+                tv_feed_user_name = convertView
                         .findViewById(R.id.tv_feed_user_name);
-                votedUpCount = (TextView) convertView
+                votedUpCount = convertView
                         .findViewById(R.id.votedUpCount);
-                commentedCount = (TextView) convertView
+                commentedCount = convertView
                         .findViewById(R.id.commentedCount);
-                rl_cc_top = (RelativeLayout) convertView
+                rl_cc_top = convertView
                         .findViewById(R.id.rl_cc_top);
 
                 // cta_btn = (LinearLayout) convertView
                 // .findViewById(R.id.not_resolved);
-                resolved = (LinearLayout) convertView
+                resolved = convertView
                         .findViewById(R.id.resolved);
-                satisfaction = (TextView) convertView
+                satisfaction = convertView
                         .findViewById(R.id.satisfaction);
-                un_satisfied = (TextView) convertView
+                un_satisfied = convertView
                         .findViewById(R.id.un_satisfied);
-                neutral = (TextView) convertView.findViewById(R.id.neutral);
-                viewLine = (View) convertView.findViewById(R.id.view);
-                card = (LinearLayout) convertView.findViewById(R.id.card);
-                changeStatus = (Spinner) convertView
+                neutral = convertView.findViewById(R.id.neutral);
+                viewLine = convertView.findViewById(R.id.view);
+                card = convertView.findViewById(R.id.card);
+                changeStatus = convertView
                         .findViewById(R.id.changeStatus);
-                frameSpinner = (FrameLayout) convertView
+                frameSpinner = convertView
                         .findViewById(R.id.frameSpinner);
-                rl_top_feed = (RelativeLayout) convertView
+                rl_top_feed = convertView
                         .findViewById(R.id.rl_top_feed);
-                feed_flag = (ImageView) convertView
+                feed_flag = convertView
                         .findViewById(R.id.feed_flag);
-                share = (TextView) convertView.findViewById(R.id.share);
+                share = convertView.findViewById(R.id.share);
             } else if (type == TYPE_HEADER) {
-                textPostComplaint = (TextView) convertView
+                textPostComplaint = convertView
                         .findViewById(R.id.textPostComplaint);
 
             }
@@ -164,50 +164,35 @@ public class HomeTabLocalFeedAdapter extends
         v.commentedCount.setText(cData.getComment_count()
                 + activity.getResources().getString(R.string._comments) + "");
         v.rl_cc_top.setTag(cData);
-        v.card.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View m) {
-                // TODO Auto-generated method stub
-                ComplaintData mCData = (ComplaintData) v.rl_cc_top.getTag();
-                AppController.selectedComplaintData = mCData;
-                Intent toComplaintDetail = new Intent(activity,
-                        ComplaintDetail.class);
-                activity.startActivity(toComplaintDetail);
+        v.card.setOnClickListener(m -> {
+            // TODO Auto-generated method stub
+            ComplaintData mCData = (ComplaintData) v.rl_cc_top.getTag();
+            AppController.selectedComplaintData = mCData;
+            Intent toComplaintDetail = new Intent(activity,
+                    ComplaintDetail.class);
+            activity.startActivity(toComplaintDetail);
 
-            }
         });
 
-        v.complaint_image.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View m) {
-                ComplaintData mCData = (ComplaintData) v.rl_cc_top.getTag();
-                AppController.selectedComplaintData = mCData;
+        v.complaint_image.setOnClickListener(m -> {
+            ComplaintData mCData = (ComplaintData) v.rl_cc_top.getTag();
+            AppController.selectedComplaintData = mCData;
 //                Intent toComplaintDetail = new Intent(activity,
 //                        ComplaintDetail.class);
 //                activity.startActivity(toComplaintDetail);
-            }
         });
-        v.comment.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View m) {
-                // TODO Auto-generated method stub
-                final ComplaintData mCData = (ComplaintData) v.rl_cc_top.getTag();
-                AppController.selectedComplaintData = mCData;
-                AppController.selectedComplaintData.setToChangeStatus(false);
-                Intent toCommentsActivity = new Intent(activity,
-                        CommentsActivity.class);
-                activity.startActivity(toCommentsActivity);
-            }
+        v.comment.setOnClickListener(m -> {
+            // TODO Auto-generated method stub
+            final ComplaintData mCData = (ComplaintData) v.rl_cc_top.getTag();
+            AppController.selectedComplaintData = mCData;
+            AppController.selectedComplaintData.setToChangeStatus(false);
+            Intent toCommentsActivity = new Intent(activity,
+                    CommentsActivity.class);
+            activity.startActivity(toCommentsActivity);
         });
-        v.share.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View m) {
-                final ComplaintData mCData = (ComplaintData) v.rl_cc_top.getTag();
-                ParseComplaintData.shareComplaint(activity, mCData);
-            }
+        v.share.setOnClickListener(m -> {
+            final ComplaintData mCData = (ComplaintData) v.rl_cc_top.getTag();
+            ParseComplaintData.shareComplaint(activity, mCData);
         });
         if (Integer.parseInt(cData.getComplaint_status_id()) == AppController.COMPLAINT_REJECTED) {
             v.rl_top_feed.setVisibility(View.GONE);

@@ -79,21 +79,16 @@ public class CommentsActivity extends BaseAppCompatActivity {
         activity = CommentsActivity.this;
         BaseAppCompatActivity.activity = activity;
         clearSelectedImage();
-        imageToUpload = (ImageView) findViewById(R.id.imageToUpload);
-        send = (ImageView) findViewById(R.id.send);
+        imageToUpload = findViewById(R.id.imageToUpload);
+        send = findViewById(R.id.send);
         data = AppController.selectedComplaintData;
         url = URLData.BASE_URL + URLData.GET_POSTED_COMMENT
                 + data.getComplaintId()
                 + URLData.GET_POSTED_COMMENT_SORT;
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        addImage = (ImageView) findViewById(R.id.addImage);
-        addImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAlertToPickImage();
-            }
-        });
-        recycler_view = (EasyRecyclerView) findViewById(R.id.mRecyclerview);
+        toolbar = findViewById(R.id.toolbar);
+        addImage = findViewById(R.id.addImage);
+        addImage.setOnClickListener(v -> showAlertToPickImage());
+        recycler_view = findViewById(R.id.mRecyclerview);
         setToolbarAndCustomizeTitle(getResources().getString(R.string.comments));
         layoutManager = new LinearLayoutManager(activity);
         recycler_view.setLayoutManager(layoutManager);
@@ -103,22 +98,19 @@ public class CommentsActivity extends BaseAppCompatActivity {
                 .getResources().getDisplayMetrics());
         margin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, activity
                 .getResources().getDisplayMetrics());
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (((EditText) findViewById(R.id.textComment)).getText().toString().trim().length() > 0) {
-                    AppController.showProgressDialog(activity, "");
-                    new InitiatePostComment().execute();
-                } else {
-                    AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, activity.getResources().getString(R.string.write_a_comment));
+        send.setOnClickListener(v -> {
+            if (((EditText) findViewById(R.id.textComment)).getText().toString().trim().length() > 0) {
+                AppController.showProgressDialog(activity, "");
+                new InitiatePostComment().execute();
+            } else {
+                AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, activity.getResources().getString(R.string.write_a_comment));
 
 //                    Toast.makeText(activity, getResources().getString(R.string.write_a_comment), Toast
 //                            .LENGTH_SHORT).show();
-                }
-
             }
+
         });
-        ((RelativeLayout) findViewById(R.id.postComm)).setVisibility(View.VISIBLE);
+        findViewById(R.id.postComm).setVisibility(View.VISIBLE);
         runCommentFeedWebService(true);
     }
 
@@ -126,7 +118,7 @@ public class CommentsActivity extends BaseAppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            ((RelativeLayout) findViewById(R.id.postComm)).setVisibility(View.GONE);
+            findViewById(R.id.postComm).setVisibility(View.GONE);
 
         }
 
@@ -196,7 +188,7 @@ public class CommentsActivity extends BaseAppCompatActivity {
 
 //                        Toast.makeText(UserMobileNumber.this, error.toString(), Toast.LENGTH_LONG).show();
                 AppController.hideProgressDialog(activity);
-                ((RelativeLayout) findViewById(R.id.postComm)).setVisibility(View.VISIBLE);
+                findViewById(R.id.postComm).setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -221,7 +213,7 @@ public class CommentsActivity extends BaseAppCompatActivity {
                     if (recycler_view != null)
                         if (recycler_view.getAdapter() != null)
                             recycler_view.getAdapter().notifyDataSetChanged();
-                    ((RelativeLayout) findViewById(R.id.postComm)).setVisibility(View.VISIBLE);
+                    findViewById(R.id.postComm).setVisibility(View.VISIBLE);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -239,51 +231,45 @@ public class CommentsActivity extends BaseAppCompatActivity {
     private void uploadImage() {
         final String uploadImageURL =BASE_URL_UPLOAD_IMAGE;
         AppController.showProgressDialog(activity, activity.getResources().getString(R.string.loading));
-        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, uploadImageURL, new
-                Response.Listener<NetworkResponse>() {
-                    @Override
-                    public void onResponse(NetworkResponse response) {
-                        String resultResponse = new String(response.data);
-                        try {
-                            AppController.hideProgressDialog(activity);
-                            JSONObject result = new JSONObject(resultResponse);
-                            try {
-                                switch (result.optInt("httpCode")) {
-                                    case 200:
-                                    case 201:
-                                        JSONObject fileJsonObject = (JSONObject) result
-                                                .get("file");
-                                        int fileId = fileJsonObject.optInt("id");
-                                        ICMyCPreferenceData
-                                                .setPreference(
-                                                        CommentsActivity.this,
-                                                        ICMyCPreferenceData.commentUploadedImageFile,
-                                                        "" + fileId);
-                                        postComment(true);
-                                        // runCommentsWebService();
-                                        break;
+        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, uploadImageURL,
+            response -> {
+                String resultResponse = new String(response.data);
+                try {
+                    AppController.hideProgressDialog(activity);
+                    JSONObject result = new JSONObject(resultResponse);
+                    try {
+                        switch (result.optInt("httpCode")) {
+                            case 200:
+                            case 201:
+                                JSONObject fileJsonObject = (JSONObject) result
+                                        .get("file");
+                                int fileId = fileJsonObject.optInt("id");
+                                ICMyCPreferenceData
+                                        .setPreference(
+                                                CommentsActivity.this,
+                                                ICMyCPreferenceData.commentUploadedImageFile,
+                                                "" + fileId);
+                                postComment(true);
+                                // runCommentsWebService();
+                                break;
 
-                                    default:
-                                        break;
-                                }
-                            } catch (JSONException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
-                            AppController.hideProgressDialog(activity);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            AppController.hideProgressDialog(activity);
+                            default:
+                                break;
                         }
+                    } catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+                    AppController.hideProgressDialog(activity);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    AppController.hideProgressDialog(activity);
+                }
+            }, error -> {
                 AppController.hideProgressDialog(activity);
                 AppController.handleVolleyError(activity, (RelativeLayout) findViewById(R.id.parentLayout), error);
-            }
-        }) {
+            }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
@@ -344,12 +330,7 @@ public class CommentsActivity extends BaseAppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> activity.finish());
         final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);

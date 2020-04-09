@@ -27,18 +27,14 @@ public class SelectLanguage extends BaseAppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.select_language);
-        languageListView = (ListView) findViewById(R.id.sp_language);
+        languageListView = findViewById(R.id.sp_language);
         act = SelectLanguage.this;
         findViewById(R.id.done)
-                .setOnClickListener(new View.OnClickListener() {
+                .setOnClickListener(v -> {
+                    startActivity(new Intent(act,
+                            UserMobileNumber.class).putExtra("setSelection",0));
+                    act.finish();
 
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(act,
-                                UserMobileNumber.class).putExtra("setSelection",0));
-                        act.finish();
-
-                    }
                 });
 
     }

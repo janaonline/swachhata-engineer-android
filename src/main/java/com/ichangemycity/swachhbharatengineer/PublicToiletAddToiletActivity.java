@@ -38,13 +38,13 @@ public class PublicToiletAddToiletActivity extends AppCompatActivity {
 
         AppController.assignLanguage(PublicToiletAddToiletActivity.this);
         activity = PublicToiletAddToiletActivity.this;
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        rippleViewAddToilet=(RippleView) findViewById(R.id.rippleViewAddToilet);
+        toolbar = findViewById(R.id.toolbar);
+        rippleViewAddToilet= findViewById(R.id.rippleViewAddToilet);
         setToolbarAndCustomizeTitle(getResources().getString(R.string.add_public_toilet));
-        et_name_toilet=(EditText) findViewById(R.id.et_name_toilet);
-        et_ward_number=(EditText) findViewById(R.id.et_ward_number);
-        et_toilet_address=(EditText) findViewById(R.id.et_toilet_address);
-        et_pincode=(EditText) findViewById(R.id.et_pincode);
+        et_name_toilet= findViewById(R.id.et_name_toilet);
+        et_ward_number= findViewById(R.id.et_ward_number);
+        et_toilet_address= findViewById(R.id.et_toilet_address);
+        et_pincode= findViewById(R.id.et_pincode);
 
        // et_pincode.addTextChangedListener(watcher);
        /* et_name_toilet.addTextChangedListener(watch);
@@ -53,70 +53,63 @@ public class PublicToiletAddToiletActivity extends AppCompatActivity {
         et_pincode.addTextChangedListener(watch);*/
 
 
-        nxtBtn = (Button) findViewById(R.id.next_btn);
-        nxtBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        nxtBtn = findViewById(R.id.next_btn);
+        nxtBtn.setOnClickListener(view -> {
 
-                    if((!et_name_toilet.getText().toString().trim().equals("")) &&(!et_ward_number.getText().toString().trim().equals("")) &&
-                        (!et_toilet_address.getText().toString().trim().equals("")) &&(!et_pincode.getText().toString().trim().equals(""))&&
-                        ( et_pincode.getText().toString().trim().length()==6)){
+                if((!et_name_toilet.getText().toString().trim().equals("")) &&(!et_ward_number.getText().toString().trim().equals("")) &&
+                    (!et_toilet_address.getText().toString().trim().equals("")) &&(!et_pincode.getText().toString().trim().equals(""))&&
+                    ( et_pincode.getText().toString().trim().length()==6)){
 
-                       if(! isValid(et_name_toilet.getText().toString().trim())) {
-                           Toast.makeText(getApplicationContext(), "Please enter valid toilet name", Toast.LENGTH_SHORT).show();
-                           et_name_toilet.requestFocus();
-                       }else{
-                    rippleViewAddToilet.performClick();
-                    rippleViewAddToilet.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-                        @Override
-                        public void onComplete(RippleView rippleView) {
-                            ICMyCPreferenceData.setPreference(activity,ICMyCPreferenceData.toiletName,
-                                    et_name_toilet.getText().toString());
+                   if(! isValid(et_name_toilet.getText().toString().trim())) {
+                       Toast.makeText(getApplicationContext(), "Please enter valid toilet name", Toast.LENGTH_SHORT).show();
+                       et_name_toilet.requestFocus();
+                   }else{
+                rippleViewAddToilet.performClick();
+                rippleViewAddToilet.setOnRippleCompleteListener(rippleView -> {
+                    ICMyCPreferenceData.setPreference(activity, ICMyCPreferenceData.toiletName,
+                        et_name_toilet.getText().toString());
 
-                            ICMyCPreferenceData.setPreference(activity,ICMyCPreferenceData.wardNo,
-                                    et_ward_number.getText().toString());
+                    ICMyCPreferenceData.setPreference(activity, ICMyCPreferenceData.wardNo,
+                        et_ward_number.getText().toString());
 
-                            ICMyCPreferenceData.setPreference(activity,ICMyCPreferenceData.toiletAddress,
-                                    et_toilet_address.getText().toString());
+                    ICMyCPreferenceData.setPreference(activity, ICMyCPreferenceData.toiletAddress,
+                        et_toilet_address.getText().toString());
 
-                            ICMyCPreferenceData.setPreference(activity,ICMyCPreferenceData.toiletPincode,
-                                    et_pincode.getText().toString());
+                    ICMyCPreferenceData.setPreference(activity, ICMyCPreferenceData.toiletPincode,
+                        et_pincode.getText().toString());
 
+                    startActivity(new Intent(PublicToiletAddToiletActivity.this,
+                        PublicToiletDetailsActivity.class));
+                });
 
-                            startActivity(new Intent(PublicToiletAddToiletActivity.this,
-                                    PublicToiletDetailsActivity.class));
-                        }
-                    });
-
-                }}
-                else if(et_name_toilet.getText().toString().trim().equals("")){
-                    //write your code here
-                    Toast.makeText(getApplicationContext(), "Please enter toilet name", Toast.LENGTH_SHORT).show();
-                    et_name_toilet.requestFocus();
-                }
-               else if(et_ward_number.getText().toString().trim().equals("")){
-                    //write your code here
-                    Toast.makeText(getApplicationContext(), "Please enter ward number", Toast.LENGTH_SHORT).show();
-                    et_ward_number.requestFocus();
-                }
-              else  if(et_toilet_address.getText().toString().trim().equals("")){
-                    //write your code here
-                    Toast.makeText(getApplicationContext(), "Please enter toilet address", Toast.LENGTH_SHORT).show();
-                    et_toilet_address.requestFocus();
-                }
-              else  if(et_pincode.getText().toString().trim().equals("") ){
-                    //write your code here
-                    Toast.makeText(getApplicationContext(), "Please enter pincode", Toast.LENGTH_SHORT).show();
-                    et_pincode.requestFocus();
-                }
-
-                else  if(et_pincode.getText().toString().trim().length()!=6){
-                    //write your code here
-                    Toast.makeText(getApplicationContext(), "Please enter 6 digit pincode", Toast.LENGTH_SHORT).show();
-                    et_pincode.requestFocus();
-                }
-
+            }}
+            else if(et_name_toilet.getText().toString().trim().equals("")){
+                //write your code here
+                Toast.makeText(getApplicationContext(), "Please enter toilet name", Toast.LENGTH_SHORT).show();
+                et_name_toilet.requestFocus();
             }
+           else if(et_ward_number.getText().toString().trim().equals("")){
+                //write your code here
+                Toast.makeText(getApplicationContext(), "Please enter ward number", Toast.LENGTH_SHORT).show();
+                et_ward_number.requestFocus();
+            }
+          else  if(et_toilet_address.getText().toString().trim().equals("")){
+                //write your code here
+                Toast.makeText(getApplicationContext(), "Please enter toilet address", Toast.LENGTH_SHORT).show();
+                et_toilet_address.requestFocus();
+            }
+          else  if(et_pincode.getText().toString().trim().equals("") ){
+                //write your code here
+                Toast.makeText(getApplicationContext(), "Please enter pincode", Toast.LENGTH_SHORT).show();
+                et_pincode.requestFocus();
+            }
+
+            else  if(et_pincode.getText().toString().trim().length()!=6){
+                //write your code here
+                Toast.makeText(getApplicationContext(), "Please enter 6 digit pincode", Toast.LENGTH_SHORT).show();
+                et_pincode.requestFocus();
+            }
+
         });
 
 
@@ -178,12 +171,7 @@ public class PublicToiletAddToiletActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> activity.finish());
         final Drawable upArrow = getResources().getDrawable(R.mipmap.back);
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);

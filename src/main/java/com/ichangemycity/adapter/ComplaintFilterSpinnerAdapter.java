@@ -57,9 +57,9 @@ public class ComplaintFilterSpinnerAdapter extends BaseAdapter {
                     R.layout.inflate_complaint_filter_dropdown, parent, false);
             view.setTag("DROPDOWN");
         }
-        TextView textView = (TextView) view
+        TextView textView = view
                 .findViewById(R.id.textPostComplaint);
-        TextView filtercolor = (TextView)view.findViewById(R.id.filtercolor);
+        TextView filtercolor = view.findViewById(R.id.filtercolor);
         filtercolor.setBackgroundColor(complaintFilterModel.get(position).getComplaintColor());
         filtercolor.setVisibility(View.GONE);
         textView.setBackgroundColor(Color.TRANSPARENT);
@@ -76,9 +76,9 @@ public class ComplaintFilterSpinnerAdapter extends BaseAdapter {
                     R.layout.inflate_complaint_filter_dropdown, parent, false);
             view.setTag("NON_DROPDOWN");
         }
-        TextView textView = (TextView) view
+        TextView textView = view
                 .findViewById(R.id.textPostComplaint);
-        TextView filtercolor = (TextView)view.findViewById(R.id.filtercolor);
+        TextView filtercolor = view.findViewById(R.id.filtercolor);
         textView.setBackgroundColor(Color.WHITE);
         filtercolor.setVisibility(View.INVISIBLE);
         textView.setText(complaintFilterModel.get(position).getDisplayTitle());
