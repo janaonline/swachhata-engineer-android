@@ -13,7 +13,6 @@ import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.AppUtils;
 import com.ichangemycity.callback.OnResponseListener;
-import com.ichangemycity.swachhbharatengineer.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,7 +82,7 @@ public class WebserviceHelper {
 
     private void doPut(final Activity activity, final String url, final HashMap<String, String> params, final OnResponseListener onResponseListener,
         final boolean isToShowProgressDialog, final int headerType) {
-        AppController.showProgressDialog(activity, activity.getString(R.string.loading));
+        AppController.showProgressDialog(activity);
         StringRequest stringRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response0) {
@@ -96,7 +95,7 @@ public class WebserviceHelper {
                             AppUtils.showToast(activity, AppConstant.TOAST_TYPE_SUCCESS, response.optString("message"));
                             onResponseListener.OnResponseSuccess(response);
                         } else {
-                            onResponseListener.OnResponseFailure(response);
+                            onResponseListener.OnResponseFailure();
                             AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, response.optString("message"));
                         }
                     } else {
@@ -105,7 +104,7 @@ public class WebserviceHelper {
                         } catch (Exception e) {
                             e.printStackTrace();
                             AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, e.getMessage());
-                            onResponseListener.OnResponseFailure(response);
+                            onResponseListener.OnResponseFailure();
                         }
                     }
                 } catch (JSONException e) {
@@ -118,8 +117,8 @@ public class WebserviceHelper {
                 public void onErrorResponse(VolleyError error) {
                     if (isToShowProgressDialog)
                         AppController.hideProgressDialog(activity);
-                    onResponseListener.OnResponseFailure(new JSONObject());
-                    AppController.handleVolleyError(activity, null, error);
+                    onResponseListener.OnResponseFailure();
+                    AppController.handleVolleyError(activity, error);
                 }
             }) {
             @Override
@@ -145,7 +144,7 @@ public class WebserviceHelper {
         onResponseListener, final boolean
         isToShowProgressDialog, final int headerType) {
         if (isToShowProgressDialog)
-            AppController.showProgressDialog(activity, activity.getResources().getString(R.string.loading));
+            AppController.showProgressDialog(activity);
         JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.DELETE, url,
             (String) null, response -> {
                 try {
@@ -156,7 +155,7 @@ public class WebserviceHelper {
                             AppUtils.showToast(activity, AppConstant.TOAST_TYPE_SUCCESS, response.optString("message"));
                             onResponseListener.OnResponseSuccess(response);
                         } else {
-                            onResponseListener.OnResponseFailure(response);
+                            onResponseListener.OnResponseFailure();
                             AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, response.optString("message"));
                         }
                     } else {
@@ -165,7 +164,7 @@ public class WebserviceHelper {
                         } catch (Exception e) {
                             e.printStackTrace();
                             AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, e.getMessage());
-                            onResponseListener.OnResponseFailure(response);
+                            onResponseListener.OnResponseFailure();
                         }
                     }
 
@@ -178,8 +177,8 @@ public class WebserviceHelper {
                 public void onErrorResponse(VolleyError error) {
                     if (isToShowProgressDialog)
                         AppController.hideProgressDialog(activity);
-                    AppController.handleVolleyError(activity, null, error);
-                    onResponseListener.OnResponseFailure(new JSONObject());
+                    AppController.handleVolleyError(activity, error);
+                    onResponseListener.OnResponseFailure();
 
                 }
             }) {
@@ -205,7 +204,7 @@ public class WebserviceHelper {
         final boolean isToShowProgressDialog, final int headerType) {
         AppUtils.hideProgressDialog(activity);
         if (isToShowProgressDialog)
-            AppController.showProgressDialog(activity, activity.getResources().getString(R.string.loading));
+            AppController.showProgressDialog(activity);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
             url, (String) null,
             response -> {
@@ -218,7 +217,7 @@ public class WebserviceHelper {
                             onResponseListener.OnResponseSuccess(response);
                         } catch (Exception e) {
                             e.printStackTrace();
-                            onResponseListener.OnResponseFailure(response);
+                            onResponseListener.OnResponseFailure();
                             AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, e.getMessage());
                         }
                     } else if (response.optInt("httpCode") == 401) {
@@ -228,10 +227,10 @@ public class WebserviceHelper {
 //                                activity.finish();
 //                                new AppController().cancelPendingRequests(AppController.TAG);
                     } else if (response.optInt("httpCode") == 404) {
-                        onResponseListener.OnResponseFailure(response);
+                        onResponseListener.OnResponseFailure();
                     } else {
                         try {
-                            onResponseListener.OnResponseFailure(response);
+                            onResponseListener.OnResponseFailure();
                         } catch (Exception e) {
                             e.printStackTrace();
                             AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, e.getMessage());
@@ -243,7 +242,7 @@ public class WebserviceHelper {
                     } catch (Exception e) {
                         e.printStackTrace();
                         AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, e.getMessage());
-                        onResponseListener.OnResponseFailure(response);
+                        onResponseListener.OnResponseFailure();
                     }
                 }
             }, new Response.ErrorListener() {
@@ -252,8 +251,8 @@ public class WebserviceHelper {
             public void onErrorResponse(final VolleyError volleyError) {
                 if (isToShowProgressDialog)
                     AppController.hideProgressDialog(activity);
-                onResponseListener.OnResponseFailure(new JSONObject());
-                AppController.handleVolleyError(activity, null, volleyError);
+                onResponseListener.OnResponseFailure();
+                AppController.handleVolleyError(activity, volleyError);
             }
 
         }) {
@@ -286,7 +285,7 @@ public class WebserviceHelper {
     private static void doPatch(final Activity activity, final String url, final OnResponseListener onResponseListener,
         final boolean isToShowProgressDialog, final int headerType) {
         if (isToShowProgressDialog)
-            AppController.showProgressDialog(activity, activity.getResources().getString(R.string.loading));
+            AppController.showProgressDialog(activity);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.PATCH,
             url, (String) null,
             response -> {
@@ -300,7 +299,7 @@ public class WebserviceHelper {
                             onResponseListener.OnResponseSuccess(response);
                         } catch (Exception e) {
                             e.printStackTrace();
-                            onResponseListener.OnResponseFailure(response);
+                            onResponseListener.OnResponseFailure();
                             AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, e.getMessage());
                         }
                     } else if (response.optInt("httpCode") == 401) {
@@ -311,10 +310,10 @@ public class WebserviceHelper {
 //                                activity.finish();
 //                                new AppController().cancelPendingRequests(AppController.TAG);
                     } else if (response.optInt("httpCode") == 404) {
-                        onResponseListener.OnResponseFailure(response);
+                        onResponseListener.OnResponseFailure();
                     } else {
                         try {
-                            onResponseListener.OnResponseFailure(response);
+                            onResponseListener.OnResponseFailure();
                         } catch (Exception e) {
                             e.printStackTrace();
                             AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, e.getMessage());
@@ -326,7 +325,7 @@ public class WebserviceHelper {
                     } catch (Exception e) {
                         e.printStackTrace();
                         AppUtils.showToast(activity, AppConstant.TOAST_TYPE_ERROR, e.getMessage());
-                        onResponseListener.OnResponseFailure(response);
+                        onResponseListener.OnResponseFailure();
                     }
                 }
             }, new Response.ErrorListener() {
@@ -335,8 +334,8 @@ public class WebserviceHelper {
             public void onErrorResponse(final VolleyError volleyError) {
                 if (isToShowProgressDialog)
                     AppController.hideProgressDialog(activity);
-                onResponseListener.OnResponseFailure(new JSONObject());
-                AppController.handleVolleyError(activity, null, volleyError);
+                onResponseListener.OnResponseFailure();
+                AppController.handleVolleyError(activity, volleyError);
             }
 
         }) {
@@ -371,7 +370,7 @@ public class WebserviceHelper {
     private static void doPost(final Activity activity, final String url, final HashMap<String, String> requestParams, final OnResponseListener
         onResponseListener, final boolean isToShowProgressDialog, final int headerType) {
         if (isToShowProgressDialog)
-            AppController.showProgressDialog(activity, activity.getResources().getString(R.string.loading));
+            AppController.showProgressDialog(activity);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
 
@@ -399,7 +398,7 @@ public class WebserviceHelper {
 //                        activity.finish();
 //                        new AppController().cancelPendingRequests(AppController.TAG);
                     } else if (mJsonObject.optInt("httpCode") == 404) {
-                        onResponseListener.OnResponseFailure(mJsonObject);
+                        onResponseListener.OnResponseFailure();
                     } else if (!mJsonObject.has("httpCode")) { //event create success
                         try {
                             onResponseListener.OnResponseSuccess(mJsonObject);
@@ -436,7 +435,7 @@ public class WebserviceHelper {
                 public void onErrorResponse(VolleyError error) {
                     if (isToShowProgressDialog)
                         AppController.hideProgressDialog(activity);
-                    AppController.handleVolleyError(activity, null, error);
+                    AppController.handleVolleyError(activity, error);
 
                 }
             }) {

@@ -29,7 +29,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.ichangemycity.adapter.ComplaintFilterSpinnerAdapter;
@@ -57,12 +56,10 @@ public class MainActivity extends AppCompatActivity
 
   public static Activity activity;
   com.jude.easyrecyclerview.EasyRecyclerView mRecyclerView;
-  private RecyclerView.Adapter mAdapter;
   private SwipeRefreshLayout refreshLayout;
   private RecyclerView.LayoutManager mLayoutManager;
   private ArrayList<ComplaintFilterModel> complaintFilterModel = new ArrayList<ComplaintFilterModel>();
   public static Spinner complaintFilter;
-  private static Toolbar toolbar;
   public static android.support.v7.app.ActionBar actionBar;
   private DrawerLayout drawer;
   int pastVisiblesItems, visibleItemCount, totalItemCount;
@@ -85,7 +82,7 @@ public class MainActivity extends AppCompatActivity
     mLayoutManager = new LinearLayoutManager(activity);
     mRecyclerView.setLayoutManager(mLayoutManager);
     initSwipeOptions();
-    setToolbarAndCustomizeTitle(toolbar, getResources().getString(R.string.app_name));
+    setToolbarAndCustomizeTitle(toolbar);
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
         this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -245,7 +242,7 @@ public class MainActivity extends AppCompatActivity
 
   }
 
-  private void setToolbarAndCustomizeTitle(Toolbar toolbar, String string) {
+  private void setToolbarAndCustomizeTitle(Toolbar toolbar) {
     toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     actionBar = getSupportActionBar();
@@ -287,8 +284,6 @@ public class MainActivity extends AppCompatActivity
     return super.onOptionsItemSelected(item);
   }
 
-  private static MenuItem menuItem;
-
 
   TextView on_the_job, resolved, rejected, re_opened, high_priority;
   NavigationView navigationView;
@@ -309,13 +304,12 @@ public class MainActivity extends AppCompatActivity
     setLeftMenuProfileDetails();
   }
 
-  private static View headerView;
   //  private static ImageView menuIcon1;
   private TextView userNameLeftMenu, textViewLocation, userDesignationLeftMenu;
 
 
   private void setLeftMenuProfileDetails() {
-    headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
+    navigationView.inflateHeaderView(R.layout.nav_header_main);
 //    menuIcon1 = (ImageView) drawer.findViewById(R.id.menuIcon1);
 //    menuIcon1.setVisibility(View.VISIBLE);
     CircleImageView imageView = drawer.findViewById(R.id.imageView1);
@@ -324,7 +318,7 @@ public class MainActivity extends AppCompatActivity
         .defaultValue("http://icmycsaasqa.ichangemycity" +
             ".com/android/image/image_not_found.png").go());
 
-    AppUtils.setImage(activity, imageView, null,
+    AppUtils.setImage(imageView, null,
         SecurePrefManager.with(activity).get(ICMyCPreferenceData.userProfileImage).defaultValue("")
             .go(), true);
     userNameLeftMenu = drawer.findViewById(R.id.userNameLeftMenu);
@@ -519,7 +513,7 @@ public class MainActivity extends AppCompatActivity
     new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null,
         new OnResponseListener() {
           @Override
-          public void OnResponseFailure(JSONObject response) {
+          public void OnResponseFailure() {
             AppUtils.hideProgressDialog(activity);
           }
 
@@ -799,7 +793,6 @@ public class MainActivity extends AppCompatActivity
     } catch (Exception e) {
       e.printStackTrace();
     }
-    onNavigationItemSelected(menuItem);
     ICMyCPreferenceData.setPreference(
         activity, ICMyCPreferenceData.activated, "1");
   }
@@ -849,7 +842,7 @@ public class MainActivity extends AppCompatActivity
       new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null,
           new OnResponseListener() {
             @Override
-            public void OnResponseFailure(JSONObject response) {
+            public void OnResponseFailure() {
 
               AppController.hideProgressDialog(activity);
               hideSwipeProgress();
@@ -879,7 +872,7 @@ public class MainActivity extends AppCompatActivity
               }
               new ParseJSONResponse(response, isToScroll).execute();
             }
-          }, isToScroll, WebserviceHelper.HEADER_TYPE_NORMAL);
+          }, false, WebserviceHelper.HEADER_TYPE_NORMAL);
 
 
            /* JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
@@ -937,8 +930,6 @@ public class MainActivity extends AppCompatActivity
     }
   }
 
-  int retryCount;
-
   private class ParseJSONResponse extends AsyncTask<Void, Void, Void> {
 
     JSONObject jsonObject = new JSONObject();
@@ -953,13 +944,6 @@ public class MainActivity extends AppCompatActivity
     protected Void doInBackground(Void... params) {
       GetParsedJsonFromResponse(this.jsonObject);
       return null;
-    }
-
-    @Override
-    protected void onProgressUpdate(Void... values) {
-      // TODO Auto-generated method stub
-      super.onProgressUpdate(values);
-      mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -1097,13 +1081,6 @@ public class MainActivity extends AppCompatActivity
         holo_green_light,
         holo_orange_light,
         holo_blue_bright);
-  }
-
-  /**
-   * It shows the SwipeRefreshLayout progress
-   */
-  public void showSwipeProgress() {
-    refreshLayout.setRefreshing(true);
   }
 
   /**

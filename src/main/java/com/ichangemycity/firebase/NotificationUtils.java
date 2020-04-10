@@ -4,36 +4,23 @@ package com.ichangemycity.firebase;
  * Created by pattabi.raman on 04-08-2017.
  */
 
-import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import android.text.Html;
+import android.support.v4.app.NotificationCompat.Builder;
 import android.text.TextUtils;
-import android.util.Patterns;
 
 import com.ichangemycity.swachhbharatengineer.R;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 
@@ -41,8 +28,6 @@ import java.util.Random;
  * Created by Ravi on 31/03/15.
  */
 public class NotificationUtils {
-
-  private static String TAG = NotificationUtils.class.getSimpleName();
 
   private Context mContext;
 
@@ -63,9 +48,6 @@ public class NotificationUtils {
         return;
       }
 
-      // notification icon
-      final int icon = R.mipmap.ic_launcher_round;
-
       intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
       final PendingIntent resultPendingIntent =
           PendingIntent.getActivity(
@@ -78,15 +60,10 @@ public class NotificationUtils {
       final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
           mContext);
 
-      final Uri alarmSound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE
-          + "://" + mContext.getPackageName() + "/raw/notification.mp3");
-
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-        showSmallNotification(mBuilder, icon, title, message, timeStamp, resultPendingIntent,
-            alarmSound);
+        showSmallNotification(mBuilder, title, message, resultPendingIntent);
       } else {
-        showSmallNotification(mBuilder, icon, title, message, timeStamp, resultPendingIntent,
-            alarmSound);
+        showSmallNotification(mBuilder, title, message, resultPendingIntent);
 
       }
       playNotificationSound();
@@ -94,8 +71,8 @@ public class NotificationUtils {
   }
 
 
-  private void showSmallNotification(NotificationCompat.Builder mBuilder, int icon, String title,
-      String message, String timeStamp, PendingIntent resultPendingIntent, Uri alarmSound) {
+  public void showSmallNotification(Builder mBuilder, String title,
+      String message, PendingIntent resultPendingIntent) {
 
     final String Channel_id = "SBM-Engineer";
     CharSequence name = "SBM Engineer App";// The user-visible name of the channel.

@@ -40,8 +40,7 @@ public class PublicToiletDetailsActivity extends AppCompatActivity implements
     // Array of choices
     String categoryspinnerArray[] = {"PTB ","CTB"," URI"};
     String toiletTypespinnerArray[] = {"Toilet","Urinal","Toilet And Urinal"};
-    String MaintenanceAuthorityspinnerArray[] = {"Sulabh Toilet","Private Toilet ","Own Toilet ","municipal corporation Toilet"};
-    String[] strings = { " Everyday", " Sunday", " Monday", "Tuesday", "Wednesday", "Thursday","Friday","Saturday" };
+  String[] strings = { " Everyday", " Sunday", " Monday", "Tuesday", "Wednesday", "Thursday","Friday","Saturday" };
     ArrayAdapter<String> categoryspinnerArrayAdapter;
     ArrayAdapter<String> toiletTypespinnerArrayAdapter;
     ArrayAdapter<String> MaintenanceAuthorityArrayAdapter;
@@ -275,30 +274,7 @@ public class PublicToiletDetailsActivity extends AppCompatActivity implements
         toolbar.setTitleTextColor(Color.WHITE);
     }
 
-    private void getTimPeriod(Integer selectedHour) {
-        String status = "AM";
-
-        if(selectedHour > 11)
-        {
-            // If the hour is greater than or equal to 12
-            // Then the current AM PM status is PM
-            status = "PM";
-        }
-
-        // Initialize a new variable to hold 12 hour format hour value
-        int hour_of_12_hour_format;
-
-        if(selectedHour > 11){
-
-            // If the hour is greater than or equal to 12
-            // Then we subtract 12 from the hour to make it 12 hour format time
-            hour_of_12_hour_format = selectedHour - 12;
-        }
-        else {
-            hour_of_12_hour_format = selectedHour;
-        }
-    }
-    @Override
+  @Override
     public void onBackPressed() {
         // TODO Auto-generated method stub
         // super.onBackPressed();

@@ -28,19 +28,7 @@ public class LanguageAdapter extends BaseAdapter {
         this.mLanguage.addAll(mLanguage);
     }
 
-    public void clear() {
-        mLanguage.clear();
-    }
-
-    public void addItem(LanguageData yourObject) {
-        mLanguage.add(yourObject);
-    }
-
-    public void addItems(ArrayList<LanguageData> yourObjectList) {
-        mLanguage.addAll(yourObjectList);
-    }
-
-    @Override
+  @Override
     public int getCount() {
         return mLanguage.size();
     }

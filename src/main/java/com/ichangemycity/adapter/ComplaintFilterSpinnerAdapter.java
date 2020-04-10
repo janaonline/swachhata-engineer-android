@@ -23,19 +23,7 @@ public class ComplaintFilterSpinnerAdapter extends BaseAdapter {
         this.complaintFilterModel = complaintFilterModel;
     }
 
-    public void clear() {
-        complaintFilterModel.clear();
-    }
-
-    public void addItem(ComplaintFilterModel yourObject) {
-        complaintFilterModel.add(yourObject);
-    }
-
-    public void addItems(ArrayList<ComplaintFilterModel> yourObjectList) {
-        complaintFilterModel.addAll(yourObjectList);
-    }
-
-    @Override
+  @Override
     public int getCount() {
         return complaintFilterModel.size();
     }

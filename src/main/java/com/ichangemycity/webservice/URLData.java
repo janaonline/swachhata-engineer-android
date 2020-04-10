@@ -40,7 +40,6 @@ public class URLData {
   public static final String RESOLVED_COMPLAINT_LISTS = "complaints/getResolvedComplaintLists";
   public static final String GET_REJECTED_COMPLAINT_LISTS = "complaints/getRejectedComplaintLists";
 
-  public static final String FILE = "file";
   // in
   // users
   public static final String CHECK_ACTIVE_ENGINEER = "check-active-engineer?apiKey="

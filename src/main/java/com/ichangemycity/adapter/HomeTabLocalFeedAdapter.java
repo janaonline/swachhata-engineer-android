@@ -31,11 +31,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeTabLocalFeedAdapter extends
         RecyclerView.Adapter<HomeTabLocalFeedAdapter.ViewHolder> {
-    ArrayList<Integer> linecount = new ArrayList<Integer>();
+
     private static Activity activity;
     // ArrayList<ComplaintData> data = new ArrayList<ComplaintData>();
-
-    String mSharedUserId = null;
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
@@ -73,17 +71,14 @@ public class HomeTabLocalFeedAdapter extends
         TextView title, complaint_status, created_on, complaint_category,
                 complaint_description, comment, tv_feed_user_name, tv_feed,
                 votedUpCount, commentedCount, share;
-        ImageView image1, image2, image3;
         RelativeLayout rl_cc_top, rl_top_feed;
         NetworkImageView complaint_image;
         ImageView feed_flag;
         // LinearLayout cta_btn, cta_feedback, card;
         LinearLayout resolved;
         TextView satisfaction, un_satisfied, neutral;
-        View viewLine;
         Spinner changeStatus;
         FrameLayout frameSpinner;
-        TextView textPostComplaint;
         LinearLayout card;
         CircleImageView user_image;
 
@@ -124,7 +119,7 @@ public class HomeTabLocalFeedAdapter extends
                 un_satisfied = convertView
                         .findViewById(R.id.un_satisfied);
                 neutral = convertView.findViewById(R.id.neutral);
-                viewLine = convertView.findViewById(R.id.view);
+
                 card = convertView.findViewById(R.id.card);
                 changeStatus = convertView
                         .findViewById(R.id.changeStatus);
@@ -135,10 +130,6 @@ public class HomeTabLocalFeedAdapter extends
                 feed_flag = convertView
                         .findViewById(R.id.feed_flag);
                 share = convertView.findViewById(R.id.share);
-            } else if (type == TYPE_HEADER) {
-                textPostComplaint = convertView
-                        .findViewById(R.id.textPostComplaint);
-
             }
         }
     }
@@ -247,10 +238,6 @@ public class HomeTabLocalFeedAdapter extends
         } else {
             rl_top_feed.setVisibility(View.GONE);
         }
-    }
-
-    public int pxToDp(int px) {
-        return (int) (px / Resources.getSystem().getDisplayMetrics().density);
     }
 
     private final int COMPLAINT_OPEN = 1;

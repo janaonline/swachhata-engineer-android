@@ -31,19 +31,7 @@ public class ChangeStatusSpinnerAdapter extends BaseAdapter {
         this.changeStatusModel = changeStatusModel;
     }
 
-    public void clear() {
-        changeStatusModel.clear();
-    }
-
-    public void addItem(ChangeStatusModel yourObject) {
-        changeStatusModel.add(yourObject);
-    }
-
-    public void addItems(ArrayList<ChangeStatusModel> yourObjectList) {
-        changeStatusModel.addAll(yourObjectList);
-    }
-
-    @Override
+  @Override
     public int getCount() {
         return changeStatusModel.size();
     }
@@ -79,9 +67,6 @@ public class ChangeStatusSpinnerAdapter extends BaseAdapter {
         textView.setGravity(Gravity.CENTER);
         textView.setText(getTitle(position));
         view.setOnClickListener(v -> {
-
-            AppController.selectedComplaintDropdownIndex = (Integer) textView
-                    .getTag();
             AppController.selectedComplaintData = (ComplaintData) view1
                     .getTag();
             AppController.selectedComplaintData.setToChangeStatus(true);

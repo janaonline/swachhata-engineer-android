@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.andexert.library.RippleView;
-import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppUtils;
@@ -97,7 +96,7 @@ public class SetEmailPasswordActivity extends BaseAppCompatActivity {
 
         new WebserviceHelper(activity, WebserviceHelper.METHOD_POST, URLDataSwachhManch.BASE_URL_AUTH, params, new OnResponseListener() {
             @Override
-            public void OnResponseFailure(JSONObject response) {
+            public void OnResponseFailure() {
                 AppUtils.hideProgressDialog(activity);
             }
 
@@ -121,7 +120,7 @@ public class SetEmailPasswordActivity extends BaseAppCompatActivity {
 
         new WebserviceHelper(activity, WebserviceHelper.METHOD_PATCH, URLString + PARAMS, null, new OnResponseListener() {
             @Override
-            public void OnResponseFailure(JSONObject response) {
+            public void OnResponseFailure() {
                 AppUtils.hideProgressDialog(activity);
             }
 
@@ -147,7 +146,7 @@ public class SetEmailPasswordActivity extends BaseAppCompatActivity {
                 new OnResponseListener() {
 
                     @Override
-                    public void OnResponseFailure(JSONObject response) {
+                    public void OnResponseFailure() {
                         AppUtils.hideProgressDialog(activity);
                     }
 
@@ -158,12 +157,12 @@ public class SetEmailPasswordActivity extends BaseAppCompatActivity {
                         ICMyCPreferenceData.setPreference(activity, ICMyCPreferenceData.profileData, json);
                         new AppUtils().parseProfileGetResponse(activity, response, new OnTaskCompleted() {
                             @Override
-                            public void onTaskSuccess(JSONObject jsonObject) {
+                            public void onTaskSuccess() {
                                 startActivity(new Intent(activity, MainActivity.class));
                             }
 
                             @Override
-                            public void onTaskFailure(VolleyError error) {
+                            public void onTaskFailure() {
 
                             }
                         });

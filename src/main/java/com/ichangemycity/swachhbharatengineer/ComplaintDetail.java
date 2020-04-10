@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -27,14 +26,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.toolbox.NetworkImageView;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
@@ -58,7 +52,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -76,8 +69,7 @@ public class ComplaintDetail extends BaseAppCompatActivity {
     Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbar;
     AppBarLayout appBarLayout;
-    FrameLayout frameLoading, framePictures;
-    private final String TAG = ComplaintDetail.class.getSimpleName();
+    FrameLayout frameLoading;
     //    private ViewPager viewPagerPictures;
     private WrapContentViewPager viewPager;
     public ComplaintData complaintDetailData = new ComplaintData();
@@ -91,7 +83,6 @@ public class ComplaintDetail extends BaseAppCompatActivity {
     TextView locationText, locationlandmark;
     ImageView change_status;
     ImageView locateComplaint, navigateComplaint;
-    View viewLine;
     public static boolean isToRefresh = false;
     private Spinner changeStatus;
     FrameLayout frameSpinner;
@@ -113,8 +104,7 @@ public class ComplaintDetail extends BaseAppCompatActivity {
         locateComplaint = findViewById(R.id.locateComplaint);
         navigateComplaint = findViewById(R.id.navigateComplaint);
         change_status = findViewById(R.id.change_status);
-        framePictures = findViewById(R.id.framePictures);
-        complaint_image = findViewById(R.id.complaint_image);
+         complaint_image = findViewById(R.id.complaint_image);
         collapsingToolbar = findViewById(R.id.collapsingToolbar);
         toolbar = findViewById(R.id.maintoolbar);
         tabLayout = findViewById(R.id.tabs);
@@ -140,8 +130,7 @@ public class ComplaintDetail extends BaseAppCompatActivity {
 //                .findViewById(R.id.resolved);
         locationText = findViewById(R.id.locationText);
         locationlandmark = findViewById(R.id.locationlandmark);
-        viewLine = ComplaintDetail.this.findViewById(R.id.view);
-        changeStatus = findViewById(R.id.changeStatus);
+         changeStatus = findViewById(R.id.changeStatus);
         change_status.setVisibility(View.GONE);
         setToolbarAndCustomizeTitle(toolbar, " ");
         runGetComplaintWebService();
@@ -170,7 +159,7 @@ public class ComplaintDetail extends BaseAppCompatActivity {
     private void runGetComplaintWebService() {
         frameLoading.setVisibility(View.GONE);
         findViewById(R.id.parentLayout).setVisibility(View.GONE);
-        AppController.showProgressDialog(activity, getString(R.string.loading));
+        AppController.showProgressDialog(activity);
         final String url = URLData.BASE_URL
                 + URLData.COMPLAINT_ID
                 + AppController.selectedComplaintData.getComplaintId()
@@ -181,7 +170,7 @@ public class ComplaintDetail extends BaseAppCompatActivity {
 
         new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
             @Override
-            public void OnResponseFailure(JSONObject response) {
+            public void OnResponseFailure() {
                 frameLoading.setVisibility(View.GONE);
                 AppController.hideProgressDialog(activity);
             }
@@ -357,7 +346,7 @@ public class ComplaintDetail extends BaseAppCompatActivity {
             // }
 
         });
-        AppController.initiateCTAForShareComment(activity, AppController.selectedComplaintData);
+        AppController.initiateCTAForShareComment();
         change_status.setOnClickListener(v -> inflateDialogtoShowChangeStatusMenu());
     }
 
@@ -365,12 +354,10 @@ public class ComplaintDetail extends BaseAppCompatActivity {
 
         d.setContentView(R.layout.inflate_listview_change_status);
         cStatusListData = new ArrayList<>();
-        list = d.findViewById(R.id.listView);
-        new SetListData(d).execute();
+         new SetListData(d).execute();
     }
 
     ArrayList<ChangeStatusListData> cStatusListData;
-    ListView list;
     public static Dialog d;
 
     private class SetListData extends AsyncTask<Void, Void, Void> {
@@ -515,7 +502,8 @@ public class ComplaintDetail extends BaseAppCompatActivity {
                                     ccData.setUser_image_url(commentsJsonObject
                                             .optString("user_image_url"));
                                 try {
-                                    ccData.setSpanColorForCoplaintStatus(ParseComplaintData.getSpanColorForStatusTitle(activity, Integer
+                                    ccData.setSpanColorForCoplaintStatus(ParseComplaintData.getSpanColorForStatusTitle(
+                                        Integer
                                             .parseInt(ccData
                                                     .getComment_complaint_status_id())));
                                 } catch (NumberFormatException w) {

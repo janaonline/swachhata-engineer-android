@@ -8,5 +8,5 @@ import android.content.DialogInterface;
 
 public interface OnButtonClick {
     public void onPositiveButtonClicked(DialogInterface dialogInterface);
-    public void onNegativeButtonClicked(DialogInterface dialogInterface);
+    public void onNegativeButtonClicked();
 }

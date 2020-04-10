@@ -23,7 +23,8 @@ import com.ichangemycity.appdata.AppController;
 
 public class PublicToiletFacilitiesActivity extends AppCompatActivity {
     private Button nxtBtn;
-    private RadioButton radio_childfriendly,radio_differentlyabled,radio_waterATM,radio_sanitary,radio_Incinerator;
+  private RadioButton radio_sanitary;
+  private RadioButton radio_Incinerator;
     public static Activity activity;
     Toolbar toolbar;
     private Spinner gender_spinner;
@@ -52,9 +53,7 @@ public class PublicToiletFacilitiesActivity extends AppCompatActivity {
         AppController.assignLanguage(PublicToiletFacilitiesActivity.this);
         activity = PublicToiletFacilitiesActivity.this;
         nxtBtn = findViewById(R.id.toilet_facilities_btn);
-        radio_childfriendly = findViewById(R.id.radio_childfriendly);
-        radio_differentlyabled = findViewById(R.id.radio_differentlyabled);
-        radio_waterATM = findViewById(R.id.radio_waterATM);
+
         radio_sanitary = findViewById(R.id.radio_sanitary);
         radio_Incinerator = findViewById(R.id.radio_Incinerator);
 

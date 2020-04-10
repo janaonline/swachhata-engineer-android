@@ -9,14 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
@@ -34,7 +27,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class UserOTPVerification extends BaseAppCompatActivity {
@@ -49,7 +41,7 @@ public class UserOTPVerification extends BaseAppCompatActivity {
         setContentView(R.layout.otp_verification);
         activity = UserOTPVerification.this;
         toolbar = findViewById(R.id.toolbar);
-        setToolbarAndCustomizeTitle(getResources().getString(R.string.enter_otp));
+        setToolbarAndCustomizeTitle();
         ((TextView) findViewById(R.id.enterotp)).setText(getResources()
                 .getString(R.string.enter_verification_code_sent_to_)
                 + " \n ("
@@ -67,7 +59,7 @@ public class UserOTPVerification extends BaseAppCompatActivity {
         findViewById(R.id.resendCode)
                 .setOnClickListener(v -> {
                     doOTPTimer();
-                    AppController.showProgressDialog(activity,getResources().getString(R.string.loading));
+                    AppController.showProgressDialog(activity);
                     String url = (URLData.BASE_URL
                             + URLData.CHECK_ACTIVE_ENGINEER
                             + ICMyCPreferenceData.getPreferenceItem(
@@ -87,7 +79,7 @@ public class UserOTPVerification extends BaseAppCompatActivity {
 
                     new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
                         @Override
-                        public void OnResponseFailure(JSONObject response) {
+                        public void OnResponseFailure() {
                             AppController.hideProgressDialog(activity);
 
                         }
@@ -154,7 +146,7 @@ public class UserOTPVerification extends BaseAppCompatActivity {
                                                             }
 
                                                             @Override
-                                                            public void onNegativeButtonClicked(DialogInterface dialogInterface) {
+                                                            public void onNegativeButtonClicked() {
 
                                                             }
                                                         });
@@ -173,7 +165,7 @@ public class UserOTPVerification extends BaseAppCompatActivity {
                                                                 }
 
                                                                 @Override
-                                                                public void onNegativeButtonClicked(DialogInterface dialogInterface) {
+                                                                public void onNegativeButtonClicked() {
 
                                                                 }
                                                             });
@@ -200,7 +192,7 @@ public class UserOTPVerification extends BaseAppCompatActivity {
 
     }
 
-    private void setToolbarAndCustomizeTitle(String title) {
+    private void setToolbarAndCustomizeTitle() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
@@ -216,7 +208,7 @@ public class UserOTPVerification extends BaseAppCompatActivity {
 
 
     private void  validateOTP(final String otpText) {
-        AppController.showProgressDialog(activity, activity.getResources().getString(R.string.loading));
+        AppController.showProgressDialog(activity);
         final String url=URLData.BASE_URL + URLData.AUTH;
 
        HashMap<String, String> params = new HashMap<String, String>();
@@ -236,7 +228,7 @@ public class UserOTPVerification extends BaseAppCompatActivity {
                         ICMyCPreferenceData.deviceToken, ""));
         new WebserviceHelper(activity, WebserviceHelper.METHOD_POST, url, params, new OnResponseListener() {
             @Override
-            public void OnResponseFailure(JSONObject response) {
+            public void OnResponseFailure() {
              //  Toast.makeText(UserMobileNumber.this, error.toString(), Toast.LENGTH_LONG).show();
                 AppController.hideProgressDialog(activity);
                // AppController.handleVolleyError(activity, (RelativeLayout) activity.findViewById(R.id.parentLayout), error);
@@ -410,7 +402,7 @@ public class UserOTPVerification extends BaseAppCompatActivity {
                                 }
 
                                 @Override
-                                public void onNegativeButtonClicked(DialogInterface dialogInterface) {
+                                public void onNegativeButtonClicked() {
 
                                 }
                             });

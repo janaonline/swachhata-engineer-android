@@ -53,8 +53,7 @@ public class AndroidCustomGalleryActivity extends BaseAppCompatActivity {
     @Nullable
     @BindView(R.id.frameLoader)
     FrameLayout frameLoader;
-    int myLastVisiblePos;
-    private Activity activity;
+  private Activity activity;
     @Nullable
     @BindView(R.id.image)
     ImageView image;
@@ -109,11 +108,8 @@ public class AndroidCustomGalleryActivity extends BaseAppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
     }
 
-    Cursor imagecursor;
 
-
-
-    private void showAlertToSelectImageNumbers(String messageInfo) {
+  private void showAlertToSelectImageNumbers(String messageInfo) {
         // TODO Auto-generated method stub
         AlertDialog.Builder ab = new AlertDialog.Builder(
                 AndroidCustomGalleryActivity.this);
@@ -140,17 +136,6 @@ public class AndroidCustomGalleryActivity extends BaseAppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }*/
-    }
-
-    @Override
-    protected void onDestroy() {
-        // TODO Auto-generated method stub
-        super.onDestroy();
-        try {
-            imagecursor.close();
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
     }
 
     private class ProceedToDescriptionScreen extends AsyncTask<Void, Void, Void> {

@@ -116,58 +116,8 @@ public class PublicToiletAddToiletActivity extends AppCompatActivity {
 
     }
 
-    TextWatcher watch = new TextWatcher(){
 
-        @Override
-        public void afterTextChanged(Editable arg0) {
-            // TODO Auto-generated method stub
-           // Toast.makeText(getApplicationContext(), "afterTextChanged", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                                      int arg3) {
-            // TODO Auto-generated method stub
-            //Toast.makeText(getApplicationContext(), "beforeTextChanged", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int a, int b, int c) {            // TODO Auto-generated method stub
-
-
-           /* if(et_pincode.getText().toString().trim().length()!=6){
-                //write your code here
-                Toast.makeText(getApplicationContext(), "Please enter 6 digit pincode", Toast.LENGTH_SHORT).show();
-                et_pincode.requestFocus();
-            }*/
-          //  output.setText(s);
-            //if(a == 9){
-             //   Toast.makeText(getApplicationContext(), "Maximum Limit Reached", Toast.LENGTH_SHORT).show();
-
-           // }
-
-          /*  if(et_name_toilet.getText().toString().trim().equals("")){
-                //write your code here
-                Toast.makeText(getApplicationContext(), "Please enter toilet name", Toast.LENGTH_SHORT).show();
-            }
-            if(et_ward_number.getText().toString().trim().equals("")){
-                //write your code here
-                Toast.makeText(getApplicationContext(), "Please enter ward number", Toast.LENGTH_SHORT).show();
-            }
-            if(et_toilet_address.getText().toString().trim().equals("")){
-                //write your code here
-                Toast.makeText(getApplicationContext(), "Please enter toilet address", Toast.LENGTH_SHORT).show();
-            }
-            if(et_pincode.getText().toString().trim().equals("")){
-                //write your code here
-                Toast.makeText(getApplicationContext(), "Please enter pincode", Toast.LENGTH_SHORT).show();
-            }
-*/
-
-    }};
-
-
-    private void setToolbarAndCustomizeTitle(String title) {
+  private void setToolbarAndCustomizeTitle(String title) {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));

@@ -49,7 +49,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.AddRem
     @Override
     public AddRemarkViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.inflate_comment, parent, false);
-        return new AddRemarkViewHolder(view, viewType);
+        return new AddRemarkViewHolder(view);
     }
 
     @Override
@@ -119,7 +119,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.AddRem
         private LinearLayout imageLinear;
         private HorizontalScrollView imageLayout;
 
-        public AddRemarkViewHolder(View itemView, int viewType) {
+        public AddRemarkViewHolder(View itemView) {
             super(itemView);
             imageLinear = itemView
                     .findViewById(R.id.imageLinear);

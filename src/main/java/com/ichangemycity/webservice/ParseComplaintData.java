@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -181,7 +180,7 @@ public class ParseComplaintData {
         }
     }
 
-    public static String getSpanColorForStatusTitle(final Activity activity, final int statusId) {
+    public static String getSpanColorForStatusTitle(final int statusId) {
 //        Log.i("getSpanColor", "--------------->" + statusId + "");
         try {
             if (statusId == AppController.COMPLAINT_OPEN|| statusId == AppController.COMPLAINT_REOPEN) {

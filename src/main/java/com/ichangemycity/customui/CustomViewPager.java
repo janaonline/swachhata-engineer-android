@@ -20,15 +20,7 @@ public class CustomViewPager extends ViewPager {
         super(context, attrs);
     }
 
-    public boolean getSwipeLocked() {
-        return swipeLocked;
-    }
-
-    public void setSwipeLocked(boolean swipeLocked) {
-        this.swipeLocked = swipeLocked;
-    }
-
-    @Override
+  @Override
     public boolean onTouchEvent(MotionEvent event) {
         return !swipeLocked && super.onTouchEvent(event);
     }

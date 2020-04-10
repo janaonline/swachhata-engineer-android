@@ -24,11 +24,8 @@ import java.util.List;
 
 public class BaseAppCompatActivity extends AppCompatActivity {
 
-    public String TAG = this.getClass().getSimpleName();
-    private String TAG_GET_MAP_KEY = "TAG_GET_MAP_KEY";
-    PermissionManager permission;
-    private SharedPreferences permissionStatus;
-    protected static Activity activity;
+  PermissionManager permission;
+  protected static Activity activity;
     private static GetPermissionResult onGetPermissionResult;
     private static List<String> customPermission;
 
@@ -44,7 +41,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         this.customPermission=customPermission;
 
         if (android.os.Build.VERSION.SDK_INT >= 23  && checkPermissionStatus(activity, customPermission)) {
-            permissionStatus = activity.getSharedPreferences("permissionStatus", Context.MODE_PRIVATE);
+            activity.getSharedPreferences("permissionStatus", Context.MODE_PRIVATE);
             checkForPermissions();
         } else {
             proceedAfterPermissionSuccess();

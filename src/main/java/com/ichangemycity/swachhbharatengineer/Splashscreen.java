@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
 import com.ichangemycity.base.BaseAppCompatActivity;
@@ -16,7 +15,6 @@ import com.ichangemycity.webservice.URLData;
 import com.ichangemycity.webservice.WebserviceHelper;
 import java.io.IOException;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -41,7 +39,7 @@ public class Splashscreen extends BaseAppCompatActivity {
     new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null,
         new OnResponseListener() {
           @Override
-          public void OnResponseFailure(JSONObject response) {
+          public void OnResponseFailure() {
 
           }
 
@@ -69,10 +67,6 @@ public class Splashscreen extends BaseAppCompatActivity {
 
   public class RegisterBackground extends AsyncTask<String, String, String> {
 
-    // public boolean isFirstTime;
-    String msg = "";
-    private boolean isFailure = false;
-
     @Override
     protected String doInBackground(String... arg0) {
       String msg = "";
@@ -81,7 +75,6 @@ public class Splashscreen extends BaseAppCompatActivity {
 
       } catch (Exception e) {
         e.printStackTrace();
-        isFailure = true;
       }
       return msg;
 
@@ -98,23 +91,20 @@ public class Splashscreen extends BaseAppCompatActivity {
 
         ICMyCPreferenceData.setPreference(activity,
             ICMyCPreferenceData.deviceToken, regid);
-        msg = "Device registered, registration ID=" + regid;
         System.out.println("Regid is=============>" + regid);
       } catch (IOException ex) {
-        msg = "Error :" + ex.getMessage();
-        isFailure = true;
+        ex.printStackTrace();
       }
     }
 
     @Override
     protected void onPostExecute(String msg) {
 
-      isFailure = false;
       final String url = URLData.GET_LANGUAGES;
       new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null,
           new OnResponseListener() {
             @Override
-            public void OnResponseFailure(JSONObject response) {
+            public void OnResponseFailure() {
 
             }
 
@@ -129,11 +119,9 @@ public class Splashscreen extends BaseAppCompatActivity {
 
   public class GetParsedData extends AsyncTask<Void, Void, Void> {
 
-    Activity activity;
     JSONArray response;
 
     public GetParsedData(Activity activity, JSONArray response) {
-      this.activity = activity;
       this.response = response;
 
     }

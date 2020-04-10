@@ -16,31 +16,7 @@ public class SelectedImageModel {
     private int selectedBgColor;
     private int drawableCheckbox;
 
-    public boolean isThumbnailsselection() {
-        return thumbnailsselection;
-    }
-
-    public void setThumbnailsselection(boolean thumbnailsselection) {
-        this.thumbnailsselection = thumbnailsselection;
-    }
-
-    public int getSelectedBgColor() {
-        return selectedBgColor;
-    }
-
-    public void setSelectedBgColor(int selectedBgColor) {
-        this.selectedBgColor = selectedBgColor;
-    }
-
-    public int getDrawableCheckbox() {
-        return drawableCheckbox;
-    }
-
-    public void setDrawableCheckbox(int drawableCheckbox) {
-        this.drawableCheckbox = drawableCheckbox;
-    }
-
-    public String getArrPath() {
+  public String getArrPath() {
 
         return arrPath;
     }
@@ -50,11 +26,7 @@ public class SelectedImageModel {
     }
 
 
-    public Bitmap getThumbnails() {
-        return thumbnails;
-    }
-
-    public void setThumbnails(Bitmap thumbnails) {
+  public void setThumbnails(Bitmap thumbnails) {
         this.thumbnails = thumbnails;
     }
 
@@ -85,11 +57,7 @@ public class SelectedImageModel {
         return Accuracy;
     }
 
-    public void setAccuracy(double accuracy) {
-        Accuracy = accuracy;
-    }
-
-    private double Accuracy;
+  private double Accuracy;
 
     public double getLatitude() {
         return latitude;

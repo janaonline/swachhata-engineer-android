@@ -25,26 +25,8 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
 
     private Response.Listener<NetworkResponse> mListener;
     private Response.ErrorListener mErrorListener;
-    private Map<String, String> mHeaders;
 
-    /**
-     * Default constructor with predefined header and post method.
-     *
-     * @param url           request destination
-     * @param headers       predefined custom header
-     * @param listener      on success achieved 200 code from request
-     * @param errorListener on error http or library timeout
-     */
-    public VolleyMultipartRequest(String url, Map<String, String> headers,
-                                  Response.Listener<NetworkResponse> listener,
-                                  Response.ErrorListener errorListener) {
-        super(Method.POST, url, errorListener);
-        this.mListener = listener;
-        this.mErrorListener = errorListener;
-        this.mHeaders = headers;
-    }
-
-    /**
+  /**
      * Constructor with option method and default header configuration.
      *
      * @param method        method for now accept POST and GET only
@@ -62,7 +44,7 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
-        return (mHeaders != null) ? mHeaders : super.getHeaders();
+        return super.getHeaders();
     }
 
     @Override
@@ -220,24 +202,7 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
         private byte[] content;
         private String type;
 
-        /**
-         * Default data part
-         */
-        public DataPart() {
-        }
-
-        /**
-         * Constructor with data.
-         *
-         * @param name label of data
-         * @param data byte data
-         */
-        public DataPart(String name, byte[] data) {
-            fileName = name;
-            content = data;
-        }
-
-        /**
+      /**
          * Constructor with mime data type.
          *
          * @param name     label of data
@@ -259,16 +224,7 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
             return fileName;
         }
 
-        /**
-         * Setter file name.
-         *
-         * @param fileName string file name
-         */
-        public void setFileName(String fileName) {
-            this.fileName = fileName;
-        }
-
-        /**
+      /**
          * Getter content.
          *
          * @return byte file data
@@ -277,16 +233,7 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
             return content;
         }
 
-        /**
-         * Setter content.
-         *
-         * @param content byte file data
-         */
-        public void setContent(byte[] content) {
-            this.content = content;
-        }
-
-        /**
+      /**
          * Getter mime type.
          *
          * @return mime type
@@ -295,13 +242,5 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
             return type;
         }
 
-        /**
-         * Setter mime type.
-         *
-         * @param type mime type
-         */
-        public void setType(String type) {
-            this.type = type;
-        }
     }
 }

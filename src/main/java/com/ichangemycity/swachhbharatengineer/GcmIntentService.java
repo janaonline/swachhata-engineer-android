@@ -27,17 +27,13 @@ import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
 
 public class GcmIntentService extends IntentService {
-	public static final String TAG = "GCM ";
-	public static int NOTIFICATION_ID = 1;
-	public static int numMessages = 0;
-	Context context;
-	NotificationCompat.Builder builder;
-	private NotificationManager mNotificationManager;
+
+  public static int NOTIFICATION_ID = 1;
+  private NotificationManager mNotificationManager;
 	SharedPreferences mSharedPreferences = null;
 	private String Message_Recieved = "";
 	String ContentId = null, pushImage = null;
-	public static boolean isToOpenFeedback = false;
-	String title = "";
+  String title = "";
 	public GcmIntentService() {
 		super("GcmIntentService");
 	}
@@ -203,9 +199,8 @@ public class GcmIntentService extends IntentService {
 			myintent = new Intent(GcmIntentService.this, Splashscreen.class);
 			// .putExtra("openFeedback", true);//
 			// ComplaintDetailFromPushNotification
-			isToOpenFeedback = true;
 
-		}  else if (redirect.equalsIgnoreCase("playstore")) {
+    }  else if (redirect.equalsIgnoreCase("playstore")) {
 			String appPackageName = "com.ichangemycity.swachhbharatengineer";
 			try {
 				myintent = (new Intent(

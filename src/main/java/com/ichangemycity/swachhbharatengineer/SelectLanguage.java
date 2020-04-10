@@ -88,15 +88,4 @@ public class SelectLanguage extends BaseAppCompatActivity {
 
     private LanguageAdapter mAdapter;
 
-    private void displaySpinner() {
-        mAdapter = new LanguageAdapter(act,
-                AppController.languageArrayList);
-        languageListView.setAdapter(mAdapter);
-        setListViewHeightBasedOnItems(languageListView);
-
-        languageListView.setSelection(Integer.parseInt(ICMyCPreferenceData
-                .getPreferenceItem(act,
-                        ICMyCPreferenceData.selectedLanguagePosition, "0")));
-
-    }
 }

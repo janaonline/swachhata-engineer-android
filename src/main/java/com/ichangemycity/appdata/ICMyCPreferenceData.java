@@ -17,8 +17,7 @@ public class ICMyCPreferenceData {
     public static final String deviceUniqueID = "deviceUniqueID";
     public static final String access_token = "access_token";
     public static final String token = "token";
-    public static final String mac_address_key = "mac_address";
-    public static final String activated = "activated";
+  public static final String activated = "activated";
     public static final String location = "location";
     public static final String otp = "otp";
     public static final String Latitude = "Latitude";
@@ -26,42 +25,14 @@ public class ICMyCPreferenceData {
     public static final String userProfileImage = "userProfileImage";
     public static final String roleId = "role_id";
     public static final String designation = "designation";
-    public static final String posted_complaint_count = "posted_complaint_count";
-    public static final String voted_up_count = "voted_up_count";
-    public static final String un_assigned_count = "un_assigned_count";
-    public static final String postedComplaintId = "postedComplaintId";
+  public static final String un_assigned_count = "un_assigned_count";
 
-    public static final String deviceToken = "deviceToken";
-    public static final String LoginStatus = "LoginStatus";
-    public static final String cityId = "cityId";
-    public static final String Mobile_No = "Mobile_No";
-    public static final String Address = "Address";
-    public static final String Ward_No = "Ward_No";
-    public static final String user_email_verified = "user_email_verified";
-    public static final String Ward_Name = "Ward_Name";
-    public static final String postedcomplaint = "postedcomplaint";
-    public static final String followers = "followers";
-    public static final String followed = "followers";
-    public static final String affectedusers = "affectedusers";
-    public static final String votedcomp = "votedcomp";
-    public static final String totalcomplaintcount = "totalcomplaintcount";
-    public static final String totalcomplaintresolvedcount = "totalcomplaintresolvedcount";
-    public static final String type = "type";
-    public static final String profile_id = "profile_id";
-    public static final String unreadNotificationsCnt = "unreadNotificationsCnt";
-    public static final String mArrayList_user_full_name = "mArrayList_user_full_name";
-    public static final String mArrayList_ward_name = "mArrayList_ward_name";
-    public static final String mArrayList_civic_agency_name = "mArrayList_civic_agency_name";
-    public static final String mArrayList_category_name = "mArrayList_category_name";
-    public static final String mArrayList_complaint_title = "mArrayList_complaint_title";
-    public static final String mArrayList_complaint_description = "mArrayList_complaint_description";
-    public static final String mArrayList_affected_users_count = "mArrayList_affected_users_count";
-    public static final String CommentsCount = "CommentsCount";
-    public static final String maintainOneComplaint = "maintainOneComplaint";
-    public static final String user_full_name = "user_full_name";
+  public static final String deviceToken = "deviceToken";
+  public static final String Mobile_No = "Mobile_No";
+  public static final String unreadNotificationsCnt = "unreadNotificationsCnt";
+  public static final String user_full_name = "user_full_name";
     public static final String id = "id";// logged in user id
-    public static final String complaintUploadedImageFile = "complaintUploadedImageFile";
-    public static final String commentUploadedImageFile = "commentUploadedImageFile";
+  public static final String commentUploadedImageFile = "commentUploadedImageFile";
     public static final String shareImage = "shareImage";
     public static final String deviceWidth = "deviceWidth";
     public static final String deviceHeight = "deviceHeight";
@@ -81,16 +52,13 @@ public class ICMyCPreferenceData {
     public static final String careTakerNumber = "careTakerNumber";
     public static final String organization = "organization";
     public static final String email = "email";
-    public static final String org_id = "org_id";
-    public static final String is_admin = "is_admin";
-    public static final String profileData = "profileData";
+  public static final String profileData = "profileData";
     public static final String ward_id = "ward_id";
     public static final String city_id = "city_id";
     public static final String TOKEN_TYPE = "token_type";
     public static final String refresh_token = "refresh_token";
     public static final String REDIRECT_TYPE="REDIRECT_TYPE";
-    public static final String SUBJECT_ID = "SUBJECT_ID";
-    public static final String COMPLAINTVIEWID = "complaintviewid";
+  public static final String COMPLAINTVIEWID = "complaintviewid";
     public static final String isResolved = "isResolved";
 
     public static void setPreference(Context activity, String key, String value) {
@@ -110,11 +78,7 @@ public class ICMyCPreferenceData {
         return value;
     }
 
-    public static void traceLog(String key, String value) {
-        Log.i(key, value);
-    }
-
-    public static void clearPreferences(Context activity) {
+  public static void clearPreferences(Context activity) {
         SecurePrefManager.with(activity).clear().confirm();
     }
 

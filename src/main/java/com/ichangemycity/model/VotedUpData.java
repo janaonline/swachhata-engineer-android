@@ -3,28 +3,14 @@ package com.ichangemycity.model;
 public class VotedUpData {
 private String id, user_id,full_name,user_image_url,voted_up_on,complaint_count;
 
-/**
- * @return the id
- */
-public String getId() {
-    return id;
-}
-
-/**
+  /**
  * @param id the id to set
  */
 public void setId(String id) {
     this.id = id;
 }
 
-/**
- * @return the user_id
- */
-public String getUser_id() {
-    return user_id;
-}
-
-/**
+  /**
  * @param user_id the user_id to set
  */
 public void setUser_id(String user_id) {

@@ -29,49 +29,21 @@ public class CommentsData {
         this.user_image_url = user_image_url;
     }
 
-    /**
-     * @return the comment_id
-     */
-    public String getComment_id() {
-        return comment_id;
-    }
-
-    /**
+  /**
      * @param comment_id the comment_id to set
      */
     public void setComment_id(String comment_id) {
         this.comment_id = comment_id;
     }
 
-    /**
-     * @return the comment_user_id
-     */
-    public String getComment_user_id() {
-        return comment_user_id;
-    }
-
-    /**
+  /**
      * @param comment_user_id the comment_user_id to set
      */
     public void setComment_user_id(String comment_user_id) {
         this.comment_user_id = comment_user_id;
     }
 
-    /**
-     * @return the comment_type_id
-     */
-    public String getComment_type_id() {
-        return comment_type_id;
-    }
-
-    /**
-     * @param comment_type_id the comment_type_id to set
-     */
-    public void setComment_type_id(String comment_type_id) {
-        this.comment_type_id = comment_type_id;
-    }
-
-    /**
+  /**
      * @return the comment_full_name
      */
     public String getComment_full_name() {

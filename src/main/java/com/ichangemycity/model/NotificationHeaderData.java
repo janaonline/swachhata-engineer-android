@@ -10,21 +10,7 @@ public class NotificationHeaderData {
     boolean isRead;
     int imageIcon, bgColor;
 
-    /**
-     * @return the bgColor
-     */
-    public int getBgColor() {
-        return bgColor;
-    }
-
-    /**
-     * @param bgColor the bgColor to set
-     */
-    public void setBgColor(int bgColor) {
-        this.bgColor = bgColor;
-    }
-
-    /**
+  /**
      * @return the imageIcon
      */
     public int getImageIcon() {
@@ -83,14 +69,7 @@ public class NotificationHeaderData {
         this.contentId = contentId;
     }
 
-    /**
-     * @return the feedCreatedOn
-     */
-    public String getFeedCreatedOn() {
-        return feedCreatedOn;
-    }
-
-    /**
+  /**
      * @param feedCreatedOn
      *            the feedCreatedOn to set
      */
@@ -98,14 +77,7 @@ public class NotificationHeaderData {
         this.feedCreatedOn = feedCreatedOn;
     }
 
-    /**
-     * @return the contentCreatedOn
-     */
-    public String getContentCreatedOn() {
-        return contentCreatedOn;
-    }
-
-    /**
+  /**
      * @param contentCreatedOn
      *            the contentCreatedOn to set
      */

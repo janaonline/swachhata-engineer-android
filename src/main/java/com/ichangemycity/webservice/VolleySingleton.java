@@ -83,12 +83,4 @@ public class VolleySingleton {
         getRequestQueue().add(req);
     }
 
-    /**
-     * Get image loader.
-     *
-     * @return ImageLoader
-     */
-    public ImageLoader getImageLoader() {
-        return mImageLoader;
-    }
 }

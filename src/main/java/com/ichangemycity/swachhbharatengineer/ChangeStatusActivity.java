@@ -1,7 +1,6 @@
 package com.ichangemycity.swachhbharatengineer;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -13,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,17 +21,13 @@ import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.AppUtils;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
 import com.ichangemycity.base.BaseAppCompatActivity;
-import com.ichangemycity.callback.OnButtonClick;
 import com.ichangemycity.callback.OnResponseListener;
 import com.ichangemycity.model.ComplaintData;
 import com.ichangemycity.model.SelectedImageModel;
@@ -57,8 +51,6 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
     Toolbar toolbar;
     RelativeLayout postComm;
     public static Activity activity;
-    private static String url;
-    ComplaintData data = new ComplaintData();
     ImageView addImage, send;
     private ImageView imageToUpload;
     TextView statusTitleValue;
@@ -84,17 +76,13 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
         messageToShow = findViewById(R.id.messageToShow);
         list = findViewById(R.id.list);
         listOfReasonToRejectComplaint.clear();
-
-        url = URLData.BASE_URL + URLData.GET_POSTED_COMMENT
-                + AppController.selectedComplaintData.getComplaintId()
-                + URLData.GET_POSTED_COMMENT_SORT;
         toolbar = findViewById(R.id.toolbar);
         addImage = findViewById(R.id.addImage);
         addImage.setOnClickListener(v -> showAlertToPickImage());
         setToolbarAndCustomizeTitle(getResources().getString(R.string.id_) + AppController.selectedComplaintData.getGeneric_id());
         send.setOnClickListener(v -> {
             if (((EditText) findViewById(R.id.textComment)).getText().toString().trim().length() > 0) {
-                AppController.showProgressDialog(activity, "");
+                AppController.showProgressDialog(activity);
                 new InitiateChangeStatus().execute();
             } else {
                 AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO, activity.getResources().getString(R.string.write_a_comment));
@@ -174,7 +162,7 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
 
     private void changeStatus(final boolean hasImage) {
         //need clarify
-        AppController.showProgressDialog(activity, activity.getResources().getString(R.string.loading));
+        AppController.showProgressDialog(activity);
         final String url = URLData.BASE_URL + URLData.COMPLAINT_STATUS;
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("apiKey", URLData.API_KEY);
@@ -202,7 +190,7 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
 
         new WebserviceHelper(activity, WebserviceHelper.METHOD_PUT, url + URLParams, null, new OnResponseListener() {
             @Override
-            public void OnResponseFailure(JSONObject response) {
+            public void OnResponseFailure() {
                 AppController.hideProgressDialog(activity);
             }
 
@@ -317,7 +305,7 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
 
     private void uploadImage() {
         final String uploadImageURL = URLData.BASE_URL_UPLOAD_IMAGE;
-        AppController.showProgressDialog(activity, activity.getResources().getString(R.string.loading));
+        AppController.showProgressDialog(activity);
         VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, uploadImageURL,
             response -> {
                 String resultResponse = new String(response.data);
@@ -351,7 +339,7 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
                 }
             }, error -> {
                 AppController.hideProgressDialog(activity);
-                AppController.handleVolleyError(activity, (RelativeLayout) findViewById(R.id.parentLayout), error);
+                AppController.handleVolleyError(activity, error);
             }) {
             @Override
             protected Map<String, String> getParams() {
@@ -399,8 +387,6 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
             e.printStackTrace();
         }
     }
-
-    private static Handler handler = new Handler();
 
 
     private void showSelectedImage() {

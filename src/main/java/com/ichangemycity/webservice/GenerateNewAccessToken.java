@@ -21,9 +21,9 @@ public class GenerateNewAccessToken {
 
         new WebserviceHelper(activity, WebserviceHelper.METHOD_POST, url, requestParams, new OnResponseListener() {
             @Override
-            public void OnResponseFailure(JSONObject response) {
+            public void OnResponseFailure() {
                 ICMyCPreferenceData.clearPreferences(activity);
-                onTaskCompleted.onTaskFailure(null);
+                onTaskCompleted.onTaskFailure();
             }
 
             @Override
@@ -32,7 +32,7 @@ public class GenerateNewAccessToken {
                 ICMyCPreferenceData.setPreference(activity, ICMyCPreferenceData.access_token, response.optString("access_token"));
                 ICMyCPreferenceData.setPreference(activity, ICMyCPreferenceData.token, response.optString("access_token"));
                 ICMyCPreferenceData.setPreference(activity, ICMyCPreferenceData.refresh_token, response.optString("refresh_token"));
-                onTaskCompleted.onTaskSuccess(response);
+                onTaskCompleted.onTaskSuccess();
             }
         }, true, WebserviceHelper.HEADER_TYPE_AUTH);
     }

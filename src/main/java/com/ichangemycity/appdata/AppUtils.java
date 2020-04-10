@@ -45,8 +45,9 @@ import es.dmoral.toasty.Toasty;
  */
 
 public class AppUtils {
-    public static void setImage(final Activity activity, final CircleImageView circleImageView, final NetworkImageView imageView, final String
-            imageUrl, final boolean isCircularImageView) {
+    public static void setImage(final CircleImageView circleImageView,
+        final NetworkImageView imageView, final String
+        imageUrl, final boolean isCircularImageView) {
         final ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
         if (isCircularImageView) {
@@ -81,76 +82,6 @@ public class AppUtils {
 
     }
 
-    public static int setBgDrawableForComplaintStatus(Activity activity, final ComplaintData cData,
-                                                      final TextView complaintStatusTextView) {
-        String ComplaintStatusID = cData.getComplaint_status_id();
-        int complaintStatusTextColor = Color.BLACK;
-        int complaintStatusBgDrawable = R.drawable.complaint_status_closed;
-        if (ComplaintStatusID != null) {
-            complaintStatusBgDrawable = Integer.parseInt(ComplaintStatusID);
-            switch (complaintStatusBgDrawable) {
-                case AppController.COMPLAINT_REOPEN:
-                case AppController.COMPLAINT_OPEN:
-                    complaintStatusBgDrawable = R.drawable.complaint_status_red;
-                    complaintStatusTextColor = activity.getResources().getColor(
-                            R.color.red_reopn_open);
-                    break;
-                case AppController.COMPLAINT_ON_THE_JOB:
-                    complaintStatusBgDrawable = R.drawable.complaint_status_on_the_job;
-                    complaintStatusTextColor = activity.getResources().getColor(
-                            R.color.blue_on_the_job);
-                    break;
-                case AppController.COMPLAINT_RESOLVED:
-                    complaintStatusBgDrawable = R.drawable.complaint_status_resolved;
-                    complaintStatusTextColor = activity.getResources().getColor(
-                            R.color.green_resolved);
-                    break;
-                case AppController.COMPLAINT_REJECTED:
-                    complaintStatusBgDrawable = R.drawable.complaint_status_closed;
-                    complaintStatusTextColor = activity.getResources().getColor(
-                            R.color.gray_closed);
-                    break;
-                default:
-                    complaintStatusBgDrawable = R.drawable.complaint_status_closed;
-                    complaintStatusTextColor = activity.getResources().getColor(
-                            R.color.gray_closed);
-                    break;
-            }
-            complaintStatusTextView.setTextColor(complaintStatusTextColor);
-            complaintStatusTextView.setText(cData.getComplaint_status());
-            complaintStatusTextView.setBackgroundResource(complaintStatusBgDrawable);
-            return complaintStatusBgDrawable;
-        } else {
-            complaintStatusTextView.setTextColor(complaintStatusTextColor);
-            complaintStatusTextView.setText(cData.getComplaint_status());
-            complaintStatusTextView.setBackgroundResource(complaintStatusBgDrawable);
-            return complaintStatusBgDrawable;
-        }
-
-    }
-
-    public static String getSpanColorForStatusTitle(final Activity activity, final int statusId) {
-//        Log.i("getSpanColor", "--------------->" + statusId + "");
-        try {
-            if (statusId == AppController.COMPLAINT_OPEN || statusId == AppController
-                    .COMPLAINT_REOPEN) {
-//                return Color.argb(1, 213, 0, 0);
-                return ("#D50000");
-            } else if (statusId == AppController.COMPLAINT_ON_THE_JOB) {
-//                return Color.argb(1, 43, 181, 249);
-                return ("#2BB5F9");
-            } else if (statusId == AppController.COMPLAINT_RESOLVED) {
-//                return Color.argb(0, 189, 0, 1);
-                return ("#00BD00");
-            } else {
-                return ("#607D8B");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ("#607D8B");
-    }
-
     public static void showToast(final Activity activity, final int type, final String message) {
         switch (type) {
             case AppConstant.TOAST_TYPE_ERROR:
@@ -164,29 +95,7 @@ public class AppUtils {
                 break;
         }
     }
-    public static void shareComplaint(Activity activity, ComplaintData cdata) {
-        try {
-            Intent i = new Intent(Intent.ACTION_SEND);
-            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            i.putExtra(Intent.EXTRA_SUBJECT,
-                    activity.getResources().getString(R.string.app_name));
-            String sAux = SecurePrefManager.with(activity).get(ICMyCPreferenceData.user_full_name).defaultValue("").go()
-                    + " shared a complaint with you.\n\n";
-            sAux = sAux + cdata.getComplaint_url();
-            if (SecurePrefManager.with(activity).get(ICMyCPreferenceData.shareImage).defaultValue("").go().trim().length() == 0) {
-                i.setType("text/plain");
-            } else {
-                i.setType("image/jpeg");
-                i.putExtra(
-                        Intent.EXTRA_STREAM,
-                        Uri.parse(SecurePrefManager.with(activity).get(ICMyCPreferenceData.shareImage).defaultValue("").go()));
-            }
-            i.putExtra(Intent.EXTRA_TEXT, sAux);
-            activity.startActivity(Intent.createChooser(i, "Share"));
-            SecurePrefManager.with(activity).set(ICMyCPreferenceData.shareImage).value("").go();
-        } catch (Exception e) { // e.toString();
-        }
-    }
+
     public static boolean validateMobileNumber(final Activity activity, final EditText mobileNumber) {
 
         String mobnobegin = "";
@@ -210,7 +119,7 @@ public class AppUtils {
                         }
 
                         @Override
-                        public void onNegativeButtonClicked(DialogInterface dialogInterface) {
+                        public void onNegativeButtonClicked() {
 
                         }
                     });
@@ -235,7 +144,7 @@ public class AppUtils {
                         }
 
                         @Override
-                        public void onNegativeButtonClicked(DialogInterface dialogInterface) {
+                        public void onNegativeButtonClicked() {
 
                         }
                     });
@@ -278,7 +187,7 @@ public class AppUtils {
 
     public static View view;
 
-    public static void showProgressDialog(final Activity activity, final String loading) {
+    public static void showProgressDialog(final Activity activity) {
         if (view != null)
             hideProgressDialog(activity);
         view = ((LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.view_loading, null);
@@ -311,7 +220,6 @@ public class AppUtils {
     public void parseProfileGetResponse(final Activity activity, final JSONObject jsonObject, final OnTaskCompleted onTaskCompleted) {
         class ParseResponse extends AsyncTask<Void, Void, Void> {
             JSONObject jsonObject = new JSONObject();
-            JSONObject events = null, complaints = null;
 
             ParseResponse(JSONObject jsonObject1) {
                 this.jsonObject = jsonObject1;
@@ -369,7 +277,7 @@ public class AppUtils {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                onTaskCompleted.onTaskSuccess(jsonObject.optJSONObject("data"));
+                onTaskCompleted.onTaskSuccess();
             }
 
         }
@@ -422,7 +330,7 @@ public class AppUtils {
                             }
 
                             @Override
-                            public void onNegativeButtonClicked(DialogInterface dialogInterface) {
+                            public void onNegativeButtonClicked() {
 
                             }
                         });
@@ -448,12 +356,12 @@ public class AppUtils {
                             AppUtils.showToast(act, AppConstant.TOAST_TYPE_ERROR, errors);
                     new GenerateNewAccessToken().generateNewAccessToken(act, new OnTaskCompleted() {
                         @Override
-                        public void onTaskSuccess(JSONObject jsonObject) {
+                        public void onTaskSuccess() {
 
                         }
 
                         @Override
-                        public void onTaskFailure(VolleyError error) {
+                        public void onTaskFailure() {
                             if ((act.getClass().getSimpleName().equalsIgnoreCase(UserMobileNumber.class.getSimpleName()) ||
                                     act.getClass().getSimpleName().equalsIgnoreCase(SetEmailPasswordActivity.class.getSimpleName()) ||
                                      act.getClass().getSimpleName().equalsIgnoreCase(OTPVerification.class.getSimpleName()))) {

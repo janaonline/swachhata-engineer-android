@@ -1,9 +1,6 @@
 package com.ichangemycity.swachhbharatengineer;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -18,12 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.SlidingDrawer;
-import android.widget.SlidingDrawer.OnDrawerCloseListener;
-import android.widget.SlidingDrawer.OnDrawerOpenListener;
-import android.widget.Toast;
 
 import com.ichangemycity.adapter.NotificationAdapter;
 import com.ichangemycity.appdata.AppConstant;
@@ -47,11 +39,8 @@ import java.util.HashMap;
 
 public class NotificationActivity extends BaseAppCompatActivity implements
         SwipeRefreshLayout.OnRefreshListener {
-    public static int btn_acknowledged_position;
-    Context context_activity;
 
     private int current_page, current_page_read;
-    Dialog myDialog = null;
     public static ArrayList<NotificationHeaderData> data = new ArrayList<NotificationHeaderData>();
     ArrayList<NotificationHeaderData> data1 = new ArrayList<NotificationHeaderData>();
     boolean isLoadMore = true;
@@ -66,7 +55,6 @@ public class NotificationActivity extends BaseAppCompatActivity implements
     public static RecyclerView.Adapter mAdapter, mAdapter2;
     private RecyclerView.LayoutManager mLayoutManager, mLayoutManager2;
     private static boolean isDrawerOpened = false;
-    Button slideHandleButton;
     SlidingDrawer slidingDrawer;
     private static Activity activity;
 
@@ -88,8 +76,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView2.setLayoutManager(mLayoutManager2);
         mRecyclerView2.setItemAnimator(new DefaultItemAnimator());
-        slideHandleButton = findViewById(R.id.slideHandleButton);
-        slidingDrawer = findViewById(R.id.SlidingDrawer);
+         slidingDrawer = findViewById(R.id.SlidingDrawer);
         pb_loader = findViewById(R.id.pb_loader);
         pb_loader.setBarColor(Color.rgb(85, 146, 251));
         pb_loader.setVisibility(View.VISIBLE);
@@ -139,7 +126,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                 + current_page + URLData.NOTIFICATION_STATUS + URLData.UNREAD;
         new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
             @Override
-            public void OnResponseFailure(JSONObject response) {
+            public void OnResponseFailure() {
                 AppController.hideProgressDialog(activity);
                 //  AppController.handleVolleyError(activity, (RelativeLayout) findViewById(R.id.parentLayout), error);
             }
@@ -162,7 +149,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
         // currentPosition = data.size() - 1;
         new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
             @Override
-            public void OnResponseFailure(JSONObject response) {
+            public void OnResponseFailure() {
                 AppController.hideProgressDialog(activity);
             }
 
@@ -241,14 +228,11 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                                 }
                                 if ((controlsVisible && dy > 0)
                                         || (!controlsVisible && dy < 0)) {
-                                    scrolledDistance += dy;
                                 }
                             }
 
                         }
 
-                        // private static final int HIDE_THRESHOLD = 10;
-                        private int scrolledDistance = 0;
                         private boolean controlsVisible = true;
                     });
             // lastListItemPosition =
@@ -358,7 +342,6 @@ public class NotificationActivity extends BaseAppCompatActivity implements
         return data;
     }
 
-    int lastListItemPosition = 0;
     // int currentPosition;
 
     private void initSwipeOptions() {
@@ -373,13 +356,6 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_blue_bright);
-    }
-
-    /**
-     * It shows the SwipeRefreshLayout progress
-     */
-    public void showSwipeProgress() {
-        refreshLayout.setRefreshing(true);
     }
 
     /**
@@ -495,7 +471,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                 + URLData.READ;
         new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
             @Override
-            public void OnResponseFailure(JSONObject response) {
+            public void OnResponseFailure() {
                 AppController.hideProgressDialog(activity);
 
             }
@@ -516,7 +492,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                 + URLData.READ;
         new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
             @Override
-            public void OnResponseFailure(JSONObject response) {
+            public void OnResponseFailure() {
                 AppController.hideProgressDialog(activity);
             }
 
@@ -696,7 +672,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
         //return params;
         new WebserviceHelper(activity, WebserviceHelper.METHOD_PUT, url,params, new OnResponseListener() {
             @Override
-            public void OnResponseFailure(JSONObject response) {
+            public void OnResponseFailure() {
                 AppController.hideProgressDialog(activity);
             }
 

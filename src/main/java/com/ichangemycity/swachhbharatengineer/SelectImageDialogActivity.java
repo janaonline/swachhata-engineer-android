@@ -48,12 +48,6 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
     ProgressBar progress;
     List<String> permissionsRequired = new ArrayList<>();
 
-    public Activity getActivity() {
-        if (activity == null)
-            activity = SelectImageDialogActivity.this;
-        return activity;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +61,6 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
         rippleViewCamera = findViewById(R.id.rippleViewCamera);
         rippleViewGallery = findViewById(R.id.rippleViewGallery);
         AppController.mSelectedImageModels = new SelectedImageModel();
-        AppController.location = "";
         AppController.latitude = 0.0;
         AppController.longitude = 0.0;
         checkForStoragePermission();
@@ -140,7 +133,7 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
                     }
 
                     @Override
-                    public void onNegativeButtonClicked(DialogInterface dialogInterface) {
+                    public void onNegativeButtonClicked() {
 
                     }
                 });
@@ -291,7 +284,6 @@ public class SelectImageDialogActivity extends BaseAppCompatActivity {
             String postalCode = addresses.get(0).getPostalCode();
             String knownName = addresses.get(0).getFeatureName();
 
-            AppController.location = address;
             progress.setVisibility(View.GONE);
 
         } else {

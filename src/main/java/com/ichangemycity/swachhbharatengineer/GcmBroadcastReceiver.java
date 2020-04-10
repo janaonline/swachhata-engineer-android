@@ -9,8 +9,7 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 
 public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
 
-	SharedPreferences mSharedPreferences=null;
-	@Override
+  @Override
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
 		

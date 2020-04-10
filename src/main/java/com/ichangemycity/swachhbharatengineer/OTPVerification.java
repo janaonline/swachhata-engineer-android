@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
@@ -49,7 +48,6 @@ public class OTPVerification extends BaseAppCompatActivity {
     @Nullable
     @BindView(R.id.otp)
     OtpView otp;
-    private final String TAG = OTPVerification.class.getSimpleName();
     @Nullable
     @BindView(R.id.resendCode)
     TextView resendCode;
@@ -99,7 +97,7 @@ public class OTPVerification extends BaseAppCompatActivity {
              */
             @Override
             public void onClick(View v) {
-                AppUtils.showProgressDialog(activity, getString(R.string.loading));
+                AppUtils.showProgressDialog(activity);
                 onResendOtp();
                 //wait for 40 sec until receive resent otp
                 new CountDownTimer(60000, 1000) {
@@ -160,7 +158,7 @@ public class OTPVerification extends BaseAppCompatActivity {
         params.putAll(URLDataSwachhManch.getChannelParam());
         new WebserviceHelper(activity, WebserviceHelper.METHOD_POST, URLDataSwachhManch.BASE_URL_AUTH, params, new OnResponseListener() {
             @Override
-            public void OnResponseFailure(JSONObject response) {
+            public void OnResponseFailure() {
                 AppUtils.hideProgressDialog(activity);
             }
 
@@ -184,7 +182,7 @@ public class OTPVerification extends BaseAppCompatActivity {
                 new OnResponseListener() {
 
                     @Override
-                    public void OnResponseFailure(JSONObject response) {
+                    public void OnResponseFailure() {
                         AppUtils.hideProgressDialog(activity);
                     }
 
@@ -195,7 +193,7 @@ public class OTPVerification extends BaseAppCompatActivity {
                         ICMyCPreferenceData.setPreference(activity, ICMyCPreferenceData.profileData, json);
                         new AppUtils().parseProfileGetResponse(activity, response, new OnTaskCompleted() {
                             @Override
-                            public void onTaskSuccess(JSONObject jsonObject) {
+                            public void onTaskSuccess() {
 //                                if (!jsonObject.optBoolean("has_password")) {
 //                                    // Goto Email,password and confirm password screen
 //                                    startActivity(new Intent(activity, SetEmailPasswordActivity.class).putExtra("type", AppConstant
@@ -206,7 +204,7 @@ public class OTPVerification extends BaseAppCompatActivity {
                             }
 
                             @Override
-                            public void onTaskFailure(VolleyError error) {
+                            public void onTaskFailure() {
 
                             }
                         });
@@ -216,14 +214,14 @@ public class OTPVerification extends BaseAppCompatActivity {
     }
 
     private void onResendOtp() {
-        AppUtils.showProgressDialog(activity, activity.getResources().getString(R.string.loading));
+        AppUtils.showProgressDialog(activity);
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("mobile_number",ICMyCPreferenceData.getPreferenceItem(activity,ICMyCPreferenceData.Mobile_No,""));
         final String url = URLDataSwachhManch.BASE_URL_AUTH
                + URLData.GENERATE_OTP+"?mobile_number="+params.get("mobile_number").toString().trim() ;
         new WebserviceHelper(activity, WebserviceHelper.METHOD_POST, url, params, new OnResponseListener() {
             @Override
-            public void OnResponseFailure(JSONObject response) {
+            public void OnResponseFailure() {
                 AppUtils.hideProgressDialog(activity);
             }
 
@@ -244,72 +242,4 @@ public class OTPVerification extends BaseAppCompatActivity {
         }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
     }
 
-    private void handleResponse(JSONObject mJsonObject) {
-
-        try {
-
-            if (mJsonObject.getInt("httpCode") == 200
-                    || mJsonObject.getInt("httpCode") == 201) {
-                String userData = mJsonObject.getString("user");
-                JSONObject userDataJsonObject = new JSONObject(userData);
-
-                ICMyCPreferenceData.setPreference(activity,
-                        ICMyCPreferenceData.location, userDataJsonObject
-                                .getString(ICMyCPreferenceData.location));
-                ICMyCPreferenceData.setPreference(
-                        activity,
-                        ICMyCPreferenceData.activated,
-                        userDataJsonObject
-                                .getInt(ICMyCPreferenceData.activated) + "");
-
-                // insert fresh token into Shared Preference
-                if (userDataJsonObject.has(ICMyCPreferenceData.token)) {
-                    if (!userDataJsonObject
-                            .getString(ICMyCPreferenceData.token).isEmpty())
-                        ICMyCPreferenceData.setPreference(
-                                activity,
-                                ICMyCPreferenceData.token,
-                                userDataJsonObject
-                                        .getString(ICMyCPreferenceData.token)
-                                        + "");
-                }
-            } else {
-
-                // ICMyCPreferenceData
-                // .setPreference(UserOTPVerification.this,
-                // ICMyCPreferenceData.token, userDataJson
-                // .getString(ICMyCPreferenceData.token));
-
-                try {
-                    String errors = mJsonObject
-                            .getString("errors");
-                    JSONArray mJsonArray = new JSONArray(errors);
-                    String error = "";
-                    for (int i = 0; i < mJsonArray.length(); i++) {
-                        error += mJsonArray.getJSONObject(i).getString(
-                                "message")
-                                + "\n";
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        } catch (JSONException e) {
-            // TODO: handle exception
-        }
-        // ICMyCPreferenceData.isOTPVerified = true;
-
-            startActivity(new Intent(activity,
-                    MainActivity.class));
-            try {
-                SelectLanguage.act.finish();
-            } catch (Exception e) {
-            }
-            try {
-                activity.finish();
-            } catch (Exception e) {
-            }
-
-    }
 }

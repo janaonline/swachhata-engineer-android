@@ -3,7 +3,6 @@ package com.ichangemycity.swachhbharatengineer;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -12,11 +11,9 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
@@ -115,7 +112,7 @@ public class UserMobileNumber extends BaseAppCompatActivity {
      * */
     ICMyCPreferenceData
         .setPreference(activity, ICMyCPreferenceData.Mobile_No, mobileNumber.getText().toString());
-    AppUtils.showProgressDialog(activity, getString(R.string.loading));
+    AppUtils.showProgressDialog(activity);
     final String url = URLDataSwachhManch.BASE_URL_AUTH + URLDataSwachhManch.USERS;
     HashMap<String, String> params = new HashMap<>();
     params.put("mobile_number", mobileNumber.getText().toString());
@@ -131,7 +128,7 @@ public class UserMobileNumber extends BaseAppCompatActivity {
     new WebserviceHelper(activity, WebserviceHelper.METHOD_POST, url, params,
         new OnResponseListener() {
           @Override
-          public void OnResponseFailure(JSONObject response) {
+          public void OnResponseFailure() {
             AppUtils.hideProgressDialog(activity);
           }
 
@@ -147,7 +144,7 @@ public class UserMobileNumber extends BaseAppCompatActivity {
                 ICMyCPreferenceData.setPreference(activity, ICMyCPreferenceData.refresh_token,
                     response.optString("refresh_token"));
 //                  getProfileAPICall
-                getProfileAPICall(true);
+                getProfileAPICall();
               } else {
                 JSONArray array = response.optJSONObject("data").optJSONArray("roles");
                 boolean isEngineerOrULBAdmin = false;
@@ -174,7 +171,7 @@ public class UserMobileNumber extends BaseAppCompatActivity {
                         }
 
                         @Override
-                        public void onNegativeButtonClicked(DialogInterface dialogInterface) {
+                        public void onNegativeButtonClicked() {
 
                         }
                       });
@@ -209,14 +206,14 @@ public class UserMobileNumber extends BaseAppCompatActivity {
         }, true, WebserviceHelper.HEADER_TYPE_AUTH);
   }
 
-  private void getProfileAPICall(final boolean hasAccessToken) {
+  private void getProfileAPICall() {
 
     final String url = BASE_URL_PROFILE + CHANNEL_KEY_VALUE;
     new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null,
         new OnResponseListener() {
 
           @Override
-          public void OnResponseFailure(JSONObject response) {
+          public void OnResponseFailure() {
             AppUtils.hideProgressDialog(activity);
           }
 
@@ -227,7 +224,7 @@ public class UserMobileNumber extends BaseAppCompatActivity {
             ICMyCPreferenceData.setPreference(activity, ICMyCPreferenceData.profileData, json);
             new AppUtils().parseProfileGetResponse(activity, response, new OnTaskCompleted() {
               @Override
-              public void onTaskSuccess(JSONObject jsonObject) {
+              public void onTaskSuccess() {
 //                                if (!hasAccessToken) {
 //                                    if (!jsonObject.optBoolean("has_password")) {
 //                                        // Goto Email,password and confirm password screen
@@ -251,7 +248,7 @@ public class UserMobileNumber extends BaseAppCompatActivity {
               }
 
               @Override
-              public void onTaskFailure(VolleyError error) {
+              public void onTaskFailure() {
                 submitMobileNumberAPI(false);
               }
             });
@@ -259,8 +256,6 @@ public class UserMobileNumber extends BaseAppCompatActivity {
           }
         }, true, WebserviceHelper.HEADER_TYPE_PROFILE);
   }
-
-  int retryCount;
 
   private void setToolbarAndCustomizeTitle(final Toolbar toolbar, String title) {
     setSupportActionBar(toolbar);

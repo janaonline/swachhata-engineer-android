@@ -87,14 +87,7 @@ public class ComplaintData {
         this.longitude = longitude;
     }
 
-    /**
-     * @return the complaint_image_l1
-     */
-    public String getComplaint_image_l1() {
-        return complaint_image_l1;
-    }
-
-    /**
+  /**
      * @param complaint_image_l1
      *            the complaint_image_l1 to set
      */
@@ -102,22 +95,7 @@ public class ComplaintData {
         this.complaint_image_l1 = complaint_image_l1;
     }
 
-    /**
-     * @return the complaint_image_l2
-     */
-    public String getComplaint_image_l2() {
-        return complaint_image_l2;
-    }
-
-    /**
-     * @param complaint_image_l2
-     *            the complaint_image_l2 to set
-     */
-    public void setComplaint_image_l2(String complaint_image_l2) {
-        this.complaint_image_l2 = complaint_image_l2;
-    }
-
-    /**
+  /**
      * @return the complaint_url
      */
     public String getComplaint_url() {
@@ -135,14 +113,7 @@ public class ComplaintData {
     private String comment_count, vote_up_count, posted_on, access_token;
     private boolean isToChangeStatus;
 
-    /**
-     * @return the isToChangeStatus
-     */
-    public boolean isToChangeStatus() {
-        return isToChangeStatus;
-    }
-
-    /**
+  /**
      * @param isToChangeStatus
      *            the isToChangeStatus to set
      */
@@ -195,14 +166,7 @@ public class ComplaintData {
         this.posted_on = posted_on;
     }
 
-    /**
-     * @return the access_token
-     */
-    public String getAccess_token() {
-        return access_token;
-    }
-
-    /**
+  /**
      * @param access_token
      *            the access_token to set
      */
@@ -272,14 +236,7 @@ public class ComplaintData {
         this.feedback_count = feedback_count;
     }
 
-    /**
-     * @return the radius
-     */
-    public String getRadius() {
-        return radius;
-    }
-
-    /**
+  /**
      * @return the affected
      */
     public String getAffected() {
@@ -332,14 +289,7 @@ public class ComplaintData {
         this.complaint_image = complaint_image;
     }
 
-    /**
-     * @return the complaint_image_height
-     */
-    public String getComplaint_image_height() {
-        return complaint_image_height;
-    }
-
-    /**
+  /**
      * @param complaint_image_height
      *            the complaint_image_height to set
      */
@@ -422,14 +372,7 @@ public class ComplaintData {
         this.generic_id = generic_id;
     }
 
-    /**
-     * @return the city_id
-     */
-    public String getCity_id() {
-        return city_id;
-    }
-
-    /**
+  /**
      * @param city_id
      *            the city_id to set
      */
@@ -467,14 +410,7 @@ public class ComplaintData {
         this.user_id = user_id;
     }
 
-    /**
-     * @return the category_id
-     */
-    public String getCategory_id() {
-        return category_id;
-    }
-
-    /**
+  /**
      * @param category_id
      *            the category_id to set
      */
@@ -512,14 +448,7 @@ public class ComplaintData {
         this.landmark = landmark;
     }
 
-    /**
-     * @return the parent_id
-     */
-    public String getParent_id() {
-        return parent_id;
-    }
-
-    /**
+  /**
      * @param parent_id
      *            the parent_id to set
      */
@@ -557,14 +486,7 @@ public class ComplaintData {
         this.complaint_status_id = complaint_status_id;
     }
 
-    /**
-     * @return the feed_id
-     */
-    public String getFeed_id() {
-        return feed_id;
-    }
-
-    /**
+  /**
      * @param feed_id
      *            the feed_id to set
      */
@@ -572,97 +494,7 @@ public class ComplaintData {
         this.feed_id = feed_id;
     }
 
-    /**
-     * @return the feed_module_id
-     */
-    public String getFeed_module_id() {
-        return feed_module_id;
-    }
-
-    /**
-     * @param feed_module_id
-     *            the feed_module_id to set
-     */
-    public void setFeed_module_id(String feed_module_id) {
-        this.feed_module_id = feed_module_id;
-    }
-
-    /**
-     * @return the feed_user_activity_id
-     */
-    public String getFeed_user_activity_id() {
-        return feed_user_activity_id;
-    }
-
-    /**
-     * @param feed_user_activity_id
-     *            the feed_user_activity_id to set
-     */
-    public void setFeed_user_activity_id(String feed_user_activity_id) {
-        this.feed_user_activity_id = feed_user_activity_id;
-    }
-
-    /**
-     * @return the feed_content_id
-     */
-    public String getFeed_content_id() {
-        return feed_content_id;
-    }
-
-    /**
-     * @param feed_content_id
-     *            the feed_content_id to set
-     */
-    public void setFeed_content_id(String feed_content_id) {
-        this.feed_content_id = feed_content_id;
-    }
-
-    /**
-     * @return the feed_created_at
-     */
-    public String getFeed_created_at() {
-        return feed_created_at;
-    }
-
-    /**
-     * @param feed_created_at
-     *            the feed_created_at to set
-     */
-    public void setFeed_created_at(String feed_created_at) {
-        this.feed_created_at = feed_created_at;
-    }
-
-    /**
-     * @return the feed_user_id
-     */
-    public String getFeed_user_id() {
-        return feed_user_id;
-    }
-
-    /**
-     * @param feed_user_id
-     *            the feed_user_id to set
-     */
-    public void setFeed_user_id(String feed_user_id) {
-        this.feed_user_id = feed_user_id;
-    }
-
-    /**
-     * @return the feed_title
-     */
-    public String getFeed_title() {
-        return feed_title;
-    }
-
-    /**
-     * @param feed_title
-     *            the feed_title to set
-     */
-    public void setFeed_title(String feed_title) {
-        this.feed_title = feed_title;
-    }
-
-    /**
+  /**
      * @return the feed_full_name
      */
     public String getFeed_full_name() {

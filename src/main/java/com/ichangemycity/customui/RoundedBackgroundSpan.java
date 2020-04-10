@@ -53,11 +53,4 @@ public class RoundedBackgroundSpan extends ReplacementSpan {
         canvas.drawText(text, start, end, x, y, paint);
     }
 
-    public int pxToDp(int px) {
-        return (int) (px / Resources.getSystem().getDisplayMetrics().density);
-    }
-
-    public CharSequence getText() {
-        return text;
-    }
 }
