@@ -10,6 +10,7 @@ import com.ichangemycity.appdata.AppController;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
 import com.ichangemycity.base.BaseAppCompatActivity;
 import com.ichangemycity.callback.OnResponseListener;
+import com.ichangemycity.firebase.MyFirebaseInstanceIDService;
 import com.ichangemycity.model.LanguageData;
 import com.ichangemycity.webservice.URLData;
 import com.ichangemycity.webservice.WebserviceHelper;
@@ -82,17 +83,8 @@ public class Splashscreen extends BaseAppCompatActivity {
 
     private void performGCMRegistration() {
       try {
-        if (gcm == null) {
-          gcm = GoogleCloudMessaging.getInstance(activity);
-        }
-        regid = gcm.register(URLData.GCM_SENDER_ID);
-        String reg = regid;
-        // Log.i("reg", reg);
-
-        ICMyCPreferenceData.setPreference(activity,
-            ICMyCPreferenceData.deviceToken, regid);
-        System.out.println("Regid is=============>" + regid);
-      } catch (IOException ex) {
+        new MyFirebaseInstanceIDService().onTokenRefresh();
+      } catch (Exception ex) {
         ex.printStackTrace();
       }
     }
