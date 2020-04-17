@@ -28,7 +28,9 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.ichangemycity.adapter.ComplaintFilterSpinnerAdapter;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity
   private RecyclerView.LayoutManager mLayoutManager;
   private ArrayList<ComplaintFilterModel> complaintFilterModel = new ArrayList<ComplaintFilterModel>();
   public static Spinner complaintFilter;
+  private static ImageView complaintFilterDropdownImageView;
   public static android.support.v7.app.ActionBar actionBar;
   private DrawerLayout drawer;
   int pastVisiblesItems, visibleItemCount, totalItemCount;
@@ -217,6 +220,7 @@ public class MainActivity extends AppCompatActivity
     complaintFilterModel.add(mComplaintFilterModel);
 
     complaintFilter = findViewById(R.id.complaintFilter);
+    complaintFilterDropdownImageView = findViewById(R.id.complaintFilterDropdownImageView);
     ComplaintFilterSpinnerAdapter complaintFilterSpinnerAdapter = new ComplaintFilterSpinnerAdapter(
         activity, complaintFilterModel);
     complaintFilter.setAdapter(complaintFilterSpinnerAdapter);
@@ -239,7 +243,9 @@ public class MainActivity extends AppCompatActivity
 
       }
     });
-
+    complaintFilterDropdownImageView.setOnClickListener(view -> {
+      complaintFilter.performClick();
+    });
   }
 
   private void setToolbarAndCustomizeTitle(Toolbar toolbar) {
