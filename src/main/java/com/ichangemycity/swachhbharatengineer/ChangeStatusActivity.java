@@ -192,6 +192,8 @@ public class ChangeStatusActivity extends BaseAppCompatActivity {
             @Override
             public void OnResponseFailure() {
                 AppController.hideProgressDialog(activity);
+                AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,"Unknown error, please refresh complaints");
+                activity.finish();
             }
 
             @Override

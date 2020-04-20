@@ -36,31 +36,7 @@ public class Splashscreen extends BaseAppCompatActivity {
   }
 
   private void proceedAfterPermissionGranted() {
-    final String url = URLData.GET_LANGUAGES;
-    new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null,
-        new OnResponseListener() {
-          @Override
-          public void OnResponseFailure() {
-
-          }
-
-          @Override
-          public void OnResponseSuccess(JSONObject response1) {
-            try {
-              JSONArray response = response1.optJSONArray("languages");
-              new GetParsedData(Splashscreen.this, response)
-                  .execute();
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
-
-            new RegisterBackground().execute();
-          }
-        }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
-
-    // Cancelling request
-    // ApplicationController.getInstance().getRequestQueue().cancelAll(tag_json_obj);
-
+    new RegisterBackground().execute();
   }
 
   GoogleCloudMessaging gcm;

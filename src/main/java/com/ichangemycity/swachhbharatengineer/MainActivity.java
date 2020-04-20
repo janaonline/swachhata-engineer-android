@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity
 
     getProfileDetailsAndRunHomeFeed();
     setSpinnerData();
-    if (ICMyCPreferenceData.getPreferenceItem(
+   /* if (ICMyCPreferenceData.getPreferenceItem(
         MainActivity.activity,
         ICMyCPreferenceData.isDeeplinked, "0").equalsIgnoreCase("1")) {
       ICMyCPreferenceData.setPreference(
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity
           ICMyCPreferenceData.isDeeplinked, "0");
       startActivity(new Intent(MainActivity.activity,
           ComplaintDetail.class));
-    }
+    }*/
 
   }
 
@@ -137,7 +137,30 @@ public class MainActivity extends AppCompatActivity
     } else {
       // do nothing
     }
+    redirectIfFromPushNotification();
 
+  }
+
+  private void redirectIfFromPushNotification() {
+    try {
+      if (getIntent().getExtras() != null) {
+        if (getIntent().getExtras().getString("body") != null) {
+//        showNotification();
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    try {
+      if (!TextUtils
+          .isEmpty(AppController.selectedComplaintData.getComplaintId())) {
+        startActivity(new Intent(MainActivity.activity,
+            ComplaintDetail.class));
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   private void setSpinnerData() {
@@ -562,7 +585,7 @@ public class MainActivity extends AppCompatActivity
 
       /*  JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 URLData.BASE_URL + URLData.USERS + "?apiKey=" + URLData.API_KEY, null,
-                new Response.Listener<JSONObject>() {
+                new Response.Listener<JSON  Object>() {
                     @Override
                     public void onResponse(final JSONObject mJsonObject) {
                         try {
@@ -1105,4 +1128,5 @@ public class MainActivity extends AppCompatActivity
     runHomeFeedWebService(complaintFilterModel.get(
         complaintFilter.getSelectedItemPosition()).getComplaintType(), true);
   }
+
 }
