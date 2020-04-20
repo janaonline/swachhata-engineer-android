@@ -30,7 +30,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.ichangemycity.appdata.AppConstant;
 import com.ichangemycity.appdata.AppController;
+import com.ichangemycity.appdata.AppUtils;
 import com.ichangemycity.appdata.ICMyCPreferenceData;
 import com.ichangemycity.base.BaseAppCompatActivity;
 import com.ichangemycity.callback.OnResponseListener;
@@ -173,6 +175,7 @@ public class ComplaintDetail extends BaseAppCompatActivity {
             public void OnResponseFailure() {
                 frameLoading.setVisibility(View.GONE);
                 AppController.hideProgressDialog(activity);
+                AppUtils.showToast(activity, AppConstant.TOAST_TYPE_INFO,"Unknown error, please refresh complaints");
             }
 
             @Override
@@ -182,7 +185,7 @@ public class ComplaintDetail extends BaseAppCompatActivity {
                 new ParseComplaintDetailResponse(response).execute();
             }
 
-        },true,WebserviceHelper.HEADER_TYPE_NORMAL);
+        },false,WebserviceHelper.HEADER_TYPE_NORMAL);
 }
 
 
@@ -219,6 +222,7 @@ public class ComplaintDetail extends BaseAppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            frameLoading.setVisibility(View.GONE);
             findViewById(R.id.parentLayout).setVisibility(View.VISIBLE);
             AppController.hideProgressDialog(activity);
             loadDataIntoComponents();

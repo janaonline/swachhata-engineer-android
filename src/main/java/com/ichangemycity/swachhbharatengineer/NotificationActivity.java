@@ -120,6 +120,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
 
     private void runHomeFeedWebService() {
         mRecyclerView.setVisibility(View.GONE);
+        setSwipeProgress(true);
         current_page = 1;
         String url = URLData.BASE_URL
                 + URLData.ENGINEER_NOTIFICATION + URLData.PAGE
@@ -127,6 +128,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
         new WebserviceHelper(activity, WebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
             @Override
             public void OnResponseFailure() {
+                setSwipeProgress(false);
                 AppController.hideProgressDialog(activity);
                 //  AppController.handleVolleyError(activity, (RelativeLayout) findViewById(R.id.parentLayout), error);
             }
@@ -134,9 +136,10 @@ public class NotificationActivity extends BaseAppCompatActivity implements
             @Override
             public void OnResponseSuccess(JSONObject response) {
                 mRecyclerView.setVisibility(View.VISIBLE);
+                setSwipeProgress(false);
                 new ParseJSONResponse(response).execute();
             }
-        }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
+        }, false, WebserviceHelper.HEADER_TYPE_NORMAL);
 
     }
 
@@ -158,7 +161,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                 mRecyclerView.setVisibility(View.VISIBLE);
                 new ParseMoreJSONResponse(response).execute();
             }
-        }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
+        }, false, WebserviceHelper.HEADER_TYPE_NORMAL);
     }
 
 
@@ -242,7 +245,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
 
 
             }
-            hideSwipeProgress();
+            setSwipeProgress(false);
             slidingDrawer.setOnDrawerOpenListener(() -> {
                 runReadNotifWebService();
                 isDrawerOpened = true;
@@ -308,7 +311,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                 pb_loader.setVisibility(View.GONE);
 //                linear.startAnimation(upBottom);
             }
-            hideSwipeProgress();
+            setSwipeProgress(false);
         }
     }
 
@@ -361,8 +364,8 @@ public class NotificationActivity extends BaseAppCompatActivity implements
     /**
      * It shows the SwipeRefreshLayout progress
      */
-    public void hideSwipeProgress() {
-        refreshLayout.setRefreshing(false);
+    public void setSwipeProgress(final boolean isToEnableRefreshing) {
+        refreshLayout.setRefreshing(isToEnableRefreshing);
     }
 
     /**
@@ -373,6 +376,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
         // Empty implementation
         try {
             // if (!isDrawerOpened)
+            setSwipeProgress(true);
             runHomeFeedWebService();
             // else
             // runReadNotifWebService();
@@ -465,6 +469,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
     private void runReadNotifWebService() {
         current_page_read = 1;
         // data1.clear();
+        setSwipeProgress(true);
         String url = URLData.BASE_URL
                 + URLData.USERS + URLData.NOTIFICATION + URLData.PAGE
                 + current_page_read + URLData.NOTIFICATION_STATUS
@@ -473,19 +478,21 @@ public class NotificationActivity extends BaseAppCompatActivity implements
             @Override
             public void OnResponseFailure() {
                 AppController.hideProgressDialog(activity);
-
+                setSwipeProgress(false);
             }
 
             @Override
             public void OnResponseSuccess(JSONObject response) {
                 new ParseReadNotifJSONResponse(response).execute();
+                setSwipeProgress(false);
             }
-        }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
+        }, false, WebserviceHelper.HEADER_TYPE_NORMAL);
     }
 
     private void runMoreReadNotifWebService() {
         current_page_read += 1;
         // currentPosition = data1.size() - 1;
+        setSwipeProgress(false);
         String url = URLData.BASE_URL
                 + URLData.ENGINEER_NOTIFICATION + URLData.PAGE
                 + current_page_read + URLData.NOTIFICATION_STATUS
@@ -500,13 +507,19 @@ public class NotificationActivity extends BaseAppCompatActivity implements
             public void OnResponseSuccess(JSONObject response) {
                 new ParseMoreReadNotifJSONResponse(response).execute();
             }
-        }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
+        }, false, WebserviceHelper.HEADER_TYPE_NORMAL);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        runHomeFeedWebService();
+        try{
+            mRecyclerView.getAdapter().notifyDataSetChanged();
+        }catch (Exception e){}
+        try{
+            mRecyclerView2.getAdapter().notifyDataSetChanged();
+        }catch (Exception e){}
+
     }
 
     private class ParseReadNotifJSONResponse extends
@@ -619,7 +632,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                 pb_loader.setVisibility(View.GONE);
 //                linear.startAnimation(upBottom);
             }
-            hideSwipeProgress();
+            setSwipeProgress(false);
         }
     }
 
@@ -659,7 +672,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                 pb_loader.setVisibility(View.GONE);
 //                linear.startAnimation(upBottom);
             }
-            hideSwipeProgress();
+            setSwipeProgress(false);
         }
     }
 
@@ -696,7 +709,7 @@ public class NotificationActivity extends BaseAppCompatActivity implements
                     e.printStackTrace();
                 }
             }
-        }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
+        }, false, WebserviceHelper.HEADER_TYPE_NORMAL);
 
 
     }

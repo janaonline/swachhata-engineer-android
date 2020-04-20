@@ -175,6 +175,7 @@ public class NotificationAdapter extends
             //  AppController.handleVolleyError(activity, (RelativeLayout) activity.findViewById(R.id.parentLayout), error);
             try {
               redirectToAppropriateScreens(nData);
+              AppController.hideProgressDialog(activity);
             } catch (Exception e) {
               e.printStackTrace();
             }
@@ -208,7 +209,7 @@ public class NotificationAdapter extends
               e.printStackTrace();
             }
           }
-        }, true, WebserviceHelper.HEADER_TYPE_NORMAL);
+        }, false, WebserviceHelper.HEADER_TYPE_NORMAL);
 
   }
 
