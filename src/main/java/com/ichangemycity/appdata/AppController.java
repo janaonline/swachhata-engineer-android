@@ -88,7 +88,7 @@ public class AppController extends MultiDexApplication {
 
 
     public static void traceLog(String key, String value) {
-//        Log.i(key, value);
+        Log.i(key, value);
     }
 
 
