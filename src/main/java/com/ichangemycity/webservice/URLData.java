@@ -19,11 +19,16 @@ public class URLData {
 ////    Old API call to upload image
 //        public static final String BASE_URL_UPLOAD_IMAGE= "http://qaapi.ichangemycity.in/sbm/v1/"+"file";
 
+  //    QA
+  public static final String GET_LANGUAGES = "http://sbmapi.swachh.city/languages";
+  public static final String BASE_URL = "http://sbmapi.swachh.city/engineer/v1/";
+  public static final String BASE_URL_UPLOAD_IMAGE = "http://filesj.swachhmanch.in/swachhata/complaints";
 
-  //    LIVE
-  public static final String GET_LANGUAGES = "http://api.swachh.city/languages";
-  public static final String BASE_URL = "http://api.swachh.city/engineer/v1/";
-  public static final String BASE_URL_UPLOAD_IMAGE = "https://files.ichangemycity.com/swachhata/complaints";
+//    LIVE
+//  public static final String GET_LANGUAGES = "http://api.swachh.city/languages";
+//  public static final String BASE_URL = "http://api.swachh.city/engineer/v1/";
+//  public static final String BASE_URL_UPLOAD_IMAGE = "https://files.ichangemycity.com/swachhata/complaints";
+
 //    Old API call to upload image
 //    public static final String BASE_URL_UPLOAD_IMAGE = "http://api.swachh.city/sbm/v1/" + URLData.FILE;
 

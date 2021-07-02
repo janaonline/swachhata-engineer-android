@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class URLDataSwachhManch {
 
-  public static final String AUTH = "auth.ichangemycity.com/";
+
 
   //Functions
     public static final String USERS = "users";
@@ -26,13 +26,22 @@ public class URLDataSwachhManch {
 //    public static final String Location = "https://qalocations.swachhmanch.in/";
 //    public static final String Feed = "https://qadataapi.swachhmanch.in/";
 //    public static final String Terms = "https://qa.swachhmanch.in/disclaimer";
+//    public static final String AUTH = "auth.ichangemycity.com/";
+
+  // QA - 2021
+  public static final String Auth = "http://authj.swachhmanch.in/";
+  public static final String Profile = "http://profilej.swachhmanch.in/";
+  public static final String AUTH = "auth.ichangemycity.com/";
+//    public static final String Events = "https://events.swachhmanch.in/";
+//    public static final String Feed = "https://dataapi.swachhmanch.in/";
 
 
-    //LIVE
-    public static final String Auth = "https://auth.swachhmanch.in/";
-    public static final String Profile = "https://profile.swachhmanch.in/";
-    public static final String Events = "https://events.swachhmanch.in/";
-  public static final String Feed = "https://dataapi.swachhmanch.in/";
+  //LIVE
+//    public static final String Auth = "https://auth.swachhmanch.in/";
+//    public static final String Profile = "https://profile.swachhmanch.in/";
+//    public static final String Events = "https://events.swachhmanch.in/";
+//    public static final String Feed = "https://dataapi.swachhmanch.in/";
+//  public static final String AUTH = "auth.ichangemycity.com/";
 
 
   //BASE URL
